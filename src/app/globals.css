@@ -22,14 +22,19 @@ html[data-theme="light"] {
   --ocs-line-strong: #b8b09f;
 
   --ocs-ink: #16150f;
-  --ocs-ink-muted: #5a574e;
-  --ocs-ink-faint: #6f6b62;
+  --ocs-ink-muted: #3f3c36;
+  --ocs-ink-faint: #524e46;
 
   /* Darker amber for small type on paper. The fill token stays the CTA gold. */
   --ocs-amber-300: #8f5c14;
   --ocs-amber-400: #d08920;
   --ocs-amber-500: #e8a24a;
   --ocs-on-accent: #14120f;
+  /* Cool highlighter yellow — distinct from the gold arrow accent. */
+  --ocs-highlight-fill: #fde047;
+  --ocs-highlight-opacity: 0.6;
+  --ocs-scrollbar-track: #f0ece6;
+  --ocs-scrollbar-thumb: #c9c2b8;
 
   --ocs-signal-success: #1a7a52;
   --ocs-signal-warning: #9a7410;
@@ -43,28 +48,36 @@ html[data-theme="light"] {
     rgba(232, 162, 74, 0.12),
     transparent 56%
   );
+
+  /* Floating nav card + top inset. Used for scroll offset and section clearance. */
+  --ocs-nav-clearance: 7.25rem;
 }
 
 html[data-theme="dark"] {
   color-scheme: dark;
 
-  --ocs-canvas: #08080b;
-  --ocs-surface-1: #0d0d11;
-  --ocs-surface-2: #111116;
-  --ocs-surface-3: #18181e;
+  --ocs-canvas: #0c0b0a;
+  --ocs-surface-1: #121110;
+  --ocs-surface-2: #181716;
+  --ocs-surface-3: #201f1d;
 
-  --ocs-line-subtle: #1a1a20;
-  --ocs-line: #24242b;
-  --ocs-line-strong: #33333c;
+  --ocs-line-subtle: #262422;
+  --ocs-line: #33312e;
+  --ocs-line-strong: #45423d;
 
   --ocs-ink: #f4f3f1;
-  --ocs-ink-muted: #9a99a5;
-  --ocs-ink-faint: #7e7d88;
+  --ocs-ink-muted: #c2c0b8;
+  --ocs-ink-faint: #a8a59c;
 
   --ocs-amber-300: #f6c98a;
   --ocs-amber-400: #f3b45f;
   --ocs-amber-500: #e8a24a;
   --ocs-on-accent: #14120f;
+  /* Darker amber so white title text stays readable over the mark. */
+  --ocs-highlight-fill: #8a6d1f;
+  --ocs-highlight-opacity: 0.55;
+  --ocs-scrollbar-track: #1a1712;
+  --ocs-scrollbar-thumb: #4a443a;
 
   --ocs-signal-success: #34d399;
   --ocs-signal-warning: #fbbf24;
@@ -72,10 +85,10 @@ html[data-theme="dark"] {
 
   --ocs-grid-line: 244, 243, 241;
   --ocs-grid-gain: 1;
-  --ocs-glow-gain: 1;
+  --ocs-glow-gain: 1.4;
   --ocs-atmosphere: radial-gradient(
     ellipse 80% 45% at 50% -12%,
-    rgba(232, 162, 74, 0.045),
+    rgba(232, 162, 74, 0.09),
     transparent 58%
   );
 }
@@ -157,6 +170,33 @@ html[data-theme="dark"] {
 }
 
 /* ==========================================================================
+   Scrollbar
+   Thin, pill-shaped, muted at rest. WebKit gets a gold hover; Firefox only
+   supports thumb/track colors and a thin width.
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ocs-scrollbar-track);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ocs-scrollbar-thumb);
+  border-radius: 999px;
+  border: 2px solid var(--ocs-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: var(--ocs-amber-500);
+}
+
+/* ==========================================================================
    Base
    ========================================================================== */
 
@@ -167,8 +207,17 @@ html[data-theme="dark"] {
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 7rem;
+    scroll-padding-top: var(--ocs-nav-clearance);
     -webkit-text-size-adjust: 100%;
+    overflow-x: clip;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ocs-scrollbar-thumb) var(--ocs-scrollbar-track);
+  }
+
+  section[id],
+  article[id],
+  footer {
+    scroll-margin-top: var(--ocs-nav-clearance);
   }
 
   body {
@@ -261,6 +310,70 @@ html[data-theme="dark"] {
   }
 }
 
+@property --ocs-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes ocs-border-orbit {
+  to {
+    --ocs-border-angle: 360deg;
+  }
+}
+
+.ocs-mission-frame {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: var(--color-line-subtle);
+}
+
+.ocs-mission-frame::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--ocs-border-angle),
+    transparent 0%,
+    transparent 38%,
+    color-mix(in oklab, var(--color-amber-500) 0%, transparent) 44%,
+    var(--color-amber-400) 50%,
+    var(--color-amber-300) 53%,
+    var(--color-amber-500) 56%,
+    transparent 64%,
+    transparent 100%
+  );
+  animation: ocs-border-orbit 7s linear infinite;
+}
+
+.ocs-mission-frame::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from calc(var(--ocs-border-angle) + 180deg),
+    transparent 0%,
+    transparent 46%,
+    color-mix(in oklab, var(--color-amber-500) 55%, transparent) 50%,
+    transparent 54%,
+    transparent 100%
+  );
+  animation: ocs-border-orbit 7s linear infinite;
+  opacity: 0.7;
+}
+
+.ocs-mission-frame > * {
+  position: relative;
+  z-index: 1;
+}
+
 .ocs-atmosphere {
   background-image: var(--ocs-atmosphere);
 }
@@ -275,6 +388,131 @@ html[data-theme="light"] .ocs-grain {
   mix-blend-mode: multiply;
 }
 
+@keyframes ocs-arrow-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.impact-arrow-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ocs-arrow-draw 1.25s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+
+.impact-arrow-head {
+  opacity: 0;
+  animation: ocs-arrow-head 0.35s ease-out 1.4s forwards;
+}
+
+@keyframes ocs-index-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.index-sketch-stroke {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.92;
+}
+
+.index-sketch-head {
+  opacity: 0;
+}
+
+.index-sketch[data-phase="in"] .index-sketch-stroke {
+  animation: ocs-index-draw 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.index-sketch[data-phase="in"] .index-sketch-head {
+  animation: ocs-index-head 0.16s ease-out 0.32s forwards;
+}
+
+@keyframes ocs-arrow-head {
+  to {
+    opacity: 0.75;
+  }
+}
+
+@keyframes ocs-index-head {
+  to {
+    opacity: 0.92;
+  }
+}
+
+.index-sketch[data-phase="out"] {
+  opacity: 0;
+  transition: opacity 0.2s ease-in;
+}
+
+.index-sketch[data-reduced][data-phase="in"] .index-sketch-stroke,
+.index-sketch[data-reduced][data-phase="in"] .index-sketch-head {
+  animation: none;
+  stroke-dashoffset: 0;
+  opacity: 0.92;
+}
+
+.program-highlight {
+  position: absolute;
+  z-index: 0;
+  top: 14%;
+  right: -0.45em;
+  bottom: 8%;
+  left: -0.35em;
+  background: color-mix(
+    in srgb,
+    var(--ocs-highlight-fill) calc(var(--ocs-highlight-opacity) * 100%),
+    transparent
+  );
+  pointer-events: none;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.2s ease-in;
+}
+
+.program-highlight.is-on {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.36s cubic-bezier(0.16, 1, 0.3, 1) 0.18s;
+}
+
+.program-highlight[data-variant="0"] {
+  border-radius: 3px 7px 4px 6px;
+  transform: rotate(-0.8deg);
+}
+
+.program-highlight[data-variant="1"] {
+  border-radius: 5px 3px 6px 4px;
+  transform: rotate(1.15deg);
+}
+
+.program-highlight[data-variant="2"] {
+  border-radius: 4px 8px 3px 5px;
+  transform: rotate(-1.25deg);
+}
+
+.program-highlight[data-variant="3"] {
+  border-radius: 6px 4px 7px 3px;
+  transform: rotate(0.7deg);
+}
+
+.partner-marquee-track {
+  animation: ocs-marquee 36s linear infinite;
+}
+
+.partner-marquee:hover .partner-marquee-track,
+.partner-marquee:focus-within .partner-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes ocs-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -286,5 +524,9 @@ html[data-theme="light"] .ocs-grain {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .partner-marquee-track {
+    animation: none;
   }
 }

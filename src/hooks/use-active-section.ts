@@ -30,7 +30,7 @@ export function useActiveSection(ids: readonly string[]) {
         }
 
         if (visible.size === 0) {
-          setActiveId(null);
+          setActiveId(window.scrollY < 160 ? ids[0] ?? null : null);
           return;
         }
 
@@ -38,7 +38,7 @@ export function useActiveSection(ids: readonly string[]) {
         setActiveId(topmost[0]);
       },
       {
-        rootMargin: "-96px 0px -55% 0px",
+        rootMargin: "-116px 0px -55% 0px",
         threshold: [0, 0.15, 0.35, 0.6, 1],
       },
     );

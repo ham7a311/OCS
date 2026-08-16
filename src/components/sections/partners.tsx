@@ -1,12 +1,15 @@
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
+import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
+import { PartnerMarquee } from "@/components/visual/partner-marquee";
 import { partnershipContact } from "@/config/site";
-import { partners } from "@/data/partners";
+import { partners, partnershipModel } from "@/data/partners";
 
 export function Partners() {
+  const roster = partners.filter((partner) => partner.active);
+
   return (
     <Section id="partners" tone="raised" labelledBy="partners-title">
       <Container>
@@ -24,56 +27,64 @@ export function Partners() {
           />
         </Reveal>
 
-        {/* Three partners are presented in matched frames at full legibility.
-            A looping ticker of three names would read as padding; a measured
-            row reads as a roster. */}
-        <RevealGroup
-          stagger={0.07}
-          className="mt-14 grid gap-px border border-line-subtle bg-line-subtle sm:grid-cols-2 lg:mt-20 lg:grid-cols-4"
-        >
-          {partners
-            .filter((partner) => partner.active)
-            .map((partner) => (
-              <RevealItem key={partner.id}>
-                <div className="flex h-full min-h-[9.5rem] flex-col justify-between gap-6 bg-surface-1 p-6 transition-colors duration-300 ease-ui hover:bg-surface-2">
-                  <span
-                    aria-hidden="true"
-                    className="grid size-10 place-items-center rounded-sm border border-line font-mono text-[0.6875rem] tracking-[0.06em] text-ink-faint"
-                  >
-                    {partner.monogram}
-                  </span>
-                  <p className="text-[1.0625rem] leading-tight font-medium tracking-[-0.015em] text-ink">
-                    {partner.name}
-                  </p>
-                </div>
-              </RevealItem>
-            ))}
+        <Reveal delay={0.06}>
+          <p className="mt-8 max-w-[54ch] text-sm leading-relaxed text-ink-muted">
+            Partnership here means guest speakers, co-hosted sessions, mentorship,
+            and routes into internships — not a logo on a slide.
+          </p>
+          <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase">
+            {roster.length} organisations
+            <span className="mx-2 text-line-strong">·</span>
+            Joint sessions and guest speakers
+          </p>
+        </Reveal>
+      </Container>
 
-          {/* The invitation occupies a real slot rather than a footnote, and
-              carries the contact action the SRS asks for (FR-043, FR-044). */}
-          <RevealItem>
-            <a
-              href={partnershipContact.href}
-              {...(partnershipContact.external
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-              className="group flex h-full min-h-[9.5rem] flex-col justify-between gap-6 bg-surface-1 p-6 transition-colors duration-300 ease-ui hover:bg-surface-2"
-            >
-              <span
-                aria-hidden="true"
-                className="grid size-10 place-items-center rounded-sm border border-dashed border-line-strong text-ink-faint transition-colors duration-300 ease-ui group-hover:border-amber-500/60 group-hover:text-amber-300"
+      <Reveal delay={0.08}>
+        <div className="mt-10 lg:mt-12">
+          <PartnerMarquee partners={roster} />
+        </div>
+      </Reveal>
+
+      <Container>
+        <Reveal delay={0.1}>
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {partnershipModel.map((item) => (
+              <li
+                key={item}
+                className="rounded-full border border-line px-3 py-1 font-mono text-[0.625rem] tracking-[0.08em] text-ink-muted uppercase"
               >
-                <ArrowUpRight className="size-4" />
-              </span>
-              <p className="text-[1.0625rem] leading-tight font-medium tracking-[-0.015em] text-ink-muted transition-colors duration-300 ease-ui group-hover:text-ink">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal delay={0.14}>
+          <a
+            href={partnershipContact.href}
+            {...(partnershipContact.external
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+            className="group mt-10 flex flex-col gap-3 rounded-lg border border-amber-500/35 bg-amber-500/[0.08] px-6 py-6 transition-colors duration-300 ease-ui hover:border-amber-500/55 hover:bg-amber-500/[0.12] sm:flex-row sm:items-center sm:justify-between sm:px-8"
+          >
+            <div>
+              <p className="text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
                 Interested in collaborating?
-                <span className="mt-2 block font-mono text-[0.625rem] tracking-[0.09em] text-amber-300 uppercase">
-                  {partnershipContact.label}
-                </span>
               </p>
-            </a>
-          </RevealItem>
-        </RevealGroup>
+              <p className="mt-1 text-sm text-ink-muted">
+                Space for more organisations — guest talks, co-hosted events, and student pipelines.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
+              {partnershipContact.label}
+              <ArrowUpRight
+                className="size-3.5 transition-transform duration-200 ease-ui group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
+            </span>
+          </a>
+        </Reveal>
       </Container>
     </Section>
   );

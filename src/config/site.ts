@@ -100,6 +100,7 @@ export const partnershipContact = CONTACT_EMAIL
     };
 
 export const navigation = [
+  { id: "top", label: "Home", href: "#top" },
   { id: "about", label: "About", href: "#about" },
   { id: "programs", label: "Programs", href: "#programs" },
   { id: "events", label: "Events", href: "#events" },

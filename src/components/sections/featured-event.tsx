@@ -2,25 +2,27 @@ import { ArrowUpRight } from "lucide-react";
 import { CategoryBadge, StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { MetaGrid } from "@/components/ui/meta-grid";
+import { Panel } from "@/components/ui/panel";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
 import {
   eventStatusLabel,
   featuredEvent,
-  formatEventDate,
+  upcomingEvents,
   splitEventDate,
 } from "@/data/events";
 
 export function FeaturedEvent() {
   const event = featuredEvent;
   const date = splitEventDate(event.date);
+  const hasUpcoming = upcomingEvents.length > 0;
 
   const metadata = [
     { label: "Speaker", value: event.speaker },
-    { label: "Date", value: formatEventDate(event.date) },
     { label: "Theme", value: event.category },
-    { label: "Status", value: eventStatusLabel[event.status] },
+    ...(event.format ? [{ label: "Format", value: event.format }] : []),
   ];
 
   return (
@@ -41,8 +43,28 @@ export function FeaturedEvent() {
         </Reveal>
 
         <Reveal delay={0.08} className="mt-14 lg:mt-20">
-          {/* The single largest panel on the page. Everything else is a row or
-              a band, so the featured event reads as the focal object. */}
+          <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase">
+            Upcoming
+          </p>
+
+          {hasUpcoming ? null : (
+            <Panel className="mt-4 px-6 py-8 sm:px-8">
+              <p className="text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
+                Next gathering to be announced
+              </p>
+              <p className="mt-2 max-w-[48ch] text-sm leading-relaxed text-ink-muted">
+                Workshops, talks, and rooms worth being in will appear here as soon
+                as they are confirmed.
+              </p>
+            </Panel>
+          )}
+        </Reveal>
+
+        <Reveal delay={0.12} className="mt-10 lg:mt-12">
+          <p className="mb-4 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase">
+            Past
+          </p>
+
           <article className="relative isolate overflow-hidden rounded-lg border border-line bg-surface-1">
             <div className="relative flex flex-wrap items-center justify-between gap-3 border-b border-line-subtle px-6 py-4 sm:px-8">
               <CategoryBadge>{event.category}</CategoryBadge>
@@ -50,7 +72,6 @@ export function FeaturedEvent() {
             </div>
 
             <div className="relative grid gap-10 px-6 py-10 sm:px-8 sm:py-12 lg:grid-cols-12 lg:gap-14 lg:py-14">
-              {/* The date is treated as a typographic object, not a caption. */}
               <div className="lg:col-span-3">
                 <p className="flex items-baseline gap-3 lg:flex-col lg:items-start lg:gap-1">
                   <span className="text-[3.5rem] leading-[0.85] font-medium tracking-[-0.04em] text-ink tabular-nums lg:text-[4.5rem]">
@@ -60,7 +81,7 @@ export function FeaturedEvent() {
                     {date.month} {date.year}
                   </span>
                 </p>
-                <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-faint uppercase lg:mt-4">
+                <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase lg:mt-4">
                   {date.weekday}
                 </p>
               </div>
@@ -84,16 +105,11 @@ export function FeaturedEvent() {
               </div>
             </div>
 
-            <dl className="relative grid grid-cols-2 gap-px border-t border-line-subtle bg-line-subtle lg:grid-cols-4">
-              {metadata.map((item) => (
-                <div key={item.label} className="bg-surface-1 px-6 py-5 sm:px-8">
-                  <dt className="font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase">
-                    {item.label}
-                  </dt>
-                  <dd className="mt-2 text-[0.9375rem] text-ink">{item.value}</dd>
-                </div>
-              ))}
-            </dl>
+            <MetaGrid
+              items={metadata}
+              columns={metadata.length === 2 ? 2 : 3}
+              className="border-t border-line-subtle"
+            />
           </article>
         </Reveal>
       </Container>

@@ -22,8 +22,10 @@ export function Logo({ className, size = "nav" }: LogoProps) {
       priority={size === "nav"}
       unoptimized
       className={cn(
-        "w-auto max-w-full shrink-0 object-contain",
-        footer ? "h-[7.5rem] sm:h-36" : "h-11",
+        "h-auto w-auto object-contain",
+        footer
+          ? "h-[6.5rem] max-w-full sm:h-36"
+          : "h-9 max-w-[8.75rem] sm:h-11 sm:max-w-[11rem]",
         className,
       )}
     />

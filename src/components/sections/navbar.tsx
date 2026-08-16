@@ -52,20 +52,19 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 pt-3 sm:pt-4">
-        <Container>
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+        <div className="h-3 bg-canvas sm:h-4" aria-hidden="true" />
+        <Container className="pointer-events-auto">
           <nav
             aria-label="Primary"
             className={cn(
-              "flex h-16 items-center justify-between rounded-lg border px-3 transition-all duration-300 ease-ui sm:h-[4.25rem] sm:px-4",
-              scrolled || menuOpen
-                ? "border-line-subtle bg-canvas/80 backdrop-blur-xl"
-                : "border-transparent bg-transparent",
+              "relative flex h-16 min-w-0 items-center justify-between gap-2 rounded-lg border border-line-subtle bg-canvas px-2.5 backdrop-blur-[24px] transition-shadow duration-300 ease-ui sm:h-[4.25rem] sm:px-4",
+              (scrolled || menuOpen) && "shadow-[0_12px_40px_-24px_rgba(20,18,12,0.45)]",
             )}
           >
             <a
               href="#top"
-              className="flex items-center rounded-sm"
+              className="flex min-w-0 items-center rounded-sm"
               aria-label={`${site.organizationName} — back to top`}
             >
               <Logo />
@@ -101,7 +100,7 @@ export function Navbar() {
               })}
             </ul>
 
-            <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
               <ThemeToggle />
               <Button
                 href={site.whatsappUrl}
@@ -142,7 +141,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={reduced ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: reduced ? 0 : 0.2, ease: easeUi }}
-            className="fixed inset-0 z-30 bg-canvas/97 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 bg-canvas lg:hidden"
           >
             <div className="flex h-full flex-col justify-between px-5 pt-28 pb-10 sm:px-8">
               <ul>

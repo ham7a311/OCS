@@ -11,6 +11,7 @@ export type OcsEvent = {
   status: EventStatus;
   /** Only surfaced while the status is `registration-open`. */
   registrationUrl: string | null;
+  format?: string;
 };
 
 /**
@@ -27,7 +28,10 @@ export const featuredEvent: OcsEvent = {
   category: "Oman Vision 2040",
   status: "completed",
   registrationUrl: null,
+  format: "Webinar",
 };
+
+export const upcomingEvents: OcsEvent[] = [];
 
 export const eventStatusLabel: Record<EventStatus, string> = {
   upcoming: "Upcoming",

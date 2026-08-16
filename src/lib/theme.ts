@@ -3,7 +3,7 @@ export const THEME_STORAGE_KEY = "ocs-theme";
 export type Theme = "dark" | "light";
 
 export const THEME_COLORS: Record<Theme, string> = {
-  dark: "#08080b",
+  dark: "#0c0b0a",
   light: "#f3f0ea",
 };
 

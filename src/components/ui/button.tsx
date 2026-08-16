@@ -6,7 +6,7 @@ type Size = "sm" | "md" | "lg";
 
 const base =
   "group/button relative inline-flex select-none items-center justify-center gap-2 " +
-  "rounded-md font-medium tracking-[-0.01em] whitespace-nowrap " +
+  "rounded-md font-medium tracking-[-0.01em] whitespace-nowrap max-w-full " +
   "transition-[background-color,border-color,color,box-shadow,transform] duration-200 ease-ui " +
   "active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
 
@@ -20,8 +20,8 @@ const variants: Record<Variant, string> = {
     "hover:bg-amber-400 hover:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.28),0_10px_24px_-16px_rgba(232,162,74,0.55)]",
   ),
   secondary: cn(
-    "border border-line bg-surface-2/70 text-ink backdrop-blur-sm",
-    "hover:border-line-strong hover:bg-surface-3",
+    "border border-line text-ink",
+    "hover:border-line-strong hover:bg-surface-2/80",
   ),
   ghost: "text-ink-muted hover:text-ink",
 };

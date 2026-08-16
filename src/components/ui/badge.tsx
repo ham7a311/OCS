@@ -3,8 +3,8 @@ import type { EventStatus } from "@/data/events";
 import { cn } from "@/lib/utils";
 
 /**
- * Two badge shapes only: a squared chip for categories, a pill with a dot for
- * status. Colour carries meaning here and nowhere else in the system.
+ * Two badge shapes: a pill for categories and a pill with a dot for status.
+ * Colour carries meaning here and nowhere else in the system.
  */
 
 export function CategoryBadge({
@@ -17,8 +17,8 @@ export function CategoryBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-sm border border-amber-500/25 bg-amber-500/[0.08]",
-        "px-2.5 py-1 font-mono text-[0.6875rem] uppercase tracking-[0.09em] text-amber-300",
+        "inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/[0.08]",
+        "px-3 py-1 font-mono text-[0.6875rem] uppercase tracking-[0.09em] text-amber-300",
         className,
       )}
     >
@@ -68,6 +68,26 @@ export function StatusBadge({
     >
       <span className={cn("size-1.5 rounded-full", style.dot)} aria-hidden="true" />
       {label}
+    </span>
+  );
+}
+
+export function TagChip({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full border border-line px-2.5 py-1",
+        "font-mono text-[0.625rem] uppercase tracking-[0.08em] text-ink-muted",
+        className,
+      )}
+    >
+      {children}
     </span>
   );
 }

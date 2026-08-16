@@ -33,7 +33,7 @@ export function Section({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cn("relative isolate section-y", tones[tone], className)}
+      className={cn("relative isolate section-y scroll-mt-[var(--ocs-nav-clearance)]", tones[tone], className)}
     >
       {divider ? (
         <div aria-hidden="true" className="absolute inset-x-0 top-0 rule-fade" />

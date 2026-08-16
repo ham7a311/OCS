@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { TagChip } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
@@ -20,7 +21,7 @@ const interests = [
 
 export function Join() {
   return (
-    <Section id="join" tone="canvas" labelledBy="join-title" className="overflow-hidden">
+    <Section id="join" tone="canvas" labelledBy="join-title">
       <GridBackdrop size={80} intensity="faint" fade="radial" drift />
       <Glow size="42rem" opacity={0.05} className="-bottom-80 left-1/2 -translate-x-1/2" />
 
@@ -31,10 +32,7 @@ export function Join() {
           </Reveal>
 
           <Reveal delay={0.06}>
-            <h2
-              id="join-title"
-              className="mt-6 text-h2 text-ink"
-            >
+            <h2 id="join-title" className="mt-6 text-h2 text-ink">
               The room is open. <Em>Come build.</Em>
             </h2>
           </Reveal>
@@ -48,7 +46,6 @@ export function Join() {
           </Reveal>
 
           <Reveal delay={0.18}>
-            {/* One action. Nothing competes with it. */}
             <div className="mt-10">
               <Button href={site.whatsappUrl} external size="lg">
                 Join WhatsApp community
@@ -61,16 +58,13 @@ export function Join() {
           </Reveal>
 
           <Reveal delay={0.24}>
-            <ul className="mt-12 flex flex-wrap justify-center gap-x-3 gap-y-2">
-              {interests.map((interest, index) => (
-                <li
-                  key={interest}
-                  className="flex items-center gap-3 font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase"
-                >
-                  {index > 0 ? (
-                    <span aria-hidden="true" className="size-1 rounded-full bg-line-strong" />
-                  ) : null}
-                  {interest}
+            <p className="mt-10 font-mono text-[0.625rem] tracking-[0.09em] text-ink-muted uppercase">
+              Focus areas
+            </p>
+            <ul className="mt-3 flex flex-wrap justify-center gap-2">
+              {interests.map((interest) => (
+                <li key={interest}>
+                  <TagChip>{interest}</TagChip>
                 </li>
               ))}
             </ul>
