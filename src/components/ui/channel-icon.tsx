@@ -37,10 +37,16 @@ const hoverTone: Record<"whatsapp" | "linkedin" | "instagram", string> = {
   instagram: "hover:text-[#E4405F]",
 };
 
-export function ChannelIcon({ channel }: { channel: SocialChannel }) {
-  if (!(channel.id in icons)) return null;
+type ChannelIconId = keyof typeof icons;
 
-  const Icon = icons[channel.id as keyof typeof icons];
+function isChannelIconId(id: SocialChannel["id"]): id is ChannelIconId {
+  return id in icons;
+}
+
+export function ChannelIcon({ channel }: { channel: SocialChannel }) {
+  if (!isChannelIconId(channel.id)) return null;
+
+  const Icon = icons[channel.id];
 
   return (
     <a
