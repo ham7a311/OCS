@@ -18,7 +18,9 @@ const WHATSAPP_COMMUNITY_URL =
   optional(process.env.NEXT_PUBLIC_WHATSAPP_URL) ??
   "https://chat.whatsapp.com/KfIbhy1foiZ25RPhyGZM6o";
 
-const LINKEDIN_URL = optional(process.env.NEXT_PUBLIC_LINKEDIN_URL);
+const LINKEDIN_URL =
+  optional(process.env.NEXT_PUBLIC_LINKEDIN_URL) ??
+  "https://www.linkedin.com/company/oman-computing-society";
 const INSTAGRAM_URL = optional(process.env.NEXT_PUBLIC_INSTAGRAM_URL);
 const CONTACT_EMAIL = optional(process.env.NEXT_PUBLIC_CONTACT_EMAIL);
 
@@ -51,13 +53,13 @@ export type SocialChannel = {
 /** Only channels with a real destination. Never a placeholder `#`. */
 export const socialChannels: SocialChannel[] = [
   {
-    id: "whatsapp" as const,
+    id: "whatsapp",
     label: "WhatsApp community",
     href: site.whatsappUrl,
     external: true,
   },
-  LINKEDIN_URL && {
-    id: "linkedin" as const,
+  {
+    id: "linkedin",
     label: "LinkedIn",
     href: LINKEDIN_URL,
     external: true,

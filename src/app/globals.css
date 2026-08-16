@@ -3,45 +3,10 @@
 /* ==========================================================================
    Theme surfaces
    Semantic tokens live on :root so a single data-theme switch restyles the
-   whole page. Dark is the product default.
+   whole page. Light is the product default.
    ========================================================================== */
 
 :root,
-html[data-theme="dark"] {
-  color-scheme: dark;
-
-  --ocs-canvas: #08080b;
-  --ocs-surface-1: #0d0d11;
-  --ocs-surface-2: #111116;
-  --ocs-surface-3: #18181e;
-
-  --ocs-line-subtle: #1a1a20;
-  --ocs-line: #24242b;
-  --ocs-line-strong: #33333c;
-
-  --ocs-ink: #f4f3f1;
-  --ocs-ink-muted: #9a99a5;
-  --ocs-ink-faint: #7e7d88;
-
-  --ocs-amber-300: #f6c98a;
-  --ocs-amber-400: #f3b45f;
-  --ocs-amber-500: #e8a24a;
-  --ocs-on-accent: #14120f;
-
-  --ocs-signal-success: #34d399;
-  --ocs-signal-warning: #fbbf24;
-  --ocs-signal-error: #f87171;
-
-  --ocs-grid-line: 244, 243, 241;
-  --ocs-grid-gain: 1;
-  --ocs-glow-gain: 1;
-  --ocs-atmosphere: radial-gradient(
-    ellipse 80% 45% at 50% -12%,
-    rgba(232, 162, 74, 0.045),
-    transparent 58%
-  );
-}
-
 html[data-theme="light"] {
   color-scheme: light;
 
@@ -77,6 +42,41 @@ html[data-theme="light"] {
     ellipse 80% 50% at 50% -10%,
     rgba(232, 162, 74, 0.12),
     transparent 56%
+  );
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ocs-canvas: #08080b;
+  --ocs-surface-1: #0d0d11;
+  --ocs-surface-2: #111116;
+  --ocs-surface-3: #18181e;
+
+  --ocs-line-subtle: #1a1a20;
+  --ocs-line: #24242b;
+  --ocs-line-strong: #33333c;
+
+  --ocs-ink: #f4f3f1;
+  --ocs-ink-muted: #9a99a5;
+  --ocs-ink-faint: #7e7d88;
+
+  --ocs-amber-300: #f6c98a;
+  --ocs-amber-400: #f3b45f;
+  --ocs-amber-500: #e8a24a;
+  --ocs-on-accent: #14120f;
+
+  --ocs-signal-success: #34d399;
+  --ocs-signal-warning: #fbbf24;
+  --ocs-signal-error: #f87171;
+
+  --ocs-grid-line: 244, 243, 241;
+  --ocs-grid-gain: 1;
+  --ocs-glow-gain: 1;
+  --ocs-atmosphere: radial-gradient(
+    ellipse 80% 45% at 50% -12%,
+    rgba(232, 162, 74, 0.045),
+    transparent 58%
   );
 }
 
@@ -167,7 +167,7 @@ html[data-theme="light"] {
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 6.5rem;
+    scroll-padding-top: 7rem;
     -webkit-text-size-adjust: 100%;
   }
 

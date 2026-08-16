@@ -11,13 +11,13 @@ export function isTheme(value: string | null): value is Theme {
   return value === "dark" || value === "light";
 }
 
-/** Dark is the product default, including first visit and failed storage reads. */
+/** Light is the product default, including first visit and failed storage reads. */
 export function readStoredTheme(): Theme {
   try {
     const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    return isTheme(stored) ? stored : "dark";
+    return isTheme(stored) ? stored : "light";
   } catch {
-    return "dark";
+    return "light";
   }
 }
 

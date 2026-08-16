@@ -37,8 +37,8 @@ const statusStyles: Record<EventStatus, { chip: string; dot: string }> = {
     dot: "bg-signal-success",
   },
   completed: {
-    chip: "border-line bg-surface-3 text-ink-muted",
-    dot: "bg-ink-faint",
+    chip: "border-signal-success/40 bg-signal-success/[0.08] text-signal-success",
+    dot: "bg-signal-success",
   },
   cancelled: {
     chip: "border-signal-error/30 bg-signal-error/[0.1] text-signal-error",

@@ -1,5 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { ChannelIcon } from "@/components/ui/channel-icon";
 import { Logo } from "@/components/ui/logo";
 import { navigation, site, socialChannels } from "@/config/site";
 
@@ -10,13 +10,8 @@ export function Footer() {
     <footer className="relative border-t border-line-subtle bg-surface-1">
       <Container>
         <div className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-12 lg:gap-16 lg:py-20">
-          <div className="flex flex-col gap-5 sm:col-span-2 lg:col-span-5">
-            <div className="flex items-center gap-3">
-              <Logo />
-              <span className="text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink">
-                {site.organizationName}
-              </span>
-            </div>
+          <div className="flex flex-col items-start gap-5 sm:col-span-2 lg:col-span-5">
+            <Logo size="footer" />
             <p className="max-w-[42ch] text-sm leading-relaxed text-ink-faint">
               {site.description}
             </p>
@@ -44,29 +39,13 @@ export function Footer() {
             <h2 className="font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase">
               Channels
             </h2>
-            {/* Only configured destinations appear here. A channel without a
-                real URL is omitted rather than linked to nowhere. */}
-            <ul className="mt-3 flex flex-col">
-              {socialChannels.map((channel) => (
-                <li key={channel.id}>
-                  <a
-                    href={channel.href}
-                    {...(channel.external
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                    className="group inline-flex min-h-6 items-center gap-1.5 py-2 text-sm break-words text-ink-muted transition-colors duration-200 ease-ui hover:text-ink"
-                  >
-                    {channel.label}
-                    {channel.external ? (
-                      <ArrowUpRight
-                        className="size-3 shrink-0 text-ink-faint transition-transform duration-200 ease-ui group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                        aria-hidden="true"
-                      />
-                    ) : null}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-4 flex items-center gap-1">
+              {socialChannels
+                .filter((channel) => channel.id === "whatsapp" || channel.id === "linkedin")
+                .map((channel) => (
+                  <ChannelIcon key={channel.id} channel={channel} />
+                ))}
+            </div>
           </div>
         </div>
 

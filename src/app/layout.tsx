@@ -57,11 +57,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#08080b",
-  colorScheme: "dark light",
+  themeColor: "#f3f0ea",
+  colorScheme: "light dark",
 };
 
-const themeInitScript = `(function(){try{var t=localStorage.getItem("ocs-theme");var theme=t==="light"?"light":"dark";document.documentElement.setAttribute("data-theme",theme);document.documentElement.style.colorScheme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",theme==="light"?"#f3f0ea":"#08080b");}catch(e){document.documentElement.setAttribute("data-theme","dark");document.documentElement.style.colorScheme="dark";}})();`;
+const themeInitScript = `(function(){try{var t=localStorage.getItem("ocs-theme");var theme=t==="dark"?"dark":"light";document.documentElement.setAttribute("data-theme",theme);document.documentElement.style.colorScheme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",theme==="light"?"#f3f0ea":"#08080b");}catch(e){document.documentElement.setAttribute("data-theme","light");document.documentElement.style.colorScheme="light";}})();`;
 
 export default function RootLayout({
   children,
@@ -69,7 +69,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="dark"
+      data-theme="light"
       className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >

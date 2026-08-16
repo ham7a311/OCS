@@ -57,7 +57,7 @@ export function Navbar() {
           <nav
             aria-label="Primary"
             className={cn(
-              "flex h-14 items-center justify-between rounded-lg border px-3 transition-all duration-300 ease-ui sm:px-4",
+              "flex h-16 items-center justify-between rounded-lg border px-3 transition-all duration-300 ease-ui sm:h-[4.25rem] sm:px-4",
               scrolled || menuOpen
                 ? "border-line-subtle bg-canvas/80 backdrop-blur-xl"
                 : "border-transparent bg-transparent",
@@ -65,18 +65,10 @@ export function Navbar() {
           >
             <a
               href="#top"
-              className="flex items-center gap-2.5 rounded-sm"
+              className="flex items-center rounded-sm"
               aria-label={`${site.organizationName} — back to top`}
             >
               <Logo />
-              <span className="flex flex-col leading-none">
-                <span className="text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink">
-                  {site.abbreviation}
-                </span>
-                <span className="mt-1 hidden font-mono text-[0.5625rem] tracking-[0.12em] text-ink-faint uppercase sm:block">
-                  Oman Computing Society
-                </span>
-              </span>
             </a>
 
             <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
