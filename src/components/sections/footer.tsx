@@ -41,7 +41,12 @@ export function Footer() {
             </h2>
             <div className="mt-4 flex items-center gap-1">
               {socialChannels
-                .filter((channel) => channel.id === "whatsapp" || channel.id === "linkedin")
+                .filter(
+                  (channel) =>
+                    channel.id === "whatsapp" ||
+                    channel.id === "linkedin" ||
+                    channel.id === "instagram",
+                )
                 .map((channel) => (
                   <ChannelIcon key={channel.id} channel={channel} />
                 ))}

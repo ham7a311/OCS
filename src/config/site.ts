@@ -21,7 +21,9 @@ const WHATSAPP_COMMUNITY_URL =
 const LINKEDIN_URL =
   optional(process.env.NEXT_PUBLIC_LINKEDIN_URL) ??
   "https://www.linkedin.com/company/oman-computing-society";
-const INSTAGRAM_URL = optional(process.env.NEXT_PUBLIC_INSTAGRAM_URL);
+const INSTAGRAM_URL =
+  optional(process.env.NEXT_PUBLIC_INSTAGRAM_URL) ??
+  "https://www.instagram.com/omancomputingsociety";
 const CONTACT_EMAIL = optional(process.env.NEXT_PUBLIC_CONTACT_EMAIL);
 
 export const site = {
@@ -64,8 +66,8 @@ export const socialChannels: SocialChannel[] = [
     href: LINKEDIN_URL,
     external: true,
   },
-  INSTAGRAM_URL && {
-    id: "instagram" as const,
+  {
+    id: "instagram",
     label: "Instagram",
     href: INSTAGRAM_URL,
     external: true,
