@@ -9,6 +9,45 @@ import { Em } from "@/components/ui/section-heading";
 import { Glow } from "@/components/visual/glow";
 import { GridBackdrop } from "@/components/visual/grid-backdrop";
 import { site } from "@/config/site";
+import { cn } from "@/lib/utils";
+
+function GuideArrow({ toward }: { toward: "left" | "right" }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 480 40"
+      preserveAspectRatio="none"
+      className={cn(
+        "h-10 w-full text-amber-400",
+        toward === "left" && "-scale-x-100",
+      )}
+    >
+      <path
+        d="M8 20
+           C 36 8 62 32 90 18
+           C 112 8 132 30 152 20
+           L 166 6 L 180 34 L 194 6 L 208 34 L 222 6 L 236 34 L 250 8 L 264 32 L 276 20
+           C 304 10 336 30 372 18
+           C 396 10 420 24 444 20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.55"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
+      <path
+        d="M432 11 L468 20 L432 29"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.55"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        vectorEffect="non-scaling-stroke"
+      />
+    </svg>
+  );
+}
 
 /** What members actually participate in (SRS FR-046). */
 const interests = [
@@ -45,15 +84,23 @@ export function Join() {
             </p>
           </Reveal>
 
-          <Reveal delay={0.18}>
-            <div className="mt-10">
-              <Button href={site.whatsappUrl} external size="lg">
-                Join WhatsApp community
-                <ArrowUpRight
-                  className="size-4 transition-transform duration-200 ease-ui group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5"
-                  aria-hidden="true"
-                />
-              </Button>
+          <Reveal delay={0.18} className="w-full">
+            <div className="mt-10 flex justify-center lg:relative lg:left-1/2 lg:w-screen lg:max-w-[100vw] lg:-translate-x-1/2 lg:px-8">
+              <div className="flex w-full items-center justify-center gap-4 lg:gap-5">
+                <div className="hidden min-w-0 flex-1 lg:block">
+                  <GuideArrow toward="right" />
+                </div>
+                <Button href={site.whatsappUrl} external size="lg" className="shrink-0">
+                  Join WhatsApp community
+                  <ArrowUpRight
+                    className="size-4 transition-transform duration-200 ease-ui group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5"
+                    aria-hidden="true"
+                  />
+                </Button>
+                <div className="hidden min-w-0 flex-1 lg:block">
+                  <GuideArrow toward="left" />
+                </div>
+              </div>
             </div>
           </Reveal>
 

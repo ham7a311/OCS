@@ -513,6 +513,55 @@ html[data-theme="light"] .ocs-grain {
   }
 }
 
+.team-orbit-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 999px;
+  background: var(--member-color);
+  box-shadow: 0 0 7px color-mix(in srgb, var(--member-color) 75%, transparent);
+  pointer-events: none;
+  offset-path: inset(0 round 10px);
+  offset-anchor: center;
+  offset-rotate: 0deg;
+  opacity: 0;
+  animation-name: team-orbit;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-play-state: paused;
+  transition: opacity 0.4s ease;
+}
+
+@keyframes team-orbit {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.team-card {
+  transition: border-color 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .team-card:hover,
+  .team-card:focus-visible {
+    border-color: color-mix(in srgb, var(--member-color) 55%, var(--color-line));
+  }
+
+  .team-card:hover .team-orbit-dot,
+  .team-card:focus-visible .team-orbit-dot {
+    opacity: 1;
+    animation-play-state: running;
+  }
+}
+
+@supports not (offset-path: inset(0 round 10px)) {
+  .team-orbit-dot {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -528,5 +577,9 @@ html[data-theme="light"] .ocs-grain {
 
   .partner-marquee-track {
     animation: none;
+  }
+
+  .team-orbit-dot {
+    display: none;
   }
 }

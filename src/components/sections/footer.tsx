@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/container";
 import { ChannelIcon } from "@/components/ui/channel-icon";
 import { Logo } from "@/components/ui/logo";
+import { TeamMarquee } from "@/components/visual/team-marquee";
 import { navigation, site, socialChannels } from "@/config/site";
 
 export function Footer() {
@@ -64,12 +65,34 @@ export function Footer() {
             </a>
           </div>
         </div>
+      </Container>
 
-        <div className="flex flex-col gap-3 border-t border-line-subtle py-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase">
+      <div className="border-t border-line-subtle">
+        <Container>
+          <h2 className="pt-12 pb-8 text-center font-serif text-[1.75rem] italic leading-[1.15] tracking-[0.005em] text-ink sm:pt-14 sm:text-[1.9375rem]">
+            Know more about us.
+          </h2>
+        </Container>
+        <TeamMarquee />
+      </div>
+
+      <Container>
+        <div className="grid gap-3 border-t border-line-subtle pt-7 pb-20 sm:grid-cols-3 sm:items-center sm:pb-20">
+          <p className="order-1 font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase sm:order-none">
             © {year} {site.organizationName}. All rights reserved.
           </p>
-          <p className="font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase">
+          <p className="order-3 text-center text-sm text-ink-faint sm:order-none">
+            built by{" "}
+            <a
+              href="https://ham7a311.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-serif italic text-amber-300 transition-colors duration-200 ease-ui hover:text-amber-400"
+            >
+              ham7a311
+            </a>
+          </p>
+          <p className="order-2 font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase sm:order-none sm:text-right">
             Student-led · Sultanate of Oman
           </p>
         </div>
