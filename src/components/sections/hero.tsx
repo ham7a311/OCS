@@ -34,7 +34,7 @@ export function Hero() {
     <section
       id="top"
       aria-labelledby="hero-title"
-      className="relative isolate overflow-hidden pb-10 pt-[calc(var(--ocs-nav-clearance)+1.5rem)] sm:pb-12 lg:pb-14 lg:pt-[calc(var(--ocs-nav-clearance)+2.5rem)]"
+      className="relative isolate overflow-hidden pb-10 pt-[calc(var(--ocs-hero-inset)+1.5rem)] sm:pb-12 lg:pb-14 lg:pt-[calc(var(--ocs-hero-inset)+2.5rem)]"
     >
       <GridBackdrop size={80} intensity="faint" fade="radial" />
       <NodeNetwork />

@@ -1,14 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { readNavClearance } from "@/hooks/use-nav-clearance";
 
 /**
- * Tracks which section owns the viewport so the navbar can indicate position.
- * The top margin accounts for the floating navbar, so a section only becomes
- * active once it is genuinely the thing being read.
+ * Tracks which section owns the band just below the sticky header.
+ * `activate` pins a target immediately on click so the underline does not
+ * wait for smooth-scroll to finish.
  */
 export function useActiveSection(ids: readonly string[]) {
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(ids[0] ?? null);
+  const pinnedRef = useRef<string | null>(null);
+  const unpinTimer = useRef<number>(0);
+
+  const activate = useCallback((id: string) => {
+    pinnedRef.current = id;
+    setActiveId(id);
+    window.clearTimeout(unpinTimer.current);
+
+    const unpin = () => {
+      pinnedRef.current = null;
+    };
+
+    window.addEventListener("scrollend", unpin, { once: true });
+    unpinTimer.current = window.setTimeout(unpin, 900);
+  }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash && ids.some((id) => id === hash)) setActiveId(hash);
+  }, [ids]);
 
   useEffect(() => {
     const sections = ids
@@ -17,35 +38,57 @@ export function useActiveSection(ids: readonly string[]) {
 
     if (sections.length === 0) return;
 
-    const visible = new Map<string, number>();
+    let observer: IntersectionObserver | null = null;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            visible.set(entry.target.id, entry.intersectionRatio);
-          } else {
-            visible.delete(entry.target.id);
+    const connect = () => {
+      observer?.disconnect();
+
+      const clearance = readNavClearance();
+      const bottom = Math.max(window.innerHeight - clearance - 1, 0);
+      const visible = new Set<string>();
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) visible.add(entry.target.id);
+            else visible.delete(entry.target.id);
           }
-        }
 
-        if (visible.size === 0) {
-          setActiveId(window.scrollY < 160 ? ids[0] ?? null : null);
-          return;
-        }
+          if (pinnedRef.current) return;
 
-        const [topmost] = [...visible.entries()].sort((a, b) => b[1] - a[1]);
-        setActiveId(topmost[0]);
-      },
-      {
-        rootMargin: "-116px 0px -55% 0px",
-        threshold: [0, 0.15, 0.35, 0.6, 1],
-      },
-    );
+          if (visible.size > 0) {
+            const next = ids.find((id) => visible.has(id));
+            if (next) setActiveId(next);
+            return;
+          }
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+          const lastId = ids[ids.length - 1];
+          const last = lastId ? document.getElementById(lastId) : null;
+          if (last && last.getBoundingClientRect().bottom <= readNavClearance() + 1) {
+            setActiveId(null);
+            return;
+          }
+
+          if (window.scrollY < 48) setActiveId(ids[0] ?? null);
+        },
+        {
+          rootMargin: `-${clearance}px 0px -${bottom}px 0px`,
+          threshold: 0,
+        },
+      );
+
+      sections.forEach((section) => observer?.observe(section));
+    };
+
+    connect();
+    window.addEventListener("resize", connect);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", connect);
+      window.clearTimeout(unpinTimer.current);
+    };
   }, [ids]);
 
-  return activeId;
+  return { activeId, activate };
 }

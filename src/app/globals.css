@@ -35,6 +35,12 @@ html[data-theme="light"] {
   --ocs-highlight-opacity: 0.6;
   --ocs-scrollbar-track: #f0ece6;
   --ocs-scrollbar-thumb: #c9c2b8;
+  --ocs-collab-bg: color-mix(in srgb, var(--ocs-amber-500) 14%, var(--ocs-surface-1));
+  --ocs-collab-bg-hover: color-mix(in srgb, var(--ocs-amber-500) 24%, var(--ocs-surface-1));
+  --ocs-collab-border: color-mix(in srgb, var(--ocs-amber-500) 38%, var(--ocs-line));
+  --ocs-collab-border-hover: var(--ocs-amber-400);
+  --ocs-collab-shadow: 0 10px 24px -16px rgba(232, 162, 74, 0.55);
+  --ocs-collab-shadow-active: 0 4px 12px -10px rgba(232, 162, 74, 0.4);
 
   --ocs-signal-success: #1a7a52;
   --ocs-signal-warning: #9a7410;
@@ -49,8 +55,13 @@ html[data-theme="light"] {
     transparent 56%
   );
 
-  /* Floating nav card + top inset. Used for scroll offset and section clearance. */
-  --ocs-nav-clearance: 7.25rem;
+  /* Scroll offset under the sticky header. Measured in JS from the real
+     header height — do not use this for section/hero internal spacing. */
+  --ocs-nav-clearance: 4.75rem;
+
+  /* Visual inset for the hero under the floating nav. Independent of
+     --ocs-nav-clearance so nav-height fixes cannot compress page rhythm. */
+  --ocs-hero-inset: 7.25rem;
 }
 
 html[data-theme="dark"] {
@@ -78,6 +89,12 @@ html[data-theme="dark"] {
   --ocs-highlight-opacity: 0.55;
   --ocs-scrollbar-track: #1a1712;
   --ocs-scrollbar-thumb: #4a443a;
+  --ocs-collab-bg: color-mix(in srgb, var(--ocs-amber-500) 12%, var(--ocs-surface-2));
+  --ocs-collab-bg-hover: color-mix(in srgb, var(--ocs-amber-500) 20%, var(--ocs-surface-3));
+  --ocs-collab-border: color-mix(in srgb, var(--ocs-amber-500) 34%, var(--ocs-line));
+  --ocs-collab-border-hover: var(--ocs-amber-400);
+  --ocs-collab-shadow: 0 12px 28px -14px rgba(232, 162, 74, 0.45);
+  --ocs-collab-shadow-active: 0 4px 12px -10px rgba(232, 162, 74, 0.28);
 
   --ocs-signal-success: #34d399;
   --ocs-signal-warning: #fbbf24;
@@ -91,6 +108,14 @@ html[data-theme="dark"] {
     rgba(232, 162, 74, 0.09),
     transparent 58%
   );
+}
+
+@media (min-width: 640px) {
+  :root,
+  html[data-theme="light"],
+  html[data-theme="dark"] {
+    --ocs-nav-clearance: 5.25rem;
+  }
 }
 
 /* ==========================================================================
@@ -207,7 +232,6 @@ html[data-theme="dark"] {
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: var(--ocs-nav-clearance);
     -webkit-text-size-adjust: 100%;
     overflow-x: clip;
     scrollbar-width: thin;
@@ -527,6 +551,197 @@ html[data-theme="dark"] .partner-logo-well[data-tone="light"] {
 
 html[data-theme="dark"] .partner-logo-well[data-tone="light"] .partner-logo {
   height: 2.35rem;
+}
+
+.collab-card {
+  display: flex;
+  cursor: pointer;
+  background: var(--ocs-collab-bg);
+  border: 1px solid var(--ocs-collab-border);
+  transition:
+    background-color 0.2s var(--ease-ui),
+    border-color 0.2s var(--ease-ui),
+    transform 0.2s var(--ease-ui),
+    box-shadow 0.2s var(--ease-ui);
+}
+
+.collab-card:hover,
+.collab-card:focus-visible {
+  background: var(--ocs-collab-bg-hover);
+  border-color: var(--ocs-collab-border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--ocs-collab-shadow);
+}
+
+.collab-card:focus-visible {
+  outline: none;
+}
+
+.collab-card:active {
+  transform: translateY(0);
+  box-shadow: var(--ocs-collab-shadow-active);
+}
+
+.collab-arrow {
+  transition: transform 0.2s var(--ease-ui);
+}
+
+.collab-card:hover .collab-arrow,
+.collab-card:focus-visible .collab-arrow {
+  transform: translate(2px, -2px);
+}
+
+.event-timeline {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+.event-timeline-rail {
+  position: absolute;
+  left: 0.125rem;
+  top: 1.15rem;
+  bottom: 1.15rem;
+  width: 0.75rem;
+  overflow: visible;
+  color: var(--color-line);
+  pointer-events: none;
+}
+
+.event-timeline-rail path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-item + .timeline-item {
+  margin-top: 0.35rem;
+}
+
+.timeline-node {
+  position: absolute;
+  top: 1.2rem;
+  left: -1.62rem;
+  z-index: 1;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border-radius: 999px;
+  background: var(--color-amber-400);
+  box-shadow:
+    0 0 0 3px var(--color-canvas),
+    0 0 8px color-mix(in srgb, var(--color-amber-500) 70%, transparent);
+  pointer-events: none;
+}
+
+.timeline-row {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  transition:
+    border-color 0.2s var(--ease-ui),
+    background-color 0.2s var(--ease-ui);
+}
+
+.timeline-row:hover,
+.timeline-row:focus-visible {
+  border-color: var(--color-amber-400);
+  background: var(--color-surface-2);
+}
+
+.timeline-date {
+  display: flex;
+  min-width: 3.15rem;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-family: var(--font-mono);
+  line-height: 1.1;
+}
+
+.timeline-date-day {
+  font-size: 0.9375rem;
+  font-weight: 550;
+  letter-spacing: -0.03em;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-date-month {
+  font-size: 0.625rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-amber-300);
+}
+
+.timeline-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-tag {
+  flex-shrink: 0;
+}
+
+.timeline-chevron {
+  transition: transform 0.25s var(--ease-ui);
+}
+
+.timeline-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.timeline-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--ease-ui);
+}
+
+.timeline-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.timeline-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.timeline-detail {
+  padding: 0 1rem 0;
+}
+
+.timeline-panel[data-open="true"] .timeline-detail {
+  padding: 0.85rem 1rem 1.1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-row,
+  .timeline-chevron,
+  .timeline-panel,
+  .timeline-panel[data-open="true"] .timeline-detail {
+    transition: none;
+  }
 }
 
 .partner-marquee-track {

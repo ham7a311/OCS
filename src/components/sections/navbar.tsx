@@ -9,6 +9,7 @@ import { Logo } from "@/components/ui/logo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { navigation, site } from "@/config/site";
 import { useActiveSection } from "@/hooks/use-active-section";
+import { useNavClearance } from "@/hooks/use-nav-clearance";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { easeEntrance, easeUi } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -19,8 +20,9 @@ const SECTION_IDS = navigation.map((item) => item.id);
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const activeId = useActiveSection(SECTION_IDS);
+  const { activeId, activate } = useActiveSection(SECTION_IDS);
   const reduced = usePrefersReducedMotion();
+  useNavClearance();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -52,7 +54,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 bg-canvas">
+      <header data-ocs-nav="" className="pointer-events-none fixed inset-x-0 top-0 z-50 bg-canvas">
         <div className="h-3 bg-canvas sm:h-4" aria-hidden="true" />
         <Container className="pointer-events-auto">
           <nav
@@ -64,6 +66,7 @@ export function Navbar() {
           >
             <a
               href="#top"
+              onClick={() => activate("top")}
               className="flex min-w-0 items-center rounded-sm"
               aria-label={`${site.organizationName} — back to top`}
             >
@@ -77,6 +80,7 @@ export function Navbar() {
                   <li key={item.id}>
                     <a
                       href={item.href}
+                      onClick={() => activate(item.id)}
                       aria-current={isActive ? "true" : undefined}
                       className={cn(
                         "relative rounded-sm px-3 py-2 font-mono text-[0.6875rem] tracking-[0.09em] uppercase transition-colors duration-200 ease-ui",
@@ -159,7 +163,10 @@ export function Navbar() {
                   >
                     <a
                       href={item.href}
-                      onClick={closeMenu}
+                      onClick={() => {
+                        activate(item.id);
+                        closeMenu();
+                      }}
                       className="flex items-baseline gap-5 py-5"
                     >
                       <span className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300">

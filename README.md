@@ -37,7 +37,7 @@ lives in two places.
   outbound URL.
 - `src/data/` — `stats.ts`, `programs.ts`, `events.ts`, `partners.ts`, `about.ts`.
 
-To feature a different event, replace the `featuredEvent` object in
+Upcoming and past events live in `upcomingEvents` and `pastEvents` in
 `src/data/events.ts`. The section reads every field generically, including
 `status`, so no layout changes are required. Setting `status` to
 `registration-open` with a `registrationUrl` reveals a Register button.
