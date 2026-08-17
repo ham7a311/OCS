@@ -34,7 +34,7 @@ function MemberLinkedIn({
   );
   const icon = <LinkedInIcon className="size-4" />;
 
-  if (decorative || !member.linkedin) {
+  if (!member.linkedin) {
     return (
       <span className={className} style={{ color: member.color }} aria-hidden="true">
         {icon}
@@ -47,8 +47,10 @@ function MemberLinkedIn({
       href={member.linkedin}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`${member.name} on LinkedIn`}
-      className={className}
+      aria-label={decorative ? undefined : `${member.name} on LinkedIn`}
+      aria-hidden={decorative || undefined}
+      tabIndex={decorative ? -1 : undefined}
+      className={cn(className, "cursor-pointer")}
       style={{ color: member.color }}
     >
       {icon}
