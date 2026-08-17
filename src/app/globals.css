@@ -499,8 +499,12 @@ html[data-theme="light"] .ocs-grain {
   animation: ocs-marquee 36s linear infinite;
 }
 
-.partner-marquee:hover .partner-marquee-track,
-.partner-marquee:focus-within .partner-marquee-track {
+.partner-marquee:not(.team-marquee):hover .partner-marquee-track,
+.partner-marquee:not(.team-marquee):focus-within .partner-marquee-track {
+  animation-play-state: paused;
+}
+
+.team-marquee:has(.team-card:hover) .partner-marquee-track {
   animation-play-state: paused;
 }
 

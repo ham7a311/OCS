@@ -67,9 +67,9 @@ export function Footer() {
         </div>
       </Container>
 
-      <div className="border-t border-line-subtle">
+      <div className="border-t border-line-subtle pb-12 sm:pb-14">
         <Container>
-          <h2 className="pt-12 pb-8 text-center font-serif text-[1.75rem] italic leading-[1.15] tracking-[0.005em] text-ink sm:pt-14 sm:text-[1.9375rem]">
+          <h2 className="pt-12 pb-10 text-center font-serif text-[1.75rem] italic leading-[1.15] tracking-[0.005em] text-ink sm:pt-14 sm:text-[1.9375rem]">
             Know more about us.
           </h2>
         </Container>

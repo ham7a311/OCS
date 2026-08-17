@@ -1,7 +1,9 @@
 "use client";
 
 import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { LinkedInIcon } from "@/components/ui/channel-icon";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { cn } from "@/lib/utils";
 import { team, type TeamMember } from "@/data/team";
 
 const SPEED_DESKTOP = 30;
@@ -17,12 +19,49 @@ const DOTS = [
   { duration: 4.45, delay: -2.15, size: 5 },
 ] as const;
 
+function MemberLinkedIn({
+  member,
+  decorative,
+}: {
+  member: TeamMember;
+  decorative?: boolean;
+}) {
+  const className = cn(
+    "inline-flex size-4 shrink-0 items-center justify-center",
+    "lg:absolute lg:right-3.5 lg:top-[1.15rem] lg:z-10",
+    "lg:opacity-0 lg:pointer-events-none lg:transition-opacity lg:duration-200 lg:ease-ui",
+    "lg:group-hover:pointer-events-auto lg:group-hover:opacity-100",
+  );
+  const icon = <LinkedInIcon className="size-4" />;
+
+  if (decorative || !member.linkedin) {
+    return (
+      <span className={className} style={{ color: member.color }} aria-hidden="true">
+        {icon}
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={member.linkedin}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${member.name} on LinkedIn`}
+      className={className}
+      style={{ color: member.color }}
+    >
+      {icon}
+    </a>
+  );
+}
+
 function TeamCard({ member, decorative }: { member: TeamMember; decorative?: boolean }) {
   return (
     <article
       tabIndex={decorative ? undefined : 0}
       aria-hidden={decorative || undefined}
-      className="team-card relative flex h-[6.5rem] w-[18rem] shrink-0 flex-col justify-center rounded-lg border border-line bg-surface-1 px-5 py-4 outline-none"
+      className="team-card group relative flex h-[6.5rem] w-[18rem] shrink-0 flex-col justify-center rounded-lg border border-line bg-surface-1 px-5 py-4 outline-none"
       style={{ "--member-color": member.color } as CSSProperties}
     >
       {DOTS.map((dot, index) => (
@@ -38,8 +77,9 @@ function TeamCard({ member, decorative }: { member: TeamMember; decorative?: boo
           }}
         />
       ))}
-      <p className="truncate text-[0.9875rem] font-medium tracking-[-0.015em] text-ink">
-        {member.name}
+      <p className="flex items-center gap-1.5 text-[0.9875rem] font-medium tracking-[-0.015em] text-ink">
+        <span className="min-w-0 truncate">{member.name}</span>
+        <MemberLinkedIn member={member} decorative={decorative} />
       </p>
       <p className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm leading-snug text-ink-muted">
         {member.role}
@@ -115,7 +155,7 @@ export function TeamMarquee() {
   return (
     <div
       ref={wrapRef}
-      className="partner-marquee overflow-hidden py-1"
+      className="partner-marquee team-marquee overflow-hidden py-1"
       style={{
         maskImage:
           "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
