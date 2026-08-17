@@ -52,7 +52,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 bg-canvas">
         <div className="h-3 bg-canvas sm:h-4" aria-hidden="true" />
         <Container className="pointer-events-auto">
           <nav
