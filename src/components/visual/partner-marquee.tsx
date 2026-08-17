@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
@@ -8,15 +9,43 @@ import type { Partner } from "@/data/partners";
 const SPEED_DESKTOP = 32;
 const SPEED_MOBILE = 24;
 
-function PartnerMark({ partner, decorative }: { partner: Partner; decorative?: boolean }) {
-  const body = (
-    <>
+function PartnerLogo({ partner }: { partner: Partner }) {
+  if (!partner.logo) {
+    return (
       <span
         aria-hidden="true"
-        className="grid h-8 min-w-8 shrink-0 place-items-center rounded-md border border-line px-1.5 font-mono text-[0.6875rem] tracking-[0.08em]"
+        className="grid h-11 min-w-11 shrink-0 place-items-center rounded-md border border-line px-1.5 font-mono text-[0.6875rem] tracking-[0.08em]"
       >
         {partner.monogram}
       </span>
+    );
+  }
+
+  return (
+    <span
+      aria-hidden="true"
+      data-tone={partner.logoTone}
+      className={cn(
+        "partner-logo-well inline-flex shrink-0 items-center justify-center",
+        partner.logoTone === "dark" ? "size-11" : "h-11",
+      )}
+    >
+      <Image
+        src={partner.logo}
+        alt=""
+        width={partner.logoWidth}
+        height={partner.logoHeight}
+        unoptimized
+        className="partner-logo"
+      />
+    </span>
+  );
+}
+
+function PartnerMark({ partner, decorative }: { partner: Partner; decorative?: boolean }) {
+  const body = (
+    <>
+      <PartnerLogo partner={partner} />
       <span className="text-[1.0625rem] font-medium tracking-[0.04em] whitespace-nowrap sm:text-[1.125rem]">
         {partner.name}
       </span>

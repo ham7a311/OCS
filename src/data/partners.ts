@@ -6,6 +6,10 @@ export type Partner = {
   /** Monogram used when no logo asset exists. */
   monogram: string;
   logo: string | null;
+  /** Artwork painted on a light field vs a dark field. */
+  logoTone: "light" | "dark";
+  logoWidth: number;
+  logoHeight: number;
   website: string | null;
   active: boolean;
 };
@@ -16,7 +20,10 @@ export const partners: Partner[] = [
     name: "Uplift Academy",
     descriptor: "Mentorship and academic tutoring",
     monogram: "UA",
-    logo: null,
+    logo: "/partners/UpliftAcademyLogo.png",
+    logoTone: "light",
+    logoWidth: 1280,
+    logoHeight: 720,
     website: "https://upliftacademy.in/",
     active: true,
   },
@@ -25,7 +32,10 @@ export const partners: Partner[] = [
     name: "NSRI",
     descriptor: "Student research and publication pathways",
     monogram: "NS",
-    logo: null,
+    logo: "/partners/nsri.png",
+    logoTone: "dark",
+    logoWidth: 128,
+    logoHeight: 128,
     website: "https://nsri.world/",
     active: true,
   },
@@ -34,7 +44,10 @@ export const partners: Partner[] = [
     name: "Georgia Association of Builders",
     descriptor: "Industry collaboration and outreach",
     monogram: "GAB",
-    logo: null,
+    logo: "/partners/GAB.png",
+    logoTone: "dark",
+    logoWidth: 592,
+    logoHeight: 592,
     website: null,
     active: true,
   },
