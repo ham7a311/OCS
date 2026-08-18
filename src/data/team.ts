@@ -27,14 +27,14 @@ export const team: TeamMember[] = [
     name: "Noor Al Rahbi",
     role: "Director of Ops",
     color: "#4A9DE0",
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/noor-al-rahbi-919410370",
   },
   {
     id: "noor-al-balushi",
     name: "Noor Al Balushi",
     role: "Chief Digital Engagement Officer",
     color: "#9B5DE5",
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/noor-al-balushi247",
   },
   {
     id: "rabia-khalid",
@@ -48,7 +48,7 @@ export const team: TeamMember[] = [
     name: "Al Munther Al Harrasi",
     role: "Director of Tech",
     color: "#E07A3D",
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/al-munther-al-harrasi",
   },
   {
     id: "hamza",
@@ -69,6 +69,6 @@ export const team: TeamMember[] = [
     name: "Taif Al Badi",
     role: "Member of Tech Dept.",
     color: "#EF6FA7",
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/taif-albadi-748a25348",
   },
 ];
