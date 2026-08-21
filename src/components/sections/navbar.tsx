@@ -38,8 +38,22 @@ export function Navbar() {
   useEffect(() => {
     if (!menuOpen) return;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const previous = {
+      htmlOverflow: html.style.overflow,
+      bodyOverflow: body.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyWidth: body.style.width,
+    };
+
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
@@ -47,7 +61,12 @@ export function Navbar() {
     document.addEventListener("keydown", onKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      html.style.overflow = previous.htmlOverflow;
+      body.style.overflow = previous.bodyOverflow;
+      body.style.position = previous.bodyPosition;
+      body.style.top = previous.bodyTop;
+      body.style.width = previous.bodyWidth;
+      window.scrollTo(0, scrollY);
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [menuOpen]);
@@ -159,10 +178,10 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={reduced ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: reduced ? 0 : 0.2, ease: easeUi }}
-            className="fixed inset-0 z-40 bg-canvas xl:hidden"
+            className="fixed inset-0 z-40 overflow-hidden overscroll-none bg-canvas xl:hidden"
           >
-            <div className="flex h-full flex-col justify-between px-5 pt-28 pb-10 sm:px-8">
-              <ul>
+            <div className="flex h-dvh max-h-dvh flex-col px-5 pt-[calc(var(--ocs-nav-clearance)+0.5rem)] pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-8">
+              <ul className="flex min-h-0 flex-1 flex-col justify-center">
                 {primaryNav.map((item, index) => (
                   <motion.li
                     key={item.id}
@@ -181,12 +200,12 @@ export function Navbar() {
                         if (item.kind === "hash") activate(item.id);
                         closeMenu();
                       }}
-                      className="flex items-baseline gap-5 py-5"
+                      className="flex items-baseline gap-4 py-2.5 sm:gap-5 sm:py-4"
                     >
                       <span className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="text-[1.75rem] font-medium tracking-[-0.02em] text-ink">
+                      <span className="text-[1.375rem] font-medium tracking-[-0.02em] text-ink sm:text-[1.75rem]">
                         {item.label}
                       </span>
                     </a>
@@ -194,7 +213,7 @@ export function Navbar() {
                 ))}
               </ul>
 
-              <div className="flex flex-col gap-5">
+              <div className="flex shrink-0 flex-col gap-4 pt-4">
                 <Button
                   href={site.whatsappUrl}
                   external
