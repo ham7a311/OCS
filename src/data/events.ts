@@ -5,6 +5,8 @@ export type OcsEvent = {
   title: string;
   description: string;
   speaker: string;
+  /** Optional LinkedIn profile for the speaker. */
+  speakerLinkedin?: string | null;
   /** ISO 8601 date. Formatted for display at render time. */
   date: string;
   /** Clock time with timezone, e.g. "7:30 PM GST". */
@@ -27,6 +29,7 @@ export const upcomingEvents: OcsEvent[] = [
     description:
       "A session on the software systems powering the next generation of aviation. Mr. Fahad Al Riyami, Founder of AeroVecto, explores advanced air mobility, emerging technologies, and the code shaping the future of flight.",
     speaker: "Mr. Fahad Al Riyami",
+    speakerLinkedin: "https://www.linkedin.com/in/fahadalriyami",
     date: "2026-08-22",
     time: "7:30 PM GST",
     category: "Aviation & Software",

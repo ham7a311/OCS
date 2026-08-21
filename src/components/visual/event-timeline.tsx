@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { TagChip } from "@/components/ui/badge";
-import { eventMetadata, splitEventDate, type OcsEvent } from "@/data/events";
+import { eventDisplayMetadata } from "@/components/ui/speaker-name";
+import { splitEventDate, type OcsEvent } from "@/data/events";
 import { cn } from "@/lib/utils";
 
 function TimelineRow({
@@ -16,7 +17,7 @@ function TimelineRow({
   onToggle: () => void;
 }) {
   const date = splitEventDate(event.date);
-  const metadata = eventMetadata(event);
+  const metadata = eventDisplayMetadata(event);
   const detailId = `event-detail-${event.id}`;
 
   return (

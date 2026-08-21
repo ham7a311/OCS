@@ -2,8 +2,8 @@ import { ArrowUpRight } from "lucide-react";
 import { CategoryBadge, StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MetaGrid } from "@/components/ui/meta-grid";
+import { eventDisplayMetadata } from "@/components/ui/speaker-name";
 import {
-  eventMetadata,
   eventStatusLabel,
   splitEventDate,
   type OcsEvent,
@@ -11,7 +11,7 @@ import {
 
 export function EventCard({ event }: { event: OcsEvent }) {
   const date = splitEventDate(event.date);
-  const metadata = eventMetadata(event);
+  const metadata = eventDisplayMetadata(event);
   const columns = metadata.length <= 2 ? 2 : metadata.length === 3 ? 3 : 4;
 
   return (

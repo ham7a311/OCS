@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export type MetaItem = {
   label: string;
-  value: string;
+  value: ReactNode;
 };
 
 /**
