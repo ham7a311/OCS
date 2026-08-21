@@ -99,10 +99,24 @@ export const partnershipContact = CONTACT_EMAIL
       external: true,
     };
 
-export const navigation = [
-  { id: "top", label: "Home", href: "#top" },
-  { id: "about", label: "About", href: "#about" },
-  { id: "programs", label: "Programs", href: "#programs" },
-  { id: "events", label: "Events", href: "#events" },
-  { id: "partners", label: "Partners", href: "#partners" },
-] as const;
+export type NavItem = {
+  id: string;
+  label: string;
+  href: string;
+  kind: "hash" | "route";
+};
+
+export const navigation: NavItem[] = [
+  { id: "top", label: "Home", href: "/#top", kind: "hash" },
+  { id: "about", label: "About", href: "/#about", kind: "hash" },
+  { id: "programs", label: "Programs", href: "/#programs", kind: "hash" },
+  { id: "events", label: "Events", href: "/#events", kind: "hash" },
+  { id: "partners", label: "Partners", href: "/#partners", kind: "hash" },
+  { id: "model", label: "The Model", href: "/model", kind: "route" },
+  { id: "members", label: "Members", href: "/signin", kind: "route" },
+];
+
+/** In-page home sections observed by the nav scrollspy. */
+export const homeSectionIds = navigation
+  .filter((item) => item.kind === "hash")
+  .map((item) => item.id);

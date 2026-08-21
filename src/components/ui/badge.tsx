@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { EventStatus } from "@/data/events";
+import type { EffortLevel } from "@/data/model";
 import { cn } from "@/lib/utils";
 
 /**
@@ -88,6 +89,36 @@ export function TagChip({
       )}
     >
       {children}
+    </span>
+  );
+}
+
+const effortLabels: Record<EffortLevel, string> = {
+  "very-low": "VERY LOW",
+  low: "LOW",
+  medium: "MEDIUM",
+  high: "HIGH",
+  "very-high": "VERY HIGH",
+};
+
+const effortTones: Record<EffortLevel, string> = {
+  "very-low": "effort-low",
+  low: "effort-low",
+  medium: "effort-medium",
+  high: "effort-high",
+  "very-high": "effort-veryhigh",
+};
+
+export function EffortBadge({
+  level,
+  className,
+}: {
+  level: EffortLevel;
+  className?: string;
+}) {
+  return (
+    <span className={cn("effort-badge", effortTones[level], className)}>
+      {effortLabels[level]}
     </span>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { cn } from "@/lib/utils";
 
 type Node = {
   x: number;
@@ -27,13 +28,22 @@ function isDark() {
   return document.documentElement.getAttribute("data-theme") === "dark";
 }
 
+type Variant = "hero" | "ambient";
+
 /**
- * Ambient connecting-nodes field for the hero. Canvas is decorative and
- * never intercepts clicks; the parent section owns pointer tracking.
+ * Connecting-nodes field. Decorative — never intercepts clicks.
+ * `hero` is mouse-reactive and denser; `ambient` is a calmer, passive drift.
  */
-export function NodeNetwork() {
+export function NodeNetwork({
+  variant = "hero",
+  className,
+}: {
+  variant?: Variant;
+  className?: string;
+}) {
   const reduced = usePrefersReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ambient = variant === "ambient";
 
   useEffect(() => {
     if (reduced) return;
@@ -47,6 +57,7 @@ export function NodeNetwork() {
     const surface: HTMLCanvasElement = canvas;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const speed = ambient ? 0.12 : 0.28;
 
     let width = 0;
     let height = 0;
@@ -66,12 +77,12 @@ export function NodeNetwork() {
     const maxDist = () => Math.min(148, Math.max(96, width * 0.12));
 
     function seed() {
-      const count = nodeCount(width);
+      const count = ambient ? 20 : nodeCount(width);
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.28,
-        vy: (Math.random() - 0.5) * 0.28,
+        vx: (Math.random() - 0.5) * speed,
+        vy: (Math.random() - 0.5) * speed,
         r: 1.6 + Math.random() * 1.8,
       }));
     }
@@ -103,9 +114,10 @@ export function NodeNetwork() {
     function step() {
       const link = maxDist();
       const influence = 150;
+      const reactive = !ambient && mouse.inside;
 
       for (const node of nodes) {
-        if (mouse.inside) {
+        if (reactive) {
           const dx = node.x - mouse.x;
           const dy = node.y - mouse.y;
           const dist = Math.hypot(dx, dy) || 1;
@@ -140,7 +152,7 @@ export function NodeNetwork() {
           if (dist > link) continue;
 
           let alpha = (1 - dist / link) * colors.line;
-          if (mouse.inside) {
+          if (reactive) {
             const midX = (a.x + c.x) / 2;
             const midY = (a.y + c.y) / 2;
             const toMouse = Math.hypot(midX - mouse.x, midY - mouse.y);
@@ -160,7 +172,7 @@ export function NodeNetwork() {
 
       for (const node of nodes) {
         let alpha = colors.node;
-        if (mouse.inside) {
+        if (reactive) {
           const dist = Math.hypot(node.x - mouse.x, node.y - mouse.y);
           if (dist < influence) {
             alpha += ((influence - dist) / influence) * (colors.glow - colors.node);
@@ -210,8 +222,10 @@ export function NodeNetwork() {
     );
     io.observe(surface);
 
-    window.addEventListener("mousemove", onMove, { passive: true });
-    window.addEventListener("mouseleave", onLeave);
+    if (!ambient) {
+      window.addEventListener("mousemove", onMove, { passive: true });
+      window.addEventListener("mouseleave", onLeave);
+    }
 
     return () => {
       running = false;
@@ -220,10 +234,12 @@ export function NodeNetwork() {
       themeObserver.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", visibility);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseleave", onLeave);
+      if (!ambient) {
+        window.removeEventListener("mousemove", onMove);
+        window.removeEventListener("mouseleave", onLeave);
+      }
     };
-  }, [reduced]);
+  }, [ambient, reduced]);
 
   if (reduced) return null;
 
@@ -231,13 +247,17 @@ export function NodeNetwork() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 z-[1] size-full"
-      style={{
-        maskImage:
-          "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
-        WebkitMaskImage:
-          "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
-      }}
+      className={cn("pointer-events-none absolute inset-0 z-[1] size-full", className)}
+      style={
+        ambient
+          ? undefined
+          : {
+              maskImage:
+                "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
+            }
+      }
     />
   );
 }

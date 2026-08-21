@@ -3,6 +3,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
 import { ProgramRow } from "@/components/sections/program-row";
+import { MemberSparkleCta } from "@/components/visual/sparkle-accent";
 import { programs } from "@/data/programs";
 
 export function Programs() {
@@ -30,6 +31,13 @@ export function Programs() {
             </RevealItem>
           ))}
         </RevealGroup>
+
+        <Reveal
+          delay={0.12}
+          className="mt-16 flex flex-col items-center px-6 text-center sm:mt-20"
+        >
+          <MemberSparkleCta href="/signin">Become a Member</MemberSparkleCta>
+        </Reveal>
       </Container>
     </Section>
   );

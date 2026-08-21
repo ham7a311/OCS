@@ -90,13 +90,18 @@ export function Join() {
                 <div className="hidden min-w-0 flex-1 lg:block">
                   <GuideArrow toward="right" />
                 </div>
-                <Button href={site.whatsappUrl} external size="lg" className="shrink-0">
-                  Join WhatsApp community
-                  <ArrowUpRight
-                    className="size-4 transition-transform duration-200 ease-ui group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5"
-                    aria-hidden="true"
-                  />
-                </Button>
+                <div className="flex shrink-0 flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+                  <Button href={site.whatsappUrl} external size="lg" className="shrink-0">
+                    Join WhatsApp community
+                    <ArrowUpRight
+                      className="size-4 transition-transform duration-200 ease-ui group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5"
+                      aria-hidden="true"
+                    />
+                  </Button>
+                  <Button href="/signin" variant="secondary" size="lg" className="shrink-0">
+                    Become a Member
+                  </Button>
+                </div>
                 <div className="hidden min-w-0 flex-1 lg:block">
                   <GuideArrow toward="left" />
                 </div>

@@ -86,6 +86,28 @@ export function About() {
             })}
           </ul>
         </Reveal>
+
+        <Reveal delay={0.18}>
+          <a
+            href="/model"
+            className="collab-card mt-10 flex flex-col gap-3 rounded-lg px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8"
+          >
+            <div>
+              <p className="inline-flex items-center gap-2 text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
+                Curious how this actually runs day to day?
+                <ArrowUpRight
+                  className="collab-arrow size-3.5 shrink-0 text-amber-300"
+                  aria-hidden="true"
+                />
+              </p>
+              <p className="mt-1 text-sm text-ink-muted">Read the full model.</p>
+            </div>
+            <span className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
+              View the Model
+              <ArrowUpRight className="collab-arrow size-3.5" aria-hidden="true" />
+            </span>
+          </a>
+        </Reveal>
       </Container>
     </Section>
   );

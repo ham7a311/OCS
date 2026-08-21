@@ -63,8 +63,8 @@ export function Hero() {
             </motion.h1>
 
             <motion.p {...rise(0.16)} className="mt-8 max-w-[40ch] text-lead text-ink-muted">
-              Students gathering around programming, AI, research, and collaboration
-              to build things that are real.
+              Something happens on your campus every month — not a conference you hear about once a
+              year. OCS runs a chapter inside your own school or university.
             </motion.p>
 
             <motion.div {...rise(0.24)} className="mt-8 flex w-full max-w-full flex-col gap-3 sm:flex-row sm:items-center">
@@ -75,7 +75,7 @@ export function Hero() {
                   aria-hidden="true"
                 />
               </Button>
-              <Button href="#programs" variant="secondary" size="lg">
+              <Button href="/#programs" variant="secondary" size="lg">
                 Explore programs
                 <ArrowDown
                   className="size-4 text-ink-faint transition-transform duration-200 ease-ui group-hover/button:translate-y-0.5"

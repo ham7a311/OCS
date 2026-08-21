@@ -71,4 +71,11 @@ export const team: TeamMember[] = [
     color: "#EF6FA7",
     linkedin: "https://www.linkedin.com/in/taif-albadi-748a25348",
   },
+  {
+    id: "sulaiman",
+    name: "Sulaiman Al Darei",
+    role: "The Brain of OCS",
+    color: "#3F7D9A",
+    linkedin: "https://www.linkedin.com/in/sulaiman-al-darei",
+  },
 ];

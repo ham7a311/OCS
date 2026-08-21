@@ -26,20 +26,20 @@ export const focusAreas: FocusArea[] = [
     label: "AI & innovation",
     description: "Machine learning and emerging technology, practised rather than only discussed.",
     icon: BrainCircuit,
-    href: "#artificial-intelligence",
+    href: "/#artificial-intelligence",
   },
   {
     id: "computer-science",
     label: "Computer science",
     description: "The practical engineering foundation that turns ideas into working software.",
     icon: Terminal,
-    href: "#programming-workshops",
+    href: "/#programming-workshops",
   },
   {
     id: "collaboration",
     label: "Collaboration & projects",
     description: "Shared work — workshops, hackathons, and student-led builds.",
     icon: Boxes,
-    href: "#student-projects",
+    href: "/#student-projects",
   },
 ];

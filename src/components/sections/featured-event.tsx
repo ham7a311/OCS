@@ -6,6 +6,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
 import { EventTimeline } from "@/components/visual/event-timeline";
+import { PowerTraceCta } from "@/components/visual/power-trace";
 import {
   TIMELINE_VISIBLE_LIMIT,
   pastEvents,
@@ -77,6 +78,13 @@ export function FeaturedEvent() {
             ) : null}
           </Reveal>
         ) : null}
+
+        <Reveal
+          delay={0.16}
+          className="mt-16 flex flex-col items-center px-8 text-center sm:mt-20 sm:px-10"
+        >
+          <PowerTraceCta href="/model">View the Model</PowerTraceCta>
+        </Reveal>
       </Container>
     </Section>
   );
