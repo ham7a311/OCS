@@ -1,14 +1,18 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Em } from "@/components/ui/section-heading";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NodeNetwork } from "@/components/visual/node-network";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { useSession } from "@/hooks/use-session";
+import { authClient } from "@/lib/auth/client";
 import { cn } from "@/lib/utils";
 
 function GoogleMark() {
@@ -54,9 +58,9 @@ function GitHubMark() {
 }
 
 const providers = [
-  { id: "google", label: "Continue with Google", icon: GoogleMark },
-  { id: "microsoft", label: "Continue with Microsoft", icon: MicrosoftMark },
-  { id: "github", label: "Continue with GitHub", icon: GitHubMark },
+  { id: "google", label: "Continue with Google", icon: GoogleMark, available: true },
+  { id: "microsoft", label: "Continue with Microsoft", icon: MicrosoftMark, available: false },
+  { id: "github", label: "Continue with GitHub", icon: GitHubMark, available: false },
 ] as const;
 
 function BackHomeLink() {
@@ -129,6 +133,14 @@ function SignInForm() {
     event.preventDefault();
   }
 
+  function continueWithProvider(providerId: (typeof providers)[number]["id"], available: boolean) {
+    if (!consented || !available || providerId !== "google") return;
+    void authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/members",
+    });
+  }
+
   return (
     <form
       autoComplete="off"
@@ -146,19 +158,27 @@ function SignInForm() {
       </p>
 
       {/*
-        OAuth is UI-only for now. Auth.js / provider credentials / callbacks
-        are a separate backend task.
+        Google is the only configured provider. GitHub and Microsoft stay
+        visible but unavailable until they are configured and the privacy
+        notice covers them.
       */}
       <div className="mt-8 flex flex-col gap-3">
         {providers.map((provider) => {
           const Icon = provider.icon;
+          const enabled = consented && provider.available;
           return (
             <Button
               key={provider.id}
               type="button"
               variant="secondary"
               size="lg"
-              disabled={!consented}
+              disabled={!enabled}
+              aria-disabled={!enabled}
+              title={provider.available ? undefined : "Not available yet"}
+              aria-label={
+                provider.available ? provider.label : `${provider.label} — not available yet`
+              }
+              onClick={() => continueWithProvider(provider.id, provider.available)}
               className="w-full justify-center transition-[background-color,border-color,opacity] duration-200 ease-ui disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-45 enabled:hover:border-amber-400 enabled:focus-visible:border-amber-400"
             >
               <Icon />
@@ -167,32 +187,12 @@ function SignInForm() {
           );
         })}
       </div>
+      <p className="mt-3 text-sm leading-relaxed text-ink-faint">
+        GitHub and Microsoft sign-in are not available yet.
+      </p>
 
-      <label className="mt-6 flex min-h-11 cursor-pointer items-start gap-3">
-        <input
-          id="signin-consent"
-          type="checkbox"
-          checked={consented}
-          onChange={(event) => setConsented(event.target.checked)}
-          className="peer sr-only"
-        />
-        <span
-          aria-hidden="true"
-          className={cn(
-            "relative mt-0.5 grid size-5 shrink-0 place-items-center rounded-sm border transition-colors duration-200 ease-ui",
-            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-amber-400",
-            consented ? "border-amber-500 bg-amber-500" : "border-line bg-transparent",
-          )}
-        >
-          <Check
-            className={cn(
-              "size-3 text-on-accent transition-opacity duration-200 ease-ui",
-              consented ? "opacity-100" : "opacity-0",
-            )}
-            strokeWidth={2.5}
-          />
-        </span>
-        <span className="pt-px text-sm leading-relaxed text-ink-muted">
+      <div className="mt-6">
+        <Checkbox id="signin-consent" checked={consented} onChange={setConsented}>
           By continuing, you agree to our{" "}
           <a
             href="/privacy"
@@ -204,8 +204,8 @@ function SignInForm() {
             Privacy Notice
           </a>
           .
-        </span>
-      </label>
+        </Checkbox>
+      </div>
 
       <div className="mt-8">
         <SketchRule kind="bottom" />
@@ -215,6 +215,12 @@ function SignInForm() {
 }
 
 export function SignInPage() {
+  const router = useRouter();
+  const { session, isPending } = useSession();
+
+  useEffect(() => {
+    if (!isPending && session) router.replace("/members");
+  }, [isPending, session, router]);
   return (
     <div className="relative flex min-h-dvh flex-col md:flex-row">
       <aside className="relative hidden min-h-dvh flex-col px-8 py-8 md:flex md:w-[45%] lg:px-12">

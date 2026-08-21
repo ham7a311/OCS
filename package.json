@@ -8,11 +8,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate && node scripts/assert-no-neon-auth-ddl.mjs",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
+    "@neondatabase/auth": "^0.5.0-beta",
+    "@neondatabase/serverless": "^1.1.0",
     "@vercel/analytics": "2.0.1",
     "clsx": "2.1.1",
+    "drizzle-orm": "^0.45.2",
     "geist": "1.7.2",
     "lucide-react": "1.31.0",
     "motion": "13.1.0",
@@ -27,6 +32,8 @@
     "@types/node": "24.10.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
     "eslint": "9.39.5",
     "eslint-config-next": "16.3.1",
     "tailwindcss": "4.3.3",

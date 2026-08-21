@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Hides the circular Next.js "N" overlay in local screenshots.
   devIndicators: false,
+  agentRules: false,
 };
 
 export default nextConfig;

@@ -1,18 +1,21 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { AccountMenu } from "@/components/ui/account-menu";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { homeSectionIds, navigation, site, type NavItem } from "@/config/site";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { useNavClearance } from "@/hooks/use-nav-clearance";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { useSession } from "@/hooks/use-session";
 import { easeEntrance, easeUi } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -21,12 +24,31 @@ const primaryNav = navigation.filter((item) => item.id !== "members");
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const onHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
   const { activeId, activate } = useActiveSection(onHome ? homeSectionIds : EMPTY_SECTION_IDS);
   const reduced = usePrefersReducedMotion();
+  const { session, signOut } = useSession();
   useNavClearance();
+
+  const compact = pathname === "/members";
+  const membersHref = session ? "/members" : "/signin";
+
+  const handleSignOut = useCallback(() => {
+    setConfirmSignOut(false);
+    setMenuOpen(false);
+    void signOut().then(() => {
+      router.push("/");
+    });
+  }, [router, signOut]);
+
+  const requestSignOut = useCallback(() => {
+    setMenuOpen(false);
+    setConfirmSignOut(true);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -71,7 +93,9 @@ export function Navbar() {
     };
   }, [menuOpen]);
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+  }, []);
 
   const isActive = (item: NavItem) => {
     if (item.kind === "route") return pathname === item.href;
@@ -90,14 +114,27 @@ export function Navbar() {
               (scrolled || menuOpen) && "shadow-[0_12px_40px_-24px_rgba(20,18,12,0.45)]",
             )}
           >
-            <Link
-              href="/"
-              className="flex min-w-0 items-center rounded-sm"
-              aria-label={`${site.organizationName} — back to top`}
-            >
-              <Logo />
-            </Link>
+            {compact ? (
+              <a
+                href={site.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-w-0 items-center rounded-sm"
+                aria-label="Join OCS on WhatsApp"
+              >
+                <Logo />
+              </a>
+            ) : (
+              <Link
+                href="/"
+                className="flex min-w-0 items-center rounded-sm"
+                aria-label={`${site.organizationName} — home`}
+              >
+                <Logo />
+              </Link>
+            )}
 
+            {compact ? null : (
             <ul className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 xl:flex">
               {primaryNav.map((item) => {
                 const active = isActive(item);
@@ -130,46 +167,64 @@ export function Navbar() {
                 );
               })}
             </ul>
+            )}
 
             <div className="flex shrink-0 items-center gap-0.5 sm:gap-2">
               <ThemeToggle />
-              <Button
-                href="/signin"
-                variant="secondary"
-                size="sm"
-                aria-current={pathname === "/signin" ? "page" : undefined}
-              >
-                Members
-              </Button>
-              <Button
-                href={site.whatsappUrl}
-                external
-                size="sm"
-                className="hidden sm:inline-flex"
-              >
-                Join OCS
-                <ArrowUpRight className="size-3.5" aria-hidden="true" />
-              </Button>
-
-              <button
-                type="button"
-                onClick={() => setMenuOpen((open) => !open)}
-                aria-expanded={menuOpen}
-                aria-controls="mobile-menu"
-                aria-label={menuOpen ? "Close menu" : "Open menu"}
-                className="grid size-11 place-items-center rounded-md text-ink-muted transition-colors duration-200 ease-ui hover:bg-surface-2 hover:text-ink xl:hidden"
-              >
-                {menuOpen ? (
-                  <X className="size-5" aria-hidden="true" />
-                ) : (
-                  <Menu className="size-5" aria-hidden="true" />
-                )}
-              </button>
+              {compact ? (
+                session ? (
+                  <AccountMenu
+                    email={session.email}
+                    onSignOut={requestSignOut}
+                    alwaysVisible
+                    hideProfileLink
+                  />
+                ) : null
+              ) : (
+                <>
+                  <Button
+                    href={membersHref}
+                    variant="secondary"
+                    size="sm"
+                    aria-current={pathname === membersHref ? "page" : undefined}
+                  >
+                    Members
+                  </Button>
+                  {session ? (
+                    <AccountMenu email={session.email} onSignOut={requestSignOut} />
+                  ) : (
+                    <Button
+                      href={site.whatsappUrl}
+                      external
+                      size="sm"
+                      className="hidden sm:inline-flex"
+                    >
+                      Join OCS
+                      <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                    </Button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setMenuOpen((open) => !open)}
+                    aria-expanded={menuOpen}
+                    aria-controls="mobile-menu"
+                    aria-label={menuOpen ? "Close menu" : "Open menu"}
+                    className="grid size-11 place-items-center rounded-md text-ink-muted transition-colors duration-200 ease-ui hover:bg-surface-2 hover:text-ink xl:hidden"
+                  >
+                    {menuOpen ? (
+                      <X className="size-5" aria-hidden="true" />
+                    ) : (
+                      <Menu className="size-5" aria-hidden="true" />
+                    )}
+                  </button>
+                </>
+              )}
             </div>
           </nav>
         </Container>
       </header>
 
+      {!compact ? (
       <AnimatePresence>
         {menuOpen ? (
           <motion.div
@@ -214,23 +269,57 @@ export function Navbar() {
               </ul>
 
               <div className="flex shrink-0 flex-col gap-4 pt-4">
-                <Button
-                  href={site.whatsappUrl}
-                  external
-                  size="lg"
-                  className="w-full"
-                >
-                  Join OCS
-                  <ArrowUpRight className="size-4" aria-hidden="true" />
-                </Button>
-                <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-ink-faint uppercase">
-                  Student-led · Sultanate of Oman
-                </p>
+                {session ? (
+                  <>
+                    <div onClick={closeMenu}>
+                      <Button href="/members" size="lg" className="w-full">
+                        My profile
+                      </Button>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="lg"
+                      className="w-full"
+                      onClick={requestSignOut}
+                    >
+                      Sign out
+                    </Button>
+                    <p className="truncate font-mono text-[0.6875rem] tracking-[0.09em] text-ink-faint uppercase">
+                      {session.email}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      href={site.whatsappUrl}
+                      external
+                      size="lg"
+                      className="w-full"
+                    >
+                      Join OCS
+                      <ArrowUpRight className="size-4" aria-hidden="true" />
+                    </Button>
+                    <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-ink-faint uppercase">
+                      Student-led · Sultanate of Oman
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
         ) : null}
       </AnimatePresence>
+      ) : null}
+
+      <ConfirmDialog
+        open={confirmSignOut}
+        title="Are you sure you want to sign out?"
+        description="You can sign back in any time with the same account."
+        confirmLabel="Sign out"
+        onCancel={() => setConfirmSignOut(false)}
+        onConfirm={handleSignOut}
+      />
     </>
   );
 }

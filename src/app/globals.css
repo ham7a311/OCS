@@ -1252,3 +1252,65 @@ html[data-theme="dark"] .model-page-table .table-cell-tier {
     display: none;
   }
 }
+
+.wizard-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.wizard-rail {
+  flex: 1;
+  min-width: 0.4rem;
+  height: 1px;
+  background: var(--color-line);
+}
+
+.wizard-dot {
+  flex-shrink: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-amber-400);
+  background: transparent;
+}
+
+.wizard-dot[data-state="done"] {
+  background: var(--color-amber-400);
+  border-color: var(--color-amber-400);
+  box-shadow: 0 0 0 3px var(--color-canvas);
+}
+
+.wizard-dot[data-state="current"] {
+  background: var(--color-amber-500);
+  border-color: var(--color-amber-500);
+  box-shadow:
+    0 0 0 3px var(--color-canvas),
+    0 0 8px color-mix(in srgb, var(--color-amber-500) 70%, transparent);
+}
+
+@media (min-width: 640px) {
+  .wizard-progress {
+    gap: 0.35rem;
+  }
+
+  .wizard-dot {
+    width: 0.5625rem;
+    height: 0.5625rem;
+  }
+}
+
+.field-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--ease-ui);
+}
+
+.field-reveal[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.field-reveal-inner {
+  min-height: 0;
+  overflow: hidden;
+}

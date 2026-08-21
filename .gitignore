@@ -9,6 +9,7 @@ yarn-debug.log*
 yarn-error.log*
 .env
 .env*.local
+.neon
 .vercel
 *.tsbuildinfo
 next-env.d.ts

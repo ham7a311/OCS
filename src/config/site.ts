@@ -37,7 +37,7 @@ export const site = {
   mission:
     "To connect students across Oman and beyond, providing opportunities to learn, innovate, and collaborate in the rapidly evolving world of technology.",
 
-  url: optional(process.env.NEXT_PUBLIC_SITE_URL) ?? "https://omancomputingsociety.org",
+  url: optional(process.env.NEXT_PUBLIC_SITE_URL) ?? "https://ocs-mocha.vercel.app",
 
   whatsappUrl: WHATSAPP_COMMUNITY_URL,
   linkedinUrl: LINKEDIN_URL,

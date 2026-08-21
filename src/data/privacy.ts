@@ -1,7 +1,9 @@
+export const PRIVACY_NOTICE_VERSION = "2026-08-17";
+
 export const privacyNotice = {
   title: "Privacy notice",
   subtitle: "What we hold, and why.",
-  version: "Version 2026-08-17",
+  version: `Version ${PRIVACY_NOTICE_VERSION}`,
   sections: [
     {
       id: "who",
