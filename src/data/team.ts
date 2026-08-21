@@ -20,7 +20,7 @@ export const team: TeamMember[] = [
     name: "Al Azher Al Rawahi",
     role: "Chief Marketing Officer",
     color: "#E4574A",
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/alazhar96",
   },
   {
     id: "noor-al-rahbi",
