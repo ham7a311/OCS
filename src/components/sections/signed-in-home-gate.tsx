@@ -11,7 +11,15 @@ export function SignedInHomeGate() {
 
   useEffect(() => {
     if (isPending || !session) return;
-    router.replace("/members");
+
+    const goToMembers = () => router.replace("/members");
+    goToMembers();
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) goToMembers();
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
   }, [isPending, session, router]);
 
   return null;

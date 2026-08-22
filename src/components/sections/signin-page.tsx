@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Em } from "@/components/ui/section-heading";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { DarkPhotoBackdrop } from "@/components/visual/dark-photo-backdrop";
 import { NodeNetwork } from "@/components/visual/node-network";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { useSession } from "@/hooks/use-session";
@@ -219,11 +220,21 @@ export function SignInPage() {
   const { session, isPending } = useSession();
 
   useEffect(() => {
-    if (!isPending && session) router.replace("/members");
+    if (isPending || !session) return;
+
+    const goToMembers = () => router.replace("/members");
+    goToMembers();
+
+    const onPageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) goToMembers();
+    };
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
   }, [isPending, session, router]);
   return (
     <div className="relative flex min-h-dvh flex-col md:flex-row">
-      <aside className="relative hidden min-h-dvh flex-col px-8 py-8 md:flex md:w-[45%] lg:px-12">
+      <aside className="signin-left-panel relative hidden min-h-dvh flex-col px-8 py-8 md:flex md:w-[45%] lg:px-12">
+        <DarkPhotoBackdrop photo="muttrah-corniche" variant="signin-panel" />
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <NodeNetwork variant="ambient" />
         </div>

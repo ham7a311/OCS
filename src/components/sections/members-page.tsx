@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { useMembersBackGuard } from "@/hooks/use-members-back-guard";
 import { useSession } from "@/hooks/use-session";
 import type { ProfileFormData } from "@/data/profile";
 
@@ -17,6 +18,12 @@ export function MembersPage() {
     useSession();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [editing, setEditing] = useState(false);
+
+  useMembersBackGuard({
+    enabled: Boolean(session),
+    editing,
+    onCancelEdit: () => setEditing(false),
+  });
 
   useEffect(() => {
     if (profileReady && !session) router.replace("/signin");

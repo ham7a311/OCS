@@ -6,6 +6,7 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em } from "@/components/ui/section-heading";
+import { DarkPhotoBackdrop } from "@/components/visual/dark-photo-backdrop";
 import { Glow } from "@/components/visual/glow";
 import { GridBackdrop } from "@/components/visual/grid-backdrop";
 import { site } from "@/config/site";
@@ -60,11 +61,12 @@ const interests = [
 
 export function Join() {
   return (
-    <Section id="join" tone="canvas" labelledBy="join-title">
+    <Section id="join" tone="canvas" labelledBy="join-title" className="closing-cta-section">
+      <DarkPhotoBackdrop photo="opera-house" variant="closing-cta" />
       <GridBackdrop size={80} intensity="faint" fade="radial" drift />
       <Glow size="42rem" opacity={0.05} className="-bottom-80 left-1/2 -translate-x-1/2" />
 
-      <Container className="relative">
+      <Container className="relative z-10">
         <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
           <Reveal>
             <Eyebrow>Join OCS</Eyebrow>

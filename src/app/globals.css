@@ -1314,3 +1314,77 @@ html[data-theme="dark"] .model-page-table .table-cell-tier {
   min-height: 0;
   overflow: hidden;
 }
+
+/* ==========================================================================
+   Dark-mode photographic section backdrops
+   URLs are injected on the element only while dark mode is active.
+   ========================================================================== */
+
+.closing-cta-section,
+.signin-left-panel,
+.money-section {
+  position: relative;
+  background-color: var(--ocs-canvas);
+}
+
+.dark-photo-backdrop {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.dark-photo-backdrop--closing-cta {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(10, 8, 6, 0.68) 0%,
+      rgba(10, 8, 6, 0.82) 60%,
+      rgba(10, 8, 6, 0.96) 100%
+    ),
+    var(--dark-photo);
+  background-position: center 30%;
+}
+
+@media (max-width: 767px) {
+  .dark-photo-backdrop--closing-cta {
+    background-position: center 38%;
+  }
+}
+
+.dark-photo-backdrop--money-section {
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(10, 8, 6, 0.68) 0%,
+      rgba(10, 8, 6, 0.82) 60%,
+      rgba(10, 8, 6, 0.96) 100%
+    ),
+    var(--dark-photo);
+  background-position: center 40%;
+}
+
+@media (max-width: 767px) {
+  .dark-photo-backdrop--money-section {
+    background-position: center 48%;
+  }
+}
+
+.dark-photo-backdrop--signin-panel {
+  background-image:
+    linear-gradient(
+      160deg,
+      rgba(8, 10, 12, 0.74) 0%,
+      rgba(8, 10, 12, 0.86) 100%
+    ),
+    var(--dark-photo);
+  background-position: 22% 55%;
+}
+
+@media (max-width: 1023px) {
+  .dark-photo-backdrop--signin-panel {
+    background-position: 18% 50%;
+  }
+}

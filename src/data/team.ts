@@ -41,7 +41,7 @@ export const team: TeamMember[] = [
     name: "Rabia Khalid",
     role: "Chief Tech Officer",
     color: "#2FBF71",
-    linkedin: null,
+    linkedin: "https://www.linkedin.com/in/eng-rabia-khalid",
   },
   {
     id: "al-munther-al-harrasi",

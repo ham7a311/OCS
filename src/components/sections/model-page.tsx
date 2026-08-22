@@ -8,6 +8,7 @@ import { MetaGrid } from "@/components/ui/meta-grid";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
+import { DarkPhotoBackdrop } from "@/components/visual/dark-photo-backdrop";
 import { LoopConnector } from "@/components/visual/loop-connector";
 import { CropMarkCta } from "@/components/visual/crop-mark";
 import { SealCta } from "@/components/visual/seal-arc";
@@ -436,8 +437,9 @@ export function ModelPage() {
         </Container>
       </Section>
 
-      <Section id="money" tone="canvas" labelledBy="money-title">
-        <Container>
+      <Section id="money" tone="canvas" labelledBy="money-title" className="money-section">
+        <DarkPhotoBackdrop photo="grand-mosque" variant="money-section" />
+        <Container className="relative z-10">
           <Reveal>
             <SectionHeading
               eyebrow="Money"
@@ -459,7 +461,7 @@ export function ModelPage() {
                 href="/#programs"
                 variant="secondary"
                 size="lg"
-                className="h-14 w-[min(100%,20.5rem)] px-8 text-[1.05rem]"
+                className="h-14 w-[min(100%,20.5rem)] border-ink/40 bg-canvas/35 px-8 text-[1.05rem] hover:border-ink/60 hover:bg-canvas/55"
               >
                 Explore Programs
               </Button>

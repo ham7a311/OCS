@@ -18,7 +18,10 @@ function nodeCount(width: number) {
   return 72;
 }
 
-function palette(dark: boolean) {
+function palette(dark: boolean, ambient: boolean) {
+  if (dark && ambient) {
+    return { rgb: [243, 180, 95] as const, node: 0.5, line: 0.28, glow: 0.58 };
+  }
   return dark
     ? { rgb: [243, 180, 95] as const, node: 0.38, line: 0.2, glow: 0.45 }
     : { rgb: [232, 162, 74] as const, node: 0.28, line: 0.13, glow: 0.36 };
@@ -62,7 +65,7 @@ export function NodeNetwork({
     let width = 0;
     let height = 0;
     let nodes: Node[] = [];
-    let colors = palette(isDark());
+    let colors = palette(isDark(), ambient);
     let frame = 0;
     let last = 0;
     let running = true;
@@ -201,7 +204,7 @@ export function NodeNetwork({
     resizeObserver.observe(surface);
 
     const themeObserver = new MutationObserver(() => {
-      colors = palette(isDark());
+      colors = palette(isDark(), ambient);
     });
     themeObserver.observe(document.documentElement, {
       attributes: true,
