@@ -9,6 +9,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
 import { DarkPhotoBackdrop } from "@/components/visual/dark-photo-backdrop";
+import { GuardedCoreVisual } from "@/components/visual/guarded-core";
 import { LoopConnector } from "@/components/visual/loop-connector";
 import { CropMarkCta } from "@/components/visual/crop-mark";
 import { SealCta } from "@/components/visual/seal-arc";
@@ -416,24 +417,39 @@ export function ModelPage() {
 
       <Section id="your-data" tone="raised" labelledBy="data-title">
         <Container>
-          <Reveal>
-            <SectionHeading
-              eyebrow="Your data"
-              id="data-title"
-              title={
-                <>
-                  Asked for properly, or <Em>not at all</Em>.
-                </>
-              }
-              description={yourData.body}
-            />
-          </Reveal>
-          <Reveal
-            delay={0.08}
-            className="mt-16 flex flex-col items-center px-6 text-center sm:mt-20"
-          >
-            <CropMarkCta href="/privacy">Read the privacy notice</CropMarkCta>
-          </Reveal>
+          <div className="lg:grid lg:grid-cols-12 lg:items-center lg:gap-16">
+            <div className="lg:col-span-6 xl:col-span-7">
+              <Reveal>
+                <SectionHeading
+                  eyebrow="Your data"
+                  id="data-title"
+                  title={
+                    <>
+                      Asked for properly, or <Em>not at all</Em>.
+                    </>
+                  }
+                  description={yourData.body}
+                />
+              </Reveal>
+              <Reveal
+                delay={0.08}
+                className="mt-16 flex flex-col items-center px-6 text-center sm:mt-20 lg:mt-14 lg:items-start lg:px-0"
+              >
+                <div className="w-full max-w-[20.5rem]">
+                  <CropMarkCta href="/privacy">Read the privacy notice</CropMarkCta>
+                </div>
+              </Reveal>
+            </div>
+
+            <div
+              className="hidden lg:col-span-6 lg:flex lg:items-center lg:justify-center xl:col-span-5"
+              aria-hidden="true"
+            >
+              <Reveal delay={0.12}>
+                <GuardedCoreVisual />
+              </Reveal>
+            </div>
+          </div>
         </Container>
       </Section>
 

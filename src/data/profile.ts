@@ -58,6 +58,7 @@ export const SKILLS = [
   "Robotics",
   "Game Dev",
   "Hardware",
+  "Other",
 ] as const;
 
 export const STARTING_OUT_LABEL = "None, I'm starting out";
@@ -188,8 +189,6 @@ export function isStepValid(step: number, data: ProfileFormData): boolean {
     case 2:
       if (!isNonEmpty(data.school)) return false;
       if (data.school === "Other" && !isNonEmpty(data.otherSchool)) return false;
-      if (!isNonEmpty(data.programme)) return false;
-      if (!isNonEmpty(data.yearOfStudy)) return false;
       return true;
     case 3:
       return data.reason !== "";

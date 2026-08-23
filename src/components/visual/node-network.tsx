@@ -12,13 +12,27 @@ type Node = {
   r: number;
 };
 
-function nodeCount(width: number) {
+type Variant = "hero" | "ambient";
+type Density = "default" | "sparse";
+
+function nodeCount(width: number, variant: Variant, density: Density) {
+  if (variant === "ambient" && density === "sparse") {
+    if (width < 640) return 10;
+    if (width < 1024) return 12;
+    return 14;
+  }
+  if (variant === "ambient") return 20;
   if (width < 640) return 36;
   if (width < 1024) return 56;
   return 72;
 }
 
-function palette(dark: boolean, ambient: boolean) {
+function palette(dark: boolean, ambient: boolean, sparse: boolean) {
+  if (sparse) {
+    return dark
+      ? { rgb: [243, 180, 95] as const, node: 0.2, line: 0.09, glow: 0.28 }
+      : { rgb: [232, 162, 74] as const, node: 0.13, line: 0.06, glow: 0.18 };
+  }
   if (dark && ambient) {
     return { rgb: [243, 180, 95] as const, node: 0.5, line: 0.28, glow: 0.58 };
   }
@@ -31,22 +45,24 @@ function isDark() {
   return document.documentElement.getAttribute("data-theme") === "dark";
 }
 
-type Variant = "hero" | "ambient";
-
 /**
  * Connecting-nodes field. Decorative — never intercepts clicks.
  * `hero` is mouse-reactive and denser; `ambient` is a calmer, passive drift.
+ * `density="sparse"` is the confirmation-page atmosphere: 10–15 nodes, slower.
  */
 export function NodeNetwork({
   variant = "hero",
+  density = "default",
   className,
 }: {
   variant?: Variant;
+  density?: Density;
   className?: string;
 }) {
   const reduced = usePrefersReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ambient = variant === "ambient";
+  const sparse = ambient && density === "sparse";
 
   useEffect(() => {
     if (reduced) return;
@@ -60,12 +76,12 @@ export function NodeNetwork({
     const surface: HTMLCanvasElement = canvas;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const speed = ambient ? 0.12 : 0.28;
+    const speed = sparse ? 0.07 : ambient ? 0.12 : 0.28;
 
     let width = 0;
     let height = 0;
     let nodes: Node[] = [];
-    let colors = palette(isDark(), ambient);
+    let colors = palette(isDark(), ambient, sparse);
     let frame = 0;
     let last = 0;
     let running = true;
@@ -77,10 +93,13 @@ export function NodeNetwork({
     }
 
     const mouse = { x: -9999, y: -9999, inside: false };
-    const maxDist = () => Math.min(148, Math.max(96, width * 0.12));
+    const maxDist = () =>
+      sparse
+        ? Math.min(220, Math.max(140, width * 0.18))
+        : Math.min(148, Math.max(96, width * 0.12));
 
     function seed() {
-      const count = ambient ? 20 : nodeCount(width);
+      const count = nodeCount(width, variant, density);
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -204,7 +223,7 @@ export function NodeNetwork({
     resizeObserver.observe(surface);
 
     const themeObserver = new MutationObserver(() => {
-      colors = palette(isDark(), ambient);
+      colors = palette(isDark(), ambient, sparse);
     });
     themeObserver.observe(document.documentElement, {
       attributes: true,
@@ -242,7 +261,7 @@ export function NodeNetwork({
         window.removeEventListener("mouseleave", onLeave);
       }
     };
-  }, [ambient, reduced]);
+  }, [ambient, density, reduced, sparse, variant]);
 
   if (reduced) return null;
 

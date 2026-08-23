@@ -49,11 +49,11 @@ export function FeaturedEvent() {
           ) : (
             <Panel className="mt-4 px-6 py-8 sm:px-8">
               <p className="text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
-                Next gathering to be announced
+                Next meeting to be announced soon.
               </p>
               <p className="mt-2 max-w-[48ch] text-sm leading-relaxed text-ink-muted">
-                Workshops, talks, and rooms worth being in will appear here as soon
-                as they are confirmed.
+                The next gathering will appear here once the date and speaker are
+                confirmed.
               </p>
             </Panel>
           )}

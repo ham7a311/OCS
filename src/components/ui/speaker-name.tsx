@@ -5,24 +5,25 @@ import type { MetaItem } from "@/components/ui/meta-grid";
 export function SpeakerName({
   name,
   href,
+  showIcon = false,
 }: {
   name: string;
   href?: string | null;
+  showIcon?: boolean;
 }) {
   if (!href) return name;
 
   return (
-    <>
+    <span className="inline-flex items-center gap-4">
       <a
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-2 sm:hidden"
+        className="underline decoration-ink/30 underline-offset-[0.18em] transition-colors duration-200 ease-ui hover:decoration-current"
       >
         {name}
       </a>
-      <span className="hidden items-center gap-4 sm:inline-flex">
-        <span>{name}</span>
+      {showIcon ? (
         <a
           href={href}
           target="_blank"
@@ -32,17 +33,26 @@ export function SpeakerName({
         >
           <LinkedInIcon className="size-4" />
         </a>
-      </span>
-    </>
+      ) : null}
+    </span>
   );
 }
 
 export function eventDisplayMetadata(event: OcsEvent): MetaItem[] {
+  const showIcon =
+    event.status === "upcoming" || event.status === "registration-open";
+
   return eventMetadata(event).map((item) =>
     item.label === "Speaker"
       ? {
           ...item,
-          value: <SpeakerName name={event.speaker} href={event.speakerLinkedin} />,
+          value: (
+            <SpeakerName
+              name={event.speaker}
+              href={event.speakerLinkedin}
+              showIcon={showIcon}
+            />
+          ),
         }
       : item,
   );

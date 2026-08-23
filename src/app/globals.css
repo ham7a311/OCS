@@ -66,6 +66,9 @@ html[data-theme="light"] {
     transparent 56%
   );
 
+  --ocs-orbit-ring: color-mix(in srgb, var(--ocs-ink) 10%, transparent);
+  --ocs-accent-gold-glow: rgba(232, 162, 74, 0.35);
+
   /* Scroll offset under the sticky header. Measured in JS from the real
      header height — do not use this for section/hero internal spacing. */
   --ocs-nav-clearance: 4.75rem;
@@ -131,6 +134,9 @@ html[data-theme="dark"] {
     rgba(232, 162, 74, 0.09),
     transparent 58%
   );
+
+  --ocs-orbit-ring: color-mix(in srgb, var(--ocs-ink) 8%, transparent);
+  --ocs-accent-gold-glow: rgba(232, 162, 74, 0.5);
 }
 
 @media (min-width: 640px) {
@@ -1231,6 +1237,213 @@ html[data-theme="dark"] .model-page-table .table-cell-tier {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Orbit field — ambient guarded core for the Your data section (desktop).
+   Same offset-path mechanic as .team-orbit-dot, applied to circular rings.
+   -------------------------------------------------------------------------- */
+
+.orbit-field {
+  position: relative;
+  pointer-events: none;
+}
+
+.orbit-field-ambient {
+  width: 17.5rem;
+  height: 17.5rem;
+}
+
+@media (max-width: 1023px) {
+  .orbit-field-ambient {
+    display: none;
+  }
+}
+
+.orbit-field-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  animation: orbit-core-pulse 3.5s ease-in-out infinite;
+}
+
+.orbit-field-node {
+  display: block;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 999px;
+  background: var(--color-amber-400);
+  box-shadow: 0 0 8px var(--ocs-accent-gold-glow);
+}
+
+@keyframes orbit-core-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 0.92;
+  }
+}
+
+.orbit-field-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--ocs-orbit-ring);
+  border-radius: 50%;
+}
+
+.orbit-field-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 999px;
+  background: var(--color-amber-400);
+  box-shadow: 0 0 7px var(--ocs-accent-gold-glow);
+  offset-path: inset(0 round 50%);
+  offset-anchor: center;
+  offset-rotate: 0deg;
+  offset-distance: var(--orbit-rest, 0%);
+  animation-name: orbit-field-travel;
+  animation-duration: var(--orbit-duration, 20s);
+  animation-delay: var(--orbit-delay, 0s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes orbit-field-travel {
+  to {
+    offset-distance: 100%;
+  }
+}
+
+@supports not (offset-path: inset(0 round 50%)) {
+  .orbit-field-ring {
+    animation: orbit-field-spin var(--orbit-duration, 20s) linear infinite;
+    animation-delay: var(--orbit-delay, 0s);
+  }
+
+  .orbit-field-dot {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    offset-path: none;
+    animation: none;
+  }
+}
+
+@keyframes orbit-field-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Approval seal — confirmation-page stamp. Fixed 120/160px box. No glow.
+   -------------------------------------------------------------------------- */
+
+.approval-seal {
+  position: relative;
+  width: 7.5rem;
+  height: 7.5rem;
+  margin-inline: auto;
+  overflow: hidden;
+  color: var(--color-amber-400);
+}
+
+@media (min-width: 640px) {
+  .approval-seal {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+.approval-seal-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.approval-seal-press {
+  transform-origin: 80px 80px;
+  transform-box: view-box;
+}
+
+.approval-seal-circle {
+  fill: none;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.approval-seal-tick {
+  opacity: 0;
+}
+
+.approval-seal[data-phase="in"] .approval-seal-circle {
+  animation: ocs-index-draw 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.approval-seal[data-phase="in"] .approval-seal-tick {
+  animation: approval-seal-tick-in 0.18s ease-out forwards;
+  animation-delay: calc(0.55s + (var(--tick-i, 0) * 26ms));
+}
+
+.approval-seal[data-phase="in"] .approval-seal-press {
+  animation: approval-seal-press 0.16s ease-out 0.88s forwards;
+}
+
+.approval-seal-mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--color-amber-300);
+  pointer-events: none;
+}
+
+@keyframes approval-seal-tick-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes approval-seal-press {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.approval-seal[data-reduced] .approval-seal-circle,
+.approval-seal[data-reduced] .approval-seal-tick,
+.approval-seal[data-reduced] .approval-seal-press {
+  animation: none;
+}
+
+.approval-seal[data-reduced] .approval-seal-circle {
+  stroke-dashoffset: 0;
+}
+
+.approval-seal[data-reduced] .approval-seal-tick {
+  opacity: 1;
+}
+
+.approval-seal[data-reduced] .approval-seal-press {
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1250,6 +1463,30 @@ html[data-theme="dark"] .model-page-table .table-cell-tier {
 
   .team-orbit-dot {
     display: none;
+  }
+
+  .orbit-field-core,
+  .orbit-field-ring,
+  .orbit-field-dot {
+    animation: none !important;
+  }
+
+  .orbit-field-dot {
+    offset-distance: var(--orbit-rest, 25%) !important;
+  }
+
+  .approval-seal-circle,
+  .approval-seal-tick,
+  .approval-seal-press {
+    animation: none !important;
+  }
+
+  .approval-seal-circle {
+    stroke-dashoffset: 0;
+  }
+
+  .approval-seal-tick {
+    opacity: 1;
   }
 }
 

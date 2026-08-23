@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check } from "lucide-react";
 import { ProfileWizard } from "@/components/sections/profile-wizard";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { NodeNetwork } from "@/components/visual/node-network";
+import { ApprovalSeal } from "@/components/visual/approval-seal";
 import { useMembersBackGuard } from "@/hooks/use-members-back-guard";
 import { useSession } from "@/hooks/use-session";
 import type { ProfileFormData } from "@/data/profile";
@@ -47,8 +48,22 @@ export function MembersPage() {
   }
 
   return (
-    <Section tone="canvas" labelledBy="profile-title" divider={false} className="!py-0">
-      <Container className="max-w-[42rem] pt-[calc(var(--ocs-nav-clearance)+0.75rem)] pb-10">
+    <Section
+      tone="canvas"
+      labelledBy="profile-title"
+      divider={false}
+      className="relative isolate min-h-dvh !py-0"
+    >
+      {!showWizard ? (
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+          aria-hidden="true"
+        >
+          <NodeNetwork variant="ambient" density="sparse" />
+        </div>
+      ) : null}
+
+      <Container className="relative z-10 max-w-[42rem] pt-[calc(var(--ocs-nav-clearance)+0.75rem)] pb-10">
         <h1 id="profile-title" className="sr-only">
           Your profile
         </h1>
@@ -93,28 +108,21 @@ function ProfileConfirmation({
 }) {
   return (
     <div className="mt-10 flex flex-col items-center text-center">
-      <span
-        aria-hidden="true"
-        className="grid size-12 place-items-center rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-300"
-      >
-        <Check className="size-5" strokeWidth={2.25} />
-      </span>
+      <ApprovalSeal />
       <h2 className="mt-6 max-w-[22ch] text-[1.5rem] font-semibold tracking-[-0.025em] text-ink sm:text-[1.75rem]">
         Thanks — your profile is in. A committee member will review it shortly.
       </h2>
 
-      <div className="mt-8 flex w-full max-w-[22rem] flex-col items-center gap-4">
-        <Button type="button" variant="secondary" onClick={onEdit}>
-          Edit profile
-        </Button>
-        <button
-          type="button"
-          onClick={onAskDelete}
-          className="min-h-11 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-faint uppercase underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-200 ease-ui hover:text-signal-error hover:decoration-current"
-        >
-          Delete my data
-        </button>
-      </div>
+      <Button type="button" variant="secondary" className="mt-8" onClick={onEdit}>
+        Edit profile
+      </Button>
+      <button
+        type="button"
+        onClick={onAskDelete}
+        className="mt-14 min-h-11 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-faint uppercase underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-200 ease-ui hover:text-signal-error hover:decoration-current"
+      >
+        Delete my data
+      </button>
     </div>
   );
 }

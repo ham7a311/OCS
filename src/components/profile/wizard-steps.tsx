@@ -57,7 +57,7 @@ export function StepWhoYouAre({ data, email, showErrors, updateField }: WizardSt
       <Field
         label="Email"
         htmlFor="profile-email"
-        helper="From your Google account. Not editable here."
+        helper="From your sign-in account. Not editable here."
       >
         <TextInput id="profile-email" name="email" value={email} readOnly />
       </Field>
@@ -139,15 +139,12 @@ export function StepWhereYouStudy({ data, showErrors, updateField }: WizardStepP
       <Field
         label="Programme"
         htmlFor="programme"
-        required
-        error={showErrors && !data.programme.trim() ? "Enter your programme." : undefined}
       >
         <TextInput
           id="programme"
           name="programme"
           placeholder="e.g. BSc Computer Science"
           value={data.programme}
-          invalid={showErrors && !data.programme.trim()}
           onChange={(event) => updateField("programme", event.target.value)}
         />
       </Field>
@@ -155,14 +152,11 @@ export function StepWhereYouStudy({ data, showErrors, updateField }: WizardStepP
       <Field
         label="Year of study"
         htmlFor="year-of-study"
-        required
-        error={showErrors && !data.yearOfStudy.trim() ? "Choose your year of study." : undefined}
       >
         <SelectField
           id="year-of-study"
           name="yearOfStudy"
           value={data.yearOfStudy}
-          invalid={showErrors && !data.yearOfStudy.trim()}
           onChange={(event) => updateField("yearOfStudy", event.target.value)}
         >
           <option value="">Select a year</option>

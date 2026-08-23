@@ -96,11 +96,10 @@ export function validateProfilePayload(input: unknown): ProfileFormData {
     throw new Error("School name is only used when Other is selected.");
   }
 
-  const programme = asString(raw.programme, "Programme").trim();
-  if (!isNonEmpty(programme)) throw new Error("Enter your programme.");
+  const programme = asString(raw.programme ?? "", "Programme").trim();
 
-  const yearOfStudy = asString(raw.yearOfStudy, "Year of study").trim();
-  if (!YEAR_SET.has(yearOfStudy)) throw new Error("Choose your year of study.");
+  const yearOfStudy = asString(raw.yearOfStudy ?? "", "Year of study").trim();
+  if (yearOfStudy && !YEAR_SET.has(yearOfStudy)) throw new Error("Choose your year of study.");
 
   const graduationMonth = asString(raw.graduationMonth ?? "", "Graduation month").trim();
   if (graduationMonth && !MONTH_SET.has(graduationMonth)) {
