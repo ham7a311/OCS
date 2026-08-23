@@ -9,6 +9,8 @@ export type Session = {
   email: string;
 };
 
+export type ReviewStatus = "pending" | "approved" | "rejected";
+
 export function useSession() {
   const { data, isPending } = authClient.useSession();
   const email = data?.user?.email ?? "";
@@ -17,6 +19,7 @@ export function useSession() {
   const [loadedEmail, setLoadedEmail] = useState<string | null>(null);
   const [storedProfile, setStoredProfile] = useState<ProfileFormData | null>(null);
   const [needsReconsent, setNeedsReconsent] = useState(false);
+  const [reviewStatus, setReviewStatus] = useState<ReviewStatus | null>(null);
 
   useEffect(() => {
     if (!email) return;
@@ -27,6 +30,7 @@ export function useSession() {
       if (cancelled) return;
       setStoredProfile(result.profile);
       setNeedsReconsent(result.needsReconsent);
+      setReviewStatus(result.reviewStatus);
       setLoadedEmail(email);
     });
 
@@ -39,6 +43,7 @@ export function useSession() {
     await authClient.signOut();
     setStoredProfile(null);
     setNeedsReconsent(false);
+    setReviewStatus(null);
     setLoadedEmail(null);
   }, []);
 
@@ -47,6 +52,7 @@ export function useSession() {
     if (!result.ok) throw new Error(result.error);
     setStoredProfile(result.profile);
     setNeedsReconsent(false);
+    setReviewStatus("pending");
   }, []);
 
   const deleteProfile = useCallback(async () => {
@@ -54,6 +60,7 @@ export function useSession() {
     if (!result.ok) throw new Error(result.error);
     setStoredProfile(null);
     setNeedsReconsent(false);
+    setReviewStatus(null);
   }, []);
 
   const profile = session ? storedProfile : null;
@@ -62,6 +69,7 @@ export function useSession() {
   return {
     session,
     profile,
+    reviewStatus: session ? reviewStatus : null,
     needsReconsent: Boolean(session) && needsReconsent,
     profileReady,
     isPending,

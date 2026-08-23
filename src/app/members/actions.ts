@@ -9,6 +9,7 @@ import { profileConsentEvents, profiles } from "@/db/schema";
 import { auth } from "@/lib/auth/server";
 import { profileRowToFormData } from "@/lib/profile-map";
 import { validateProfilePayload } from "@/lib/profile-validation";
+import { limitProfileWrite } from "@/lib/rate-limit";
 
 async function requireUser() {
   const session = await auth.api.getSession({
@@ -23,12 +24,19 @@ async function requireUser() {
 export async function getMyProfile(): Promise<{
   profile: ProfileFormData | null;
   needsReconsent: boolean;
+  reviewStatus: "pending" | "approved" | "rejected" | null;
   email: string | null;
   error: string | null;
 }> {
   const { error, user } = await requireUser();
   if (error || !user) {
-    return { profile: null, needsReconsent: false, email: null, error: error ?? "Unauthorized" };
+    return {
+      profile: null,
+      needsReconsent: false,
+      reviewStatus: null,
+      email: null,
+      error: error ?? "Unauthorized",
+    };
   }
 
   const [row] = await db.select().from(profiles).where(eq(profiles.userId, user.id)).limit(1);
@@ -41,13 +49,20 @@ export async function getMyProfile(): Promise<{
   }
 
   if (!row) {
-    return { profile: null, needsReconsent: false, email: user.email, error: null };
+    return {
+      profile: null,
+      needsReconsent: false,
+      reviewStatus: null,
+      email: user.email,
+      error: null,
+    };
   }
 
   const needsReconsent = row.privacyNoticeVersion !== PRIVACY_NOTICE_VERSION;
   return {
     profile: profileRowToFormData(row),
     needsReconsent,
+    reviewStatus: row.reviewStatus,
     email: user.email,
     error: null,
   };
@@ -65,6 +80,9 @@ export async function saveMyProfile(
   } catch (caught) {
     return { ok: false, error: caught instanceof Error ? caught.message : "Invalid profile data." };
   }
+
+  const limited = await limitProfileWrite(user.id);
+  if (!limited.ok) return { ok: false, error: limited.error };
 
   const now = new Date();
   const [existing] = await db.select().from(profiles).where(eq(profiles.userId, user.id)).limit(1);
