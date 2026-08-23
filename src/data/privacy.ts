@@ -1,4 +1,4 @@
-export const PRIVACY_NOTICE_VERSION = "2026-08-17";
+export const PRIVACY_NOTICE_VERSION = "2026-08-23";
 
 export const privacyNotice = {
   title: "Privacy notice",
@@ -16,7 +16,7 @@ export const privacyNotice = {
       id: "collect",
       heading: "What we collect",
       paragraphs: [
-        "When you sign in with Google we receive your name, email address and profile picture — nothing else. We do not request access to your Drive, contacts, calendar or anything you have stored with Google.",
+        "When you sign in with Google, Microsoft, or GitHub we receive the name, email address, and profile picture those providers share with us. We do not request access to your Google Drive, contacts or calendar, your Microsoft mailbox or files, or your GitHub repositories.",
         "When you fill in the member profile, we store what you type there: your campus, programme, year of study, expected graduation, whether you are a member or interested in joining, the skills you have and want, what you want out of OCS, and any phone number or links you choose to add. Every one of those fields except your name is optional.",
       ],
     },
@@ -53,7 +53,7 @@ export const privacyNotice = {
       id: "rights",
       heading: "Your rights",
       paragraphs: [
-        "You can see everything we hold about you on your profile page, correct any of it there, and delete all of it with the button at the bottom of that page — no conversation required. You can also withdraw consent by deleting your profile, and revoke our access to your Google account from Google's own security settings.",
+        "You can see everything we hold about you on your profile page, correct any of it there, and delete all of it with the button at the bottom of that page — no conversation required. You can also withdraw consent by deleting your profile, and revoke our access from the security settings of the Google, Microsoft, or GitHub account you used to sign in.",
         "Under Oman's Personal Data Protection Law (Royal Decree 6/2022) you may also complain to the Ministry of Transport, Communications and Information Technology if you think we have handled your data badly. We would rather you told us first.",
       ],
     },

@@ -1,8 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth/server";
 
-const protectMembers = auth.middleware({ loginUrl: "/signin" });
-
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -12,11 +10,15 @@ export async function proxy(request: NextRequest) {
     if (request.headers.has("Next-Action")) {
       return NextResponse.next();
     }
-    return protectMembers(request);
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session?.user) {
+      return NextResponse.redirect(new URL("/signin", request.url));
+    }
+    return NextResponse.next();
   }
 
   if (pathname === "/" || pathname === "/signin") {
-    const { data: session } = await auth.getSession();
+    const session = await auth.api.getSession({ headers: request.headers });
     if (session?.user) {
       return NextResponse.redirect(new URL("/members", request.url));
     }

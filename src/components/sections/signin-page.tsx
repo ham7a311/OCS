@@ -59,9 +59,9 @@ function GitHubMark() {
 }
 
 const providers = [
-  { id: "google", label: "Continue with Google", icon: GoogleMark, available: true },
-  { id: "microsoft", label: "Continue with Microsoft", icon: MicrosoftMark, available: false },
-  { id: "github", label: "Continue with GitHub", icon: GitHubMark, available: false },
+  { id: "google", label: "Continue with Google", icon: GoogleMark },
+  { id: "microsoft", label: "Continue with Microsoft", icon: MicrosoftMark },
+  { id: "github", label: "Continue with GitHub", icon: GitHubMark },
 ] as const;
 
 function BackHomeLink() {
@@ -134,10 +134,10 @@ function SignInForm() {
     event.preventDefault();
   }
 
-  function continueWithProvider(providerId: (typeof providers)[number]["id"], available: boolean) {
-    if (!consented || !available || providerId !== "google") return;
+  function continueWithProvider(providerId: (typeof providers)[number]["id"]) {
+    if (!consented) return;
     void authClient.signIn.social({
-      provider: "google",
+      provider: providerId,
       callbackURL: "/members",
     });
   }
@@ -158,28 +158,19 @@ function SignInForm() {
         Create your member profile and get matched with chapters, build squads, and mentors.
       </p>
 
-      {/*
-        Google is the only configured provider. GitHub and Microsoft stay
-        visible but unavailable until they are configured and the privacy
-        notice covers them.
-      */}
       <div className="mt-8 flex flex-col gap-3">
         {providers.map((provider) => {
           const Icon = provider.icon;
-          const enabled = consented && provider.available;
           return (
             <Button
               key={provider.id}
               type="button"
               variant="secondary"
               size="lg"
-              disabled={!enabled}
-              aria-disabled={!enabled}
-              title={provider.available ? undefined : "Not available yet"}
-              aria-label={
-                provider.available ? provider.label : `${provider.label} — not available yet`
-              }
-              onClick={() => continueWithProvider(provider.id, provider.available)}
+              disabled={!consented}
+              aria-disabled={!consented}
+              aria-label={provider.label}
+              onClick={() => continueWithProvider(provider.id)}
               className="w-full justify-center transition-[background-color,border-color,opacity] duration-200 ease-ui disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-45 enabled:hover:border-amber-400 enabled:focus-visible:border-amber-400"
             >
               <Icon />
@@ -188,9 +179,6 @@ function SignInForm() {
           );
         })}
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-ink-faint">
-        GitHub and Microsoft sign-in are not available yet.
-      </p>
 
       <div className="mt-6">
         <Checkbox id="signin-consent" checked={consented} onChange={setConsented}>

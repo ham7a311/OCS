@@ -11,10 +11,9 @@ export default defineConfig({
   schema: "./src/db/schema.ts",
   out: "./drizzle",
   dialect: "postgresql",
-  // push / pull / introspect only. generate still walks the TypeScript schema;
-  // neon_auth.user is intentionally unexported so generate skips it.
-  schemaFilter: ["public"],
-  tablesFilter: ["profiles", "profile_consent_events"],
+  // generate walks the TypeScript schema. neon_auth is not imported, so it is
+  // never emitted. Keep it out of schemaFilter as a second guard.
+  schemaFilter: ["public", "auth"],
   dbCredentials: {
     url: process.env.DATABASE_URL_UNPOOLED,
   },

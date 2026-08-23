@@ -3,23 +3,15 @@ import {
   boolean,
   index,
   pgEnum,
-  pgSchema,
   pgTable,
   text,
   timestamp,
   unique,
   uuid,
 } from "drizzle-orm/pg-core";
+import { user } from "./auth-schema";
 
-const neonAuth = pgSchema("neon_auth");
-
-/**
- * Managed Better Auth user table. Not exported so drizzle-kit generate
- * does not emit CREATE SCHEMA / CREATE TABLE for neon_auth.
- */
-const userInNeonAuth = neonAuth.table("user", {
-  id: uuid().primaryKey().notNull(),
-});
+export * from "./auth-schema";
 
 export const reviewStatusEnum = pgEnum("review_status", ["pending", "approved", "rejected"]);
 export const consentEventKindEnum = pgEnum("consent_event_kind", [
@@ -33,7 +25,7 @@ export const profiles = pgTable(
     id: uuid("id").defaultRandom().primaryKey().notNull(),
     userId: uuid("user_id")
       .notNull()
-      .references(() => userInNeonAuth.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     fullName: text("full_name").notNull(),
     preferredName: text("preferred_name").notNull().default(""),
     phone: text("phone").notNull().default(""),
@@ -55,7 +47,7 @@ export const profiles = pgTable(
     sendUpdates: boolean("send_updates").notNull().default(false),
     reviewStatus: reviewStatusEnum("review_status").notNull().default("pending"),
     reviewedAt: timestamp("reviewed_at", { withTimezone: true, mode: "date" }),
-    reviewedBy: uuid("reviewed_by").references(() => userInNeonAuth.id, { onDelete: "set null" }),
+    reviewedBy: uuid("reviewed_by").references(() => user.id, { onDelete: "set null" }),
     privacyNoticeVersion: text("privacy_notice_version").notNull(),
     consentedAt: timestamp("consented_at", { withTimezone: true, mode: "date" }).notNull(),
     submittedAt: timestamp("submitted_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
@@ -77,7 +69,7 @@ export const profileConsentEvents = pgTable(
     id: uuid("id").defaultRandom().primaryKey().notNull(),
     userId: uuid("user_id")
       .notNull()
-      .references(() => userInNeonAuth.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     noticeVersion: text("notice_version").notNull(),
     kind: consentEventKindEnum("kind").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),

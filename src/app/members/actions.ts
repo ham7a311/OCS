@@ -1,6 +1,7 @@
 "use server";
 
 import { eq } from "drizzle-orm";
+import { headers } from "next/headers";
 import { PRIVACY_NOTICE_VERSION } from "@/data/privacy";
 import type { ProfileFormData } from "@/data/profile";
 import { db } from "@/db";
@@ -10,7 +11,9 @@ import { profileRowToFormData } from "@/lib/profile-map";
 import { validateProfilePayload } from "@/lib/profile-validation";
 
 async function requireUser() {
-  const { data: session } = await auth.getSession();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   if (!session?.user?.id) {
     return { error: "You need to sign in first." as const, user: null };
   }
