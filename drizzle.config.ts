@@ -11,8 +11,6 @@ export default defineConfig({
   schema: "./src/db/schema.ts",
   out: "./drizzle",
   dialect: "postgresql",
-  // generate walks the TypeScript schema. Keep leftover neon_auth out of
-  // schemaFilter so it is never emitted.
   schemaFilter: ["public", "auth"],
   dbCredentials: {
     url: process.env.DATABASE_URL_UNPOOLED,
