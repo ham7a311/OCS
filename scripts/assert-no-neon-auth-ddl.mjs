@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * drizzle-kit generate walks every table in the TypeScript schema.
- * neon_auth is managed by Neon Auth and must stay untouched during the
- * Better Auth migration. Historical REFERENCES to neon_auth."user" in
+ * neon_auth is leftover isolated data and must not be mutated until it is
+ * deliberately dropped. Historical REFERENCES to neon_auth."user" in
  * already-applied migrations are allowed; new CREATE/ALTER/DROP against
  * neon_auth is not.
  */

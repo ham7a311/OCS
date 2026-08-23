@@ -1,8 +1,6 @@
 /**
  * Neon services used by this app.
- * Auth is enabled here; connection URLs and secrets come from environment
- * variables, not from this file.
+ * Postgres is always available; connection URLs come from environment
+ * variables. Auth is self-managed Better Auth, not Neon Auth.
  */
-export default {
-  auth: true,
-} as const;
+export default {} as const;
