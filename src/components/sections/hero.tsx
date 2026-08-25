@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/container";
 import { Em } from "@/components/ui/section-heading";
 import { Glow } from "@/components/visual/glow";
 import { GridBackdrop } from "@/components/visual/grid-backdrop";
+import { HeroSkyline } from "@/components/visual/hero-skyline";
 import { NodeNetwork } from "@/components/visual/node-network";
 import { site } from "@/config/site";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
@@ -34,9 +35,10 @@ export function Hero() {
     <section
       id="top"
       aria-labelledby="hero-title"
-      className="relative isolate overflow-hidden pb-10 pt-[calc(var(--ocs-hero-inset)+1.5rem)] sm:pb-12 lg:pb-14 lg:pt-[calc(var(--ocs-hero-inset)+2.5rem)]"
+      className="hero-section relative isolate overflow-hidden pb-10 pt-[calc(var(--ocs-hero-inset)+1.5rem)] sm:pb-12 lg:pb-14 lg:pt-[calc(var(--ocs-hero-inset)+2.5rem)]"
     >
-      <GridBackdrop size={80} intensity="faint" fade="radial" />
+      <HeroSkyline />
+      <GridBackdrop size={80} intensity="faint" fade="radial" className="z-[1]" />
       <NodeNetwork />
       <Glow size="48rem" opacity={0.055} className="-top-72 left-[18%] hidden sm:block" />
 
@@ -75,10 +77,15 @@ export function Hero() {
                   aria-hidden="true"
                 />
               </Button>
-              <Button href="/#programs" variant="secondary" size="lg">
+              <Button
+                href="/#programs"
+                variant="secondary"
+                size="lg"
+                className="w-full min-w-0 border-ink/40 bg-surface-3 sm:w-auto hover:border-ink/55 hover:bg-ink/10"
+              >
                 Explore programs
                 <ArrowDown
-                  className="size-4 text-ink-faint transition-transform duration-200 ease-ui group-hover/button:translate-y-0.5"
+                  className="size-4 text-ink-muted transition-transform duration-200 ease-ui group-hover/button:translate-y-0.5"
                   aria-hidden="true"
                 />
               </Button>

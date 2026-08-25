@@ -40,6 +40,11 @@ const FILES = {
   },
 } as const;
 
+const SIGNIN_DAY = {
+  webp: "/images/bg-muttrah-corniche-day.webp",
+  jpeg: "/images/bg-muttrah-corniche-day.jpg",
+} as const;
+
 function webpSupported() {
   return CSS.supports(
     "background-image",
@@ -47,7 +52,7 @@ function webpSupported() {
   );
 }
 
-function pickUrl(photo: PhotoId, variant: Variant) {
+function pickUrl(photo: PhotoId, variant: Variant, theme: "light" | "dark") {
   if (
     (variant === "closing-cta" || variant === "money-section") &&
     window.matchMedia("(max-width: 479px)").matches
@@ -55,10 +60,17 @@ function pickUrl(photo: PhotoId, variant: Variant) {
     return null;
   }
 
-  // Sign-in left panel is `hidden` below md — do not download the photo.
+  // Sign-in left panel is `hidden` below md — do not download either photo.
   if (variant === "signin-panel" && window.matchMedia("(max-width: 767px)").matches) {
     return null;
   }
+
+  if (variant === "signin-panel") {
+    const files = theme === "light" ? SIGNIN_DAY : FILES["muttrah-corniche"].desktop;
+    return webpSupported() ? files.webp : files.jpeg;
+  }
+
+  if (theme !== "dark") return null;
 
   const mobile = window.matchMedia("(max-width: 767px)").matches;
   const files = FILES[photo][mobile ? "mobile" : "desktop"];
@@ -66,8 +78,10 @@ function pickUrl(photo: PhotoId, variant: Variant) {
 }
 
 /**
- * Decorative night photograph, mounted only in dark mode so light-theme
- * visitors never download it. JPEG is used when WebP is unavailable.
+ * Decorative section photograph. Night photos stay dark-mode-only except
+ * the sign-in panel, which loads a daytime companion in light mode.
+ * JPEG is used when WebP is unavailable. Mobile never downloads the
+ * sign-in panel asset.
  */
 export function DarkPhotoBackdrop({
   photo,
@@ -82,12 +96,7 @@ export function DarkPhotoBackdrop({
   const [url, setUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (theme !== "dark") {
-      setUrl(null);
-      return;
-    }
-
-    const sync = () => setUrl(pickUrl(photo, variant));
+    const sync = () => setUrl(pickUrl(photo, variant, theme));
     sync();
 
     const queries = [

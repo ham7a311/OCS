@@ -1670,6 +1670,72 @@ html[data-theme="dark"] .model-page-table .table-cell-tier {
 }
 
 /* ==========================================================================
+   Hero Muscat skyline
+   Gold linework in dark mode, charcoal linework in light mode. Sits at the
+   back of the hero stacking context: skyline → node-network → foreground.
+   ========================================================================== */
+
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-skyline-wrap {
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  display: block;
+  line-height: 0;
+}
+
+.hero-skyline {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 34vh;
+  max-height: 34vh;
+  object-fit: cover;
+  /* Keep the fort, dome, and minaret in frame on a narrow crop. */
+  object-position: 42% 100%;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 100%);
+}
+
+@media (min-width: 768px) {
+  .hero-skyline {
+    height: 28vh;
+    max-height: 28vh;
+    object-position: 32% 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-skyline {
+    /* Oversized + shifted so the dense mosque/minaret sits center-left,
+       leaving quieter mountains behind the "How we show up" card. */
+    width: 132%;
+    height: 26vh;
+    max-height: 28vh;
+    margin-left: -8%;
+    object-position: 18% 100%;
+  }
+}
+
+html[data-theme="light"] .hero-skyline {
+  opacity: 0.24;
+}
+
+html[data-theme="dark"] .hero-skyline {
+  opacity: 0.32;
+}
+
+/* ==========================================================================
    Dark-mode photographic section backdrops
    URLs are injected on the element only while dark mode is active.
    ========================================================================== */
@@ -1735,6 +1801,16 @@ html[data-theme="dark"] .model-page-table .table-cell-tier {
     ),
     var(--dark-photo);
   background-position: 22% 55%;
+}
+
+html[data-theme="light"] .dark-photo-backdrop--signin-panel {
+  background-image:
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--ocs-canvas) 75%, transparent) 0%,
+      color-mix(in srgb, var(--ocs-canvas) 82%, transparent) 100%
+    ),
+    var(--dark-photo);
 }
 
 @media (max-width: 1023px) {
