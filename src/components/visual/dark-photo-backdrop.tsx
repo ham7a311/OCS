@@ -4,20 +4,10 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@/hooks/use-theme";
 import { cn } from "@/lib/utils";
 
-type PhotoId = "opera-house" | "muttrah-corniche" | "grand-mosque";
-type Variant = "closing-cta" | "signin-panel" | "money-section";
+type PhotoId = "muttrah-corniche";
+type Variant = "signin-panel";
 
 const FILES = {
-  "opera-house": {
-    desktop: {
-      webp: "/images/bg-opera-house.webp",
-      jpeg: "/images/bg-opera-house.jpg",
-    },
-    mobile: {
-      webp: "/images/bg-opera-house-800.webp",
-      jpeg: "/images/bg-opera-house-800.jpg",
-    },
-  },
   "muttrah-corniche": {
     desktop: {
       webp: "/images/bg-muttrah-corniche.webp",
@@ -26,16 +16,6 @@ const FILES = {
     mobile: {
       webp: "/images/bg-muttrah-corniche-800.webp",
       jpeg: "/images/bg-muttrah-corniche-800.jpg",
-    },
-  },
-  "grand-mosque": {
-    desktop: {
-      webp: "/images/bg-grand-mosque.webp",
-      jpeg: "/images/bg-grand-mosque.jpg",
-    },
-    mobile: {
-      webp: "/images/bg-grand-mosque-800.webp",
-      jpeg: "/images/bg-grand-mosque-800.jpg",
     },
   },
 } as const;
@@ -53,27 +33,12 @@ function webpSupported() {
 }
 
 function pickUrl(photo: PhotoId, variant: Variant, theme: "light" | "dark") {
-  if (
-    (variant === "closing-cta" || variant === "money-section") &&
-    window.matchMedia("(max-width: 479px)").matches
-  ) {
-    return null;
-  }
-
   // Sign-in left panel is `hidden` below md — do not download either photo.
   if (variant === "signin-panel" && window.matchMedia("(max-width: 767px)").matches) {
     return null;
   }
 
-  if (variant === "signin-panel") {
-    const files = theme === "light" ? SIGNIN_DAY : FILES["muttrah-corniche"].desktop;
-    return webpSupported() ? files.webp : files.jpeg;
-  }
-
-  if (theme !== "dark") return null;
-
-  const mobile = window.matchMedia("(max-width: 767px)").matches;
-  const files = FILES[photo][mobile ? "mobile" : "desktop"];
+  const files = theme === "light" ? SIGNIN_DAY : FILES[photo].desktop;
   return webpSupported() ? files.webp : files.jpeg;
 }
 
@@ -99,10 +64,7 @@ export function DarkPhotoBackdrop({
     const sync = () => setUrl(pickUrl(photo, variant, theme));
     sync();
 
-    const queries = [
-      window.matchMedia("(max-width: 479px)"),
-      window.matchMedia("(max-width: 767px)"),
-    ];
+    const queries = [window.matchMedia("(max-width: 767px)")];
     queries.forEach((query) => query.addEventListener("change", sync));
     return () => queries.forEach((query) => query.removeEventListener("change", sync));
   }, [theme, photo, variant]);

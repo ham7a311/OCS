@@ -263,8 +263,6 @@ export function NodeNetwork({
     };
   }, [ambient, density, reduced, sparse, variant]);
 
-  if (reduced) return null;
-
   return (
     <canvas
       ref={canvasRef}

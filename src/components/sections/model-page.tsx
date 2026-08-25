@@ -8,11 +8,11 @@ import { MetaGrid } from "@/components/ui/meta-grid";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
-import { DarkPhotoBackdrop } from "@/components/visual/dark-photo-backdrop";
 import { GuardedCoreVisual } from "@/components/visual/guarded-core";
 import { LoopConnector } from "@/components/visual/loop-connector";
 import { CropMarkCta } from "@/components/visual/crop-mark";
 import { SealCta } from "@/components/visual/seal-arc";
+import { MoneyDuneFlight } from "@/components/visual/money-dune-flight";
 import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 import {
@@ -454,7 +454,7 @@ export function ModelPage() {
       </Section>
 
       <Section id="money" tone="canvas" labelledBy="money-title" className="money-section">
-        <DarkPhotoBackdrop photo="grand-mosque" variant="money-section" />
+        <MoneyDuneFlight />
         <Container className="relative z-10">
           <Reveal>
             <SectionHeading
@@ -470,14 +470,14 @@ export function ModelPage() {
           </Reveal>
           <Reveal
             delay={0.08}
-            className="mt-16 flex flex-col items-center px-10 text-center sm:mt-20"
+            className="mt-16 flex flex-col items-center px-10 text-center sm:mt-20 lg:items-start lg:px-0 lg:text-left"
           >
-            <div className="flex w-full flex-col items-center gap-10">
+            <div className="flex w-full flex-col items-center gap-10 lg:max-w-[32rem] lg:items-start">
               <Button
                 href="/#programs"
                 variant="secondary"
                 size="lg"
-                className="h-14 w-[min(100%,20.5rem)] border-ink/40 bg-canvas/35 px-8 text-[1.05rem] hover:border-ink/60 hover:bg-canvas/55"
+                className="h-14 w-[min(100%,20.5rem)] border-ink/40 bg-surface-3 px-8 text-[1.05rem] hover:border-ink/55 hover:bg-ink/10"
               >
                 Explore Programs
               </Button>

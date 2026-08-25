@@ -1736,15 +1736,179 @@ html[data-theme="dark"] .hero-skyline {
 }
 
 /* ==========================================================================
-   Dark-mode photographic section backdrops
-   URLs are injected on the element only while dark mode is active.
+   Money section dune/flight artwork
+   Out of flow, like the hero skyline — this wrap must never contribute
+   to the section's height. Theme files are swapped in the component.
+   ========================================================================== */
+
+.money-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.money-section-artwork-wrap {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  line-height: 0;
+}
+
+.money-section-artwork {
+  pointer-events: none;
+  position: absolute;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  /* Scale by width so both theme assets span the section without
+     stretching birds. Panoramic art sits under the copy. */
+  height: auto;
+  object-fit: contain;
+  object-position: bottom right;
+  user-select: none;
+  opacity: 0.92;
+  /* Keep the heading clear; leave the bottom-left terrain visible. */
+  mask-image: linear-gradient(to top, black 0%, black 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 0%, black 82%, transparent 100%);
+}
+
+/* Mobile: crop the strongest dune/flight passage behind the CTAs. */
+@media (max-width: 1023px) {
+  .money-section-artwork-wrap {
+    top: auto;
+    height: 62%;
+  }
+
+  .money-section-artwork {
+    top: auto;
+    right: auto;
+    left: 50%;
+    bottom: 0;
+    width: 170%;
+    max-width: none;
+    height: 100%;
+    transform: translateX(-50%);
+    object-fit: cover;
+    object-position: 64% 72%;
+    opacity: 0.8;
+    mask-image: linear-gradient(to top, black 0%, black 52%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, black 52%, transparent 100%);
+  }
+
+  html[data-theme="dark"] .money-section-artwork {
+    object-position: 52% 62%;
+    opacity: 0.88;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 1023px) {
+  .money-section-artwork-wrap {
+    height: 64%;
+  }
+
+  .money-section-artwork {
+    width: 155%;
+    object-position: 68% 68%;
+  }
+
+  html[data-theme="dark"] .money-section-artwork {
+    object-position: 54% 58%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .money-section-artwork-wrap {
+    height: 66%;
+  }
+
+  .money-section-artwork {
+    width: 140%;
+    height: 100%;
+    object-position: 72% 64%;
+    opacity: 0.76;
+  }
+
+  html[data-theme="dark"] .money-section-artwork {
+    object-position: 58% 54%;
+    opacity: 0.84;
+  }
+}
+
+/* ==========================================================================
+   Join courtyard backdrop (dark mode only) + photographic section backdrops
+   Light Join uses the site canvas. Sign-in still injects a photograph URL.
    ========================================================================== */
 
 .closing-cta-section,
-.signin-left-panel,
-.money-section {
+.signin-left-panel {
   position: relative;
   background-color: var(--ocs-canvas);
+}
+
+.closing-cta-section {
+  overflow: hidden;
+}
+
+.join-courtyard-backdrop {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* Open courtyard sits behind the headline / body. */
+  background-position: center 46%;
+  opacity: 0.94;
+  animation: join-courtyard-in 360ms ease;
+  background-image:
+    radial-gradient(
+      ellipse 70% 58% at 50% 42%,
+      transparent 0%,
+      color-mix(in srgb, var(--ocs-canvas) 52%, transparent) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--ocs-canvas) 48%, transparent) 0%,
+      transparent 24%,
+      transparent 66%,
+      color-mix(in srgb, var(--ocs-canvas) 72%, transparent) 100%
+    ),
+    var(--join-courtyard);
+}
+
+@keyframes join-courtyard-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .join-courtyard-backdrop {
+    background-position: center 48%;
+    opacity: 0.88;
+  }
+}
+
+.closing-cta-section .join-lead {
+  color: var(--ocs-ink-muted);
+}
+
+html[data-theme="dark"] .closing-cta-section .join-member-btn {
+  border-color: color-mix(in srgb, var(--ocs-ink) 38%, transparent);
+  background-color: color-mix(in srgb, var(--ocs-surface-3) 55%, transparent);
+  color: color-mix(in srgb, var(--ocs-ink) 94%, transparent);
+}
+
+html[data-theme="dark"] .closing-cta-section .join-member-btn:hover {
+  border-color: color-mix(in srgb, var(--ocs-ink) 55%, transparent);
+  background-color: color-mix(in srgb, var(--ocs-surface-3) 82%, transparent);
+  color: var(--ocs-ink);
 }
 
 .dark-photo-backdrop {
@@ -1754,42 +1918,6 @@ html[data-theme="dark"] .hero-skyline {
   z-index: 0;
   background-size: cover;
   background-repeat: no-repeat;
-}
-
-.dark-photo-backdrop--closing-cta {
-  background-image:
-    linear-gradient(
-      to bottom,
-      rgba(10, 8, 6, 0.68) 0%,
-      rgba(10, 8, 6, 0.82) 60%,
-      rgba(10, 8, 6, 0.96) 100%
-    ),
-    var(--dark-photo);
-  background-position: center 30%;
-}
-
-@media (max-width: 767px) {
-  .dark-photo-backdrop--closing-cta {
-    background-position: center 38%;
-  }
-}
-
-.dark-photo-backdrop--money-section {
-  background-image:
-    linear-gradient(
-      to bottom,
-      rgba(10, 8, 6, 0.68) 0%,
-      rgba(10, 8, 6, 0.82) 60%,
-      rgba(10, 8, 6, 0.96) 100%
-    ),
-    var(--dark-photo);
-  background-position: center 40%;
-}
-
-@media (max-width: 767px) {
-  .dark-photo-backdrop--money-section {
-    background-position: center 48%;
-  }
 }
 
 .dark-photo-backdrop--signin-panel {
