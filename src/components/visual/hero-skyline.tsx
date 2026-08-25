@@ -26,13 +26,15 @@ const FILES = {
   },
 } as const;
 
+type SkylineFiles = { webp: string; png: string };
+
 /**
  * Muscat skyline horizon strip. Gold linework in dark mode, charcoal
  * linework in light mode. Only the active theme's asset is downloaded.
  */
 export function HeroSkyline() {
   const { theme } = useTheme();
-  const [files, setFiles] = useState<(typeof FILES)[typeof theme]["desktop"] | null>(null);
+  const [files, setFiles] = useState<SkylineFiles | null>(null);
 
   useEffect(() => {
     const query = window.matchMedia("(max-width: 767px)");
