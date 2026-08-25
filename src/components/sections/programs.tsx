@@ -3,13 +3,14 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
 import { ProgramRow } from "@/components/sections/program-row";
+import { CircuitRootsArtwork } from "@/components/visual/circuit-roots-artwork";
 import { MemberSparkleCta } from "@/components/visual/sparkle-accent";
 import { programs } from "@/data/programs";
 
 export function Programs() {
   return (
     <Section id="programs" tone="elevated" labelledBy="programs-title">
-      <Container>
+      <Container className="relative z-10">
         <Reveal>
           <SectionHeading
             index="02"
@@ -24,13 +25,16 @@ export function Programs() {
           />
         </Reveal>
 
-        <RevealGroup stagger={0.07} className="mt-14 border-t border-line-subtle lg:mt-20">
-          {programs.map((program, index) => (
-            <RevealItem key={program.id}>
-              <ProgramRow programId={program.id} index={index} />
-            </RevealItem>
-          ))}
-        </RevealGroup>
+        <div className="programs-rows mt-14 lg:mt-20">
+          <CircuitRootsArtwork />
+          <RevealGroup stagger={0.07} className="relative z-10 border-t border-line-subtle">
+            {programs.map((program, index) => (
+              <RevealItem key={program.id}>
+                <ProgramRow programId={program.id} index={index} />
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </div>
 
         <Reveal
           delay={0.12}

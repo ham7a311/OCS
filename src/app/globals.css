@@ -1736,6 +1736,187 @@ html[data-theme="dark"] .hero-skyline {
 }
 
 /* ==========================================================================
+   Evidence — terminal/circuit ink-wash (desktop only)
+   Upper-right, out of flow. Scaled to stay above the six-number grid.
+   ========================================================================== */
+
+.evidence-artwork-wrap {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  display: none;
+  width: min(40%, 520px);
+  max-width: 520px;
+  line-height: 0;
+}
+
+.evidence-artwork {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 14.5rem;
+  object-fit: contain;
+  object-position: top right;
+  user-select: none;
+  opacity: 0.85;
+}
+
+@media (min-width: 1024px) {
+  .evidence-artwork-wrap {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  .evidence-artwork-wrap {
+    width: min(42%, 560px);
+    max-width: 560px;
+  }
+
+  .evidence-artwork {
+    max-height: 15.5rem;
+  }
+}
+
+/* ==========================================================================
+   Build squads — circuit-converge ink-wash (desktop only)
+   Upper-right, out of flow. Scaled to stay above the Week 0–10 table.
+   ========================================================================== */
+
+.build-squads-artwork-wrap {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  display: none;
+  width: min(40%, 520px);
+  max-width: 520px;
+  line-height: 0;
+}
+
+.build-squads-artwork {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 17.5rem;
+  object-fit: contain;
+  object-position: top right;
+  user-select: none;
+  opacity: 0.85;
+}
+
+@media (min-width: 1024px) {
+  .build-squads-artwork-wrap {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  .build-squads-artwork-wrap {
+    width: min(42%, 580px);
+    max-width: 580px;
+  }
+
+  .build-squads-artwork {
+    max-height: 17rem;
+  }
+}
+
+/* ==========================================================================
+   Programs — circuit-roots ink-wash (wide desktop only)
+   Clipped to the four program rows so the circuit→root span tracks the list.
+   Absolutely positioned; must not contribute to section height.
+   ========================================================================== */
+
+.programs-rows {
+  position: relative;
+}
+
+.programs-artwork-wrap {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  /* Park in the viewport gutter beside the page measure, inside overflow-x clip. */
+  right: calc(1.25rem - (100vw - 100%) / 2);
+  z-index: 0;
+  display: none;
+  width: 160px;
+  min-width: 140px;
+  max-width: 200px;
+  height: 100%;
+  line-height: 0;
+}
+
+.programs-artwork {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top center;
+  user-select: none;
+  opacity: 0.85;
+}
+
+@media (min-width: 1280px) {
+  .programs-artwork-wrap {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   Model intro — two-loops ink-wash (desktop only)
+   Absolutely positioned in the upper-right; scaled to stay above the
+   Slow/Fast cards. Must not contribute to section height.
+   ========================================================================== */
+
+.model-intro-artwork-wrap {
+  pointer-events: none;
+  position: absolute;
+  top: var(--ocs-nav-clearance);
+  right: 0;
+  z-index: 0;
+  display: none;
+  width: min(34%, 360px);
+  max-width: 360px;
+  line-height: 0;
+}
+
+.model-intro-artwork {
+  pointer-events: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 18.5rem;
+  object-fit: contain;
+  object-position: top right;
+  user-select: none;
+  opacity: 0.85;
+}
+
+@media (min-width: 1024px) {
+  .model-intro-artwork-wrap {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  .model-intro-artwork-wrap {
+    width: min(38%, 420px);
+    max-width: 420px;
+  }
+
+  .model-intro-artwork {
+    max-height: 20rem;
+  }
+}
+
+/* ==========================================================================
    Money section dune/flight artwork
    Out of flow, like the hero skyline — this wrap must never contribute
    to the section's height. Theme files are swapped in the component.

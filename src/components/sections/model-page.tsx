@@ -13,6 +13,9 @@ import { LoopConnector } from "@/components/visual/loop-connector";
 import { CropMarkCta } from "@/components/visual/crop-mark";
 import { SealCta } from "@/components/visual/seal-arc";
 import { MoneyDuneFlight } from "@/components/visual/money-dune-flight";
+import { TwoLoopsArtwork } from "@/components/visual/two-loops-artwork";
+import { CircuitConvergeArtwork } from "@/components/visual/circuit-converge-artwork";
+import { EvidenceTerminalArtwork } from "@/components/visual/evidence-terminal-artwork";
 import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 import {
@@ -94,9 +97,16 @@ function LoopCard({
 export function ModelPage() {
   return (
     <>
-      <Section id="the-model" tone="canvas" labelledBy="model-title" divider={false}>
-        <Container className="pt-[var(--ocs-nav-clearance)]">
-          <Reveal>
+      <Section
+        id="the-model"
+        tone="canvas"
+        labelledBy="model-title"
+        divider={false}
+        className="model-intro-section"
+      >
+        <Container className="relative z-10 pt-[var(--ocs-nav-clearance)]">
+          <TwoLoopsArtwork />
+          <Reveal className="relative z-10">
             <SectionHeading
               index="01"
               eyebrow="The Model"
@@ -110,7 +120,7 @@ export function ModelPage() {
             />
           </Reveal>
 
-          <Reveal delay={0.08} className="mt-12 lg:mt-16">
+          <Reveal delay={0.08} className="relative z-10 mt-12 lg:mt-16">
             <LoopConnector
               left={<LoopCard kicker="Slow loop" loop={slowLoop} />}
               right={<LoopCard kicker="Fast loop" loop={fastLoop} />}
@@ -281,9 +291,10 @@ export function ModelPage() {
         </Container>
       </Section>
 
-      <Section id="build-squads" tone="raised" labelledBy="squads-title">
-        <Container>
-          <Reveal>
+      <Section id="build-squads" tone="raised" labelledBy="squads-title" className="build-squads-section">
+        <Container className="relative z-10">
+          <CircuitConvergeArtwork />
+          <Reveal className="relative z-10">
             <SectionHeading
               index="04"
               eyebrow="Build squads"
@@ -297,7 +308,7 @@ export function ModelPage() {
             />
           </Reveal>
 
-          <Reveal delay={0.08} className="mt-10">
+          <Reveal delay={0.08} className="relative z-10 mt-10">
             <ContentTable
               columns={["Week(s)", "Phase", "What happens"]}
               colWidths={["8.75rem", "8.5rem", "auto"]}
@@ -361,8 +372,9 @@ export function ModelPage() {
       </Section>
 
       <Section id="evidence" tone="canvas" labelledBy="evidence-title">
-        <Container>
-          <Reveal>
+        <Container className="relative z-10">
+          <EvidenceTerminalArtwork />
+          <Reveal className="relative z-10">
             <SectionHeading
               index="05"
               eyebrow="Evidence"
@@ -376,7 +388,7 @@ export function ModelPage() {
             />
           </Reveal>
 
-          <Reveal delay={0.08}>
+          <Reveal delay={0.08} className="relative z-10">
             <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden border-y border-line-subtle bg-line-subtle sm:grid-cols-2 lg:grid-cols-3">
               {evidenceMetrics.map((metric) => {
                 const northStar = "northStar" in metric && metric.northStar;
