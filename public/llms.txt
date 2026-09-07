@@ -1,0 +1,18 @@
+# Oman Computing Society (OCS)
+
+Student-led computing and technology community in Oman. Official site: https://ocs-mocha.vercel.app
+
+OCS brings students together through programming, artificial intelligence, research, hackathons, student projects, collaboration, and learning.
+
+## Official profiles
+
+- LinkedIn: https://www.linkedin.com/company/oman-computing-society
+- Instagram: https://www.instagram.com/omancomputingsociety
+
+## Pages
+
+- / — Home
+- /model — How OCS runs (chapters, build squads, rhythm, evidence)
+- /events/archive — Past events
+- /privacy — Privacy notice
+- /signin — Member sign-in

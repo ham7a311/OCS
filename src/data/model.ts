@@ -295,37 +295,51 @@ export const evidence = {
   body: "Student organisations collect ten times more data than they ever look at. So we keep three surveys and six numbers, and we publish them whether they flatter us or not.",
 } as const;
 
+export type EvidenceAtmosphere =
+  | "sage"
+  | "steel"
+  | "indigo"
+  | "teal"
+  | "amber"
+  | "north";
+
 export const evidenceMetrics = [
   {
     id: "live-chapters",
     label: "Live chapters",
     note: "Campuses that ran something in the last 35 days. Not chapters that exist on paper — chapters that moved.",
+    atmosphere: "sage",
   },
   {
     id: "return-rate",
     label: "Return rate",
     note: "How many come to a second session within 60 days. The one number that matters. A full room with a low return rate means we threw a party.",
     northStar: true,
+    atmosphere: "north",
   },
   {
     id: "volunteer-survival",
     label: "Volunteer survival",
     note: "Officers still active at semester end. An early warning for burnout, months before a chapter dies.",
+    atmosphere: "steel",
   },
   {
     id: "systems-shipped",
     label: "Systems shipped",
     note: "Build-squad projects delivered and handed over. Handed over is the operative phrase.",
+    atmosphere: "indigo",
   },
   {
     id: "outcomes",
     label: "Outcomes",
     note: "Members who report an internship, job or paid project they attribute to OCS. Slow to accumulate, and the only number a serious partner cares about.",
+    atmosphere: "teal",
   },
   {
     id: "money",
     label: "Money in / money out",
     note: "Per chapter, published publicly, every month. This one is a trust instrument, not a finance metric.",
+    atmosphere: "amber",
   },
 ] as const;
 

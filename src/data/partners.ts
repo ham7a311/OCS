@@ -6,8 +6,8 @@ export type Partner = {
   /** Monogram used when no logo asset exists. */
   monogram: string;
   logo: string | null;
-  /** Artwork painted on a light field vs a dark field. */
-  logoTone: "light" | "dark";
+  /** Artwork painted on a light field vs a dark field, or a self-contained badge. */
+  logoTone: "light" | "dark" | "badge";
   logoWidth: number;
   logoHeight: number;
   website: string | null;
@@ -48,6 +48,30 @@ export const partners: Partner[] = [
     logoTone: "dark",
     logoWidth: 592,
     logoHeight: 592,
+    website: null,
+    active: true,
+  },
+  {
+    id: "ai-founder-hub",
+    name: "AI Founder Hub",
+    descriptor: "Founder community and AI practice",
+    monogram: "AF",
+    logo: "/partners/ai-founder-hub.png",
+    logoTone: "badge",
+    logoWidth: 1024,
+    logoHeight: 1024,
+    website: null,
+    active: true,
+  },
+  {
+    id: "gutech-cs-club",
+    name: "GUtech CS Club",
+    descriptor: "Campus computing community",
+    monogram: "CS",
+    logo: "/partners/gutech-cs-club.png",
+    logoTone: "badge",
+    logoWidth: 520,
+    logoHeight: 519,
     website: null,
     active: true,
   },

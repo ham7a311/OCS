@@ -1,15 +1,18 @@
 import { ArrowUpRight, ClipboardList, Megaphone, Radio, Sparkles, UserRound } from "lucide-react";
-import { CategoryBadge, EffortBadge, TagChip } from "@/components/ui/badge";
+import { EffortBadge, TagChip } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { ContentTable } from "@/components/ui/content-table";
+import { HalftoneCta } from "@/components/ui/halftone-cta";
 import { Panel } from "@/components/ui/panel";
-import { MetaGrid } from "@/components/ui/meta-grid";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
+import { AudienceAtmosphereCards } from "@/components/sections/audience-atmosphere-cards";
+import { EvidenceMetricGrid } from "@/components/sections/evidence-metric-grid";
 import { GuardedCoreVisual } from "@/components/visual/guarded-core";
 import { LoopConnector } from "@/components/visual/loop-connector";
+import { LoopCard } from "@/components/visual/loop-time-plate";
 import { CropMarkCta } from "@/components/visual/crop-mark";
 import { SealCta } from "@/components/visual/seal-arc";
 import { MoneyDuneFlight } from "@/components/visual/money-dune-flight";
@@ -17,14 +20,12 @@ import { TwoLoopsArtwork } from "@/components/visual/two-loops-artwork";
 import { CircuitConvergeArtwork } from "@/components/visual/circuit-converge-artwork";
 import { EvidenceTerminalArtwork } from "@/components/visual/evidence-terminal-artwork";
 import { site } from "@/config/site";
-import { cn } from "@/lib/utils";
 import {
   chapterPrinciples,
   chapterRoles,
   chapterWaves,
   chapters,
   evidence,
-  evidenceMetrics,
   fastLoop,
   menuTiers,
   modelIntro,
@@ -73,27 +74,6 @@ function PullQuote({
   );
 }
 
-function LoopCard({
-  kicker,
-  loop,
-}: {
-  kicker: string;
-  loop: typeof slowLoop | typeof fastLoop;
-}) {
-  return (
-    <Panel className="flex h-full flex-col overflow-hidden">
-      <div className="px-6 py-6 sm:px-8">
-        <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-          {kicker}
-        </p>
-        <h3 className="mt-3 text-h3 text-ink">{loop.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-ink-muted">{loop.subtitle}</p>
-      </div>
-      <MetaGrid items={[...loop.fields]} columns={2} className="mt-auto border-t border-line-subtle" />
-    </Panel>
-  );
-}
-
 export function ModelPage() {
   return (
     <>
@@ -122,8 +102,8 @@ export function ModelPage() {
 
           <Reveal delay={0.08} className="relative z-10 mt-12 lg:mt-16">
             <LoopConnector
-              left={<LoopCard kicker="Slow loop" loop={slowLoop} />}
-              right={<LoopCard kicker="Fast loop" loop={fastLoop} />}
+              left={<LoopCard kicker="Slow loop" pace="slow" loop={slowLoop} />}
+              right={<LoopCard kicker="Fast loop" pace="fast" loop={fastLoop} />}
             />
           </Reveal>
 
@@ -281,12 +261,19 @@ export function ModelPage() {
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="collab-card mt-10 flex cursor-default flex-col gap-4 rounded-lg px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-              <p className="max-w-[54ch] text-sm text-ink-muted">{chapters.startCta}</p>
-              <Button href="/signin" className="shrink-0">
-                Start a Chapter
-              </Button>
-            </div>
+            <HalftoneCta
+              className="mt-10"
+              badge="Start a chapter"
+              heading={
+                <>
+                  Your campus
+                  <br />
+                  can have one.
+                </>
+              }
+              subtext={chapters.startCta}
+              action={{ href: "/signin", label: "Start a Chapter" }}
+            />
           </Reveal>
         </Container>
       </Section>
@@ -333,40 +320,32 @@ export function ModelPage() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.14} className="mt-10 grid gap-4 lg:grid-cols-2">
-            <Panel className="px-6 py-6 sm:px-8">
-              <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-                For students
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-muted">{squads.forStudents}</p>
-            </Panel>
-            <Panel className="px-6 py-6 sm:px-8">
-              <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-                For businesses
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-muted">{squads.forBusinesses}</p>
-            </Panel>
+          <Reveal delay={0.14} className="mt-10">
+            <AudienceAtmosphereCards
+              students={squads.forStudents}
+              businesses={squads.forBusinesses}
+            />
           </Reveal>
 
           <Reveal delay={0.16}>
-            <a
-              href={site.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Talk to us about a project — reach us on WhatsApp"
-              className="collab-card mt-10 flex flex-col gap-3 rounded-lg px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8"
-            >
-              <div>
-                <p className="inline-flex items-center gap-2 text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
-                  Talk to us about a project
-                  <ArrowUpRight className="collab-arrow size-3.5 shrink-0 text-amber-300" aria-hidden="true" />
-                </p>
-              </div>
-              <span className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-                Reach us on WhatsApp
-                <ArrowUpRight className="collab-arrow size-3.5" aria-hidden="true" />
-              </span>
-            </a>
+            <HalftoneCta
+              className="mt-10"
+              badge="Build squads"
+              heading={
+                <>
+                  Talk to us
+                  <br />
+                  about a project.
+                </>
+              }
+              subtext="Guest talks, co-hosted builds, and student pipelines — reach the team on WhatsApp."
+              action={{
+                href: site.whatsappUrl,
+                label: "Reach us on WhatsApp",
+                external: true,
+                ariaLabel: "Talk to us about a project — reach us on WhatsApp",
+              }}
+            />
           </Reveal>
         </Container>
       </Section>
@@ -389,40 +368,7 @@ export function ModelPage() {
           </Reveal>
 
           <Reveal delay={0.08} className="relative z-10">
-            <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden border-y border-line-subtle bg-line-subtle sm:grid-cols-2 lg:grid-cols-3">
-              {evidenceMetrics.map((metric) => {
-                const northStar = "northStar" in metric && metric.northStar;
-
-                return (
-                  <div
-                    key={metric.id}
-                    className={cn(
-                      "flex flex-col gap-3 px-5 py-7 sm:px-6 sm:py-8",
-                      northStar ? "metric-north-star" : "bg-surface-1",
-                    )}
-                  >
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <p
-                        className={cn(
-                          "font-mono text-[0.6875rem] uppercase",
-                          northStar
-                            ? "tracking-[0.11em] text-amber-300"
-                            : "tracking-[0.09em] text-ink-muted",
-                        )}
-                      >
-                        {metric.label}
-                      </p>
-                      {northStar ? (
-                        <CategoryBadge className="px-2.5 py-px text-[0.625rem]">
-                          North star
-                        </CategoryBadge>
-                      ) : null}
-                    </div>
-                    <p className="text-sm leading-relaxed text-ink-faint">{metric.note}</p>
-                  </div>
-                );
-              })}
-            </div>
+            <EvidenceMetricGrid />
           </Reveal>
         </Container>
       </Section>

@@ -1,5 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { HalftoneCta } from "@/components/ui/halftone-cta";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
@@ -61,38 +61,26 @@ export function Partners() {
         </Reveal>
 
         <Reveal delay={0.14}>
-          <a
-            href={partnershipContact.href}
-            {...(partnershipContact.external
-              ? { target: "_blank", rel: "noopener noreferrer" }
-              : {})}
-            aria-label={
-              partnershipContact.external
-                ? "Reach us on WhatsApp to discuss collaborating with OCS"
-                : "Email the OCS team to discuss collaborating"
+          <HalftoneCta
+            className="mt-10"
+            badge="Work with us"
+            heading={
+              <>
+                Interested in
+                <br />
+                collaborating?
+              </>
             }
-            className="collab-card mt-10 flex flex-col gap-3 rounded-lg px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8"
-          >
-            <div>
-              <p className="inline-flex items-center gap-2 text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
-                Interested in collaborating?
-                <ArrowUpRight
-                  className="collab-arrow size-3.5 shrink-0 text-amber-300"
-                  aria-hidden="true"
-                />
-              </p>
-              <p className="mt-1 text-sm text-ink-muted">
-                Space for more organisations — guest talks, co-hosted events, and student pipelines.
-              </p>
-            </div>
-            <span className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-              {partnershipContact.label}
-              <ArrowUpRight
-                className="collab-arrow size-3.5"
-                aria-hidden="true"
-              />
-            </span>
-          </a>
+            subtext="Space for more organisations — guest talks, co-hosted events, and student pipelines."
+            action={{
+              href: partnershipContact.href,
+              label: partnershipContact.label,
+              external: partnershipContact.external,
+              ariaLabel: partnershipContact.external
+                ? "Reach us on WhatsApp to discuss collaborating with OCS"
+                : "Email the OCS team to discuss collaborating",
+            }}
+          />
         </Reveal>
       </Container>
     </Section>

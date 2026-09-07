@@ -26,6 +26,21 @@ export const upcomingEvents: OcsEvent[] = [];
 
 export const pastEvents: OcsEvent[] = [
   {
+    id: "ai-agents-under-the-scope",
+    title: "AI Agents: Under the Scope",
+    description:
+      "AI Agents are rapidly changing the way we interact with technology — but how do they actually work, and what can they really do?",
+    speaker: "Al Munther Al Harrasi",
+    speakerLinkedin: "https://www.linkedin.com/in/al-munther-al-harrasi",
+    date: "2026-09-02",
+    time: "5:00 PM GST",
+    category: "AI Agents",
+    theme: "AI Agents",
+    status: "completed",
+    registrationUrl: null,
+    format: "Google Meet — Online",
+  },
+  {
     id: "advanced-air-mobility-101",
     title: "Advanced Air Mobility 101",
     description:

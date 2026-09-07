@@ -27,7 +27,7 @@ function PartnerLogo({ partner }: { partner: Partner }) {
       data-tone={partner.logoTone}
       className={cn(
         "partner-logo-well inline-flex shrink-0 items-center justify-center",
-        partner.logoTone === "dark" ? "size-11" : "h-11",
+        partner.logoTone === "light" ? "h-11" : "size-11",
       )}
     >
       <Image

@@ -3,6 +3,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { JsonLd } from "@/components/seo/json-ld";
 import { Grain } from "@/components/visual/grain";
 import { site } from "@/config/site";
 import "./globals.css";
@@ -76,6 +77,7 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <JsonLd />
       </head>
       <body className="antialiased">
         <div aria-hidden="true" className="ocs-atmosphere pointer-events-none fixed inset-0 -z-10" />

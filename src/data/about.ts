@@ -12,12 +12,15 @@ export const about = {
     "Everything we run gives students the people, space, and momentum to build something real.",
 } as const;
 
+export type FocusAtmosphere = "violet" | "cyan" | "teal";
+
 export type FocusArea = {
   id: string;
   label: string;
   description: string;
   icon: LucideIcon;
   href: string;
+  atmosphere: FocusAtmosphere;
 };
 
 export const focusAreas: FocusArea[] = [
@@ -27,6 +30,7 @@ export const focusAreas: FocusArea[] = [
     description: "Machine learning and emerging technology, practised rather than only discussed.",
     icon: BrainCircuit,
     href: "/#artificial-intelligence",
+    atmosphere: "violet",
   },
   {
     id: "computer-science",
@@ -34,6 +38,7 @@ export const focusAreas: FocusArea[] = [
     description: "The practical engineering foundation that turns ideas into working software.",
     icon: Terminal,
     href: "/#programming-workshops",
+    atmosphere: "cyan",
   },
   {
     id: "collaboration",
@@ -41,5 +46,6 @@ export const focusAreas: FocusArea[] = [
     description: "Shared work — workshops, hackathons, and student-led builds.",
     icon: Boxes,
     href: "/#student-projects",
+    atmosphere: "teal",
   },
 ];

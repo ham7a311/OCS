@@ -1,9 +1,10 @@
-import { ArrowUpRight } from "lucide-react";
+import { AboutFocusCards } from "@/components/sections/about-focus-cards";
 import { Container } from "@/components/ui/container";
+import { HalftoneCta } from "@/components/ui/halftone-cta";
 import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
-import { about, focusAreas } from "@/data/about";
+import { about } from "@/data/about";
 import { site } from "@/config/site";
 
 export function About() {
@@ -52,61 +53,23 @@ export function About() {
         </div>
 
         <Reveal delay={0.14}>
-          <ul className="mt-14 grid gap-px overflow-hidden rounded-lg border border-line-subtle bg-line-subtle sm:grid-cols-3 lg:mt-16">
-            {focusAreas.map((area) => {
-              const Icon = area.icon;
-
-              return (
-                <li key={area.id}>
-                  <a
-                    href={area.href}
-                    className="group flex h-full gap-4 bg-surface-1 p-5 transition-colors duration-200 ease-ui hover:bg-surface-2 sm:p-6"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="grid size-10 shrink-0 place-items-center rounded-md border border-line text-ink-muted transition-colors duration-200 ease-ui group-hover:border-amber-500/40 group-hover:text-amber-300"
-                    >
-                      <Icon className="size-4" strokeWidth={1.5} />
-                    </span>
-                    <span>
-                      <span className="flex items-center gap-2 text-[0.9375rem] font-medium text-ink">
-                        {area.label}
-                        <ArrowUpRight
-                          className="size-3.5 text-ink-faint opacity-0 transition-opacity duration-200 ease-ui group-hover:opacity-100"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <span className="mt-1.5 block max-w-[32ch] text-sm leading-relaxed text-ink-faint">
-                        {area.description}
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
+          <AboutFocusCards />
         </Reveal>
 
         <Reveal delay={0.18}>
-          <a
-            href="/model"
-            className="collab-card mt-10 flex flex-col gap-3 rounded-lg px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8"
-          >
-            <div>
-              <p className="inline-flex items-center gap-2 text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
-                Curious how this actually runs day to day?
-                <ArrowUpRight
-                  className="collab-arrow size-3.5 shrink-0 text-amber-300"
-                  aria-hidden="true"
-                />
-              </p>
-              <p className="mt-1 text-sm text-ink-muted">Read the full model.</p>
-            </div>
-            <span className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-              View the Model
-              <ArrowUpRight className="collab-arrow size-3.5" aria-hidden="true" />
-            </span>
-          </a>
+          <HalftoneCta
+            className="mt-10"
+            badge="Curious how this runs?"
+            heading={
+              <>
+                See the model,
+                <br />
+                day to day.
+              </>
+            }
+            subtext="Read the full breakdown of how OCS actually operates."
+            action={{ href: "/model", label: "View the model" }}
+          />
         </Reveal>
       </Container>
     </Section>
