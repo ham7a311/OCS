@@ -17,6 +17,7 @@ import { CropMarkCta } from "@/components/visual/crop-mark";
 import { SealCta } from "@/components/visual/seal-arc";
 import { MoneyDuneFlight } from "@/components/visual/money-dune-flight";
 import { TwoLoopsArtwork } from "@/components/visual/two-loops-artwork";
+import { PanelField } from "@/components/visual/panel-field";
 import { CircuitConvergeArtwork } from "@/components/visual/circuit-converge-artwork";
 import { EvidenceTerminalArtwork } from "@/components/visual/evidence-terminal-artwork";
 import { site } from "@/config/site";
@@ -170,17 +171,23 @@ export function ModelPage() {
           </Reveal>
 
           <Reveal delay={0.14} className="mt-10 grid gap-4 lg:grid-cols-2">
-            <Panel className="px-6 py-6 sm:px-8">
-              <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-                Online by default
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-muted">{rhythm.onlineDefault}</p>
+            <Panel className="relative isolate overflow-hidden px-6 py-6 sm:px-8">
+              <PanelField variant="online" />
+              <div className="relative z-[2]">
+                <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
+                  Online by default
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">{rhythm.onlineDefault}</p>
+              </div>
             </Panel>
-            <Panel className="px-6 py-6 sm:px-8">
-              <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-                In person, and only these
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-muted">{rhythm.inPersonOnly}</p>
+            <Panel className="relative isolate overflow-hidden px-6 py-6 sm:px-8">
+              <PanelField variant="room" />
+              <div className="relative z-[2]">
+                <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
+                  In person, and only these
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">{rhythm.inPersonOnly}</p>
+              </div>
             </Panel>
           </Reveal>
 

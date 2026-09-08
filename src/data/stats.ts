@@ -24,7 +24,7 @@ export const stats: Stat[] = [
   },
   {
     id: "members",
-    value: 50,
+    value: 250,
     suffix: "+",
     label: "Members",
     note: "Students building together",

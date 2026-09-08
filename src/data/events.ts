@@ -22,6 +22,7 @@ export type OcsEvent = {
   collaboration?: string;
 };
 
+/** Real upcoming events. Artwork (Orbit / Halo / Construction) is wired on EventCard by category. */
 export const upcomingEvents: OcsEvent[] = [];
 
 export const pastEvents: OcsEvent[] = [

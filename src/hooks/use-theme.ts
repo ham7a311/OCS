@@ -32,11 +32,11 @@ function subscribe(onStoreChange: () => void) {
 
 function getSnapshot(): Theme {
   const fromDom = document.documentElement.getAttribute("data-theme");
-  return isTheme(fromDom) ? fromDom : "light";
+  return isTheme(fromDom) ? fromDom : "dark";
 }
 
 function getServerSnapshot(): Theme {
-  return "light";
+  return "dark";
 }
 
 export function useTheme() {

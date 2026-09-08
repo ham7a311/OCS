@@ -15,11 +15,11 @@ function StatCell({ stat }: { stat: Stat }) {
     <div
       data-arrow-well={stat.id === "workshops" ? "" : undefined}
       className={cn(
-        "flex flex-col gap-3 px-4 py-7 sm:px-6 sm:py-8 lg:px-7 lg:py-10",
-        stat.featured ? "bg-amber-500/[0.07]" : "bg-surface-1",
+        "hero-metric flex flex-col gap-3 px-4 py-7 sm:px-6 sm:py-8 lg:px-7 lg:py-10",
+        stat.featured && "hero-metric--featured",
       )}
     >
-      <p className="text-stat text-ink tabular-nums">
+      <p className="hero-metric-value text-stat text-ink tabular-nums">
         <span ref={ref}>{value}</span>
         {stat.suffix ? <span className="text-amber-300">{stat.suffix}</span> : null}
       </p>
@@ -44,7 +44,7 @@ export function Stats() {
         </div>
 
         <Reveal delay={0.08}>
-          <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden border-y border-line-subtle bg-line-subtle lg:grid-cols-4">
+          <div className="hero-metrics mt-8 grid grid-cols-2 gap-px overflow-hidden border-y lg:grid-cols-4">
             {stats.map((stat) => (
               <StatCell key={stat.id} stat={stat} />
             ))}

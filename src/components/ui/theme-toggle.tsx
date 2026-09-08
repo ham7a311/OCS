@@ -5,7 +5,7 @@ import { useTheme } from "@/hooks/use-theme";
 
 /**
  * Quiet icon control. It never competes with Join OCS — it only changes the
- * environment. Light is the default; this is how a visitor opts into dark.
+ * environment. Dark is the default; this is how a visitor opts into light.
  */
 export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();

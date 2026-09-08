@@ -6,6 +6,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
 import { EventTimeline } from "@/components/visual/event-timeline";
+import { PanelField } from "@/components/visual/panel-field";
 import { PowerTraceCta } from "@/components/visual/power-trace";
 import {
   TIMELINE_VISIBLE_LIMIT,
@@ -47,14 +48,17 @@ export function FeaturedEvent() {
               ))}
             </div>
           ) : (
-            <Panel className="mt-4 px-6 py-8 sm:px-8">
-              <p className="text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
-                Next meeting to be announced soon.
-              </p>
-              <p className="mt-2 max-w-[48ch] text-sm leading-relaxed text-ink-muted">
-                The next gathering will appear here once the date and speaker are
-                confirmed.
-              </p>
+            <Panel className="relative isolate mt-4 overflow-hidden px-6 py-8 sm:px-8">
+              <PanelField variant="awaiting" />
+              <div className="relative z-[2]">
+                <p className="text-[1.0625rem] font-medium tracking-[-0.015em] text-ink">
+                  Next meeting to be announced soon.
+                </p>
+                <p className="mt-2 max-w-[48ch] text-sm leading-relaxed text-ink-muted">
+                  The next gathering will appear here once the date and speaker are
+                  confirmed.
+                </p>
+              </div>
             </Panel>
           )}
         </Reveal>
