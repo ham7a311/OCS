@@ -69,13 +69,13 @@ html[data-theme="light"] {
   --ocs-orbit-ring: color-mix(in srgb, var(--ocs-ink) 10%, transparent);
   --ocs-accent-gold-glow: rgba(232, 162, 74, 0.35);
 
-  /* Scroll offset under the sticky header. Measured in JS from the real
-     header height — do not use this for section/hero internal spacing. */
-  --ocs-nav-clearance: 4.75rem;
+  /* Scroll offset under the sticky header. Fallback matches the compact
+     bar (h-16 + safe area); JS overwrites from the rendered header. */
+  --ocs-nav-clearance: calc(4rem + env(safe-area-inset-top, 0px));
 
-  /* Visual inset for the hero under the floating nav. Independent of
-     --ocs-nav-clearance so nav-height fixes cannot compress page rhythm. */
-  --ocs-hero-inset: 7.25rem;
+  /* Hero content starts below the bar plus a fixed gap, so a taller
+     safe-area header cannot hide the eyebrow. */
+  --ocs-hero-inset: calc(var(--ocs-nav-clearance) + 2.5rem);
 }
 
 html[data-theme="dark"] {
@@ -143,7 +143,7 @@ html[data-theme="dark"] {
   :root,
   html[data-theme="light"],
   html[data-theme="dark"] {
-    --ocs-nav-clearance: 5.25rem;
+    --ocs-nav-clearance: calc(4.25rem + env(safe-area-inset-top, 0px));
   }
 }
 
@@ -308,6 +308,51 @@ html[data-theme="dark"] {
 
   p {
     text-wrap: pretty;
+  }
+}
+
+/* ==========================================================================
+   Site header
+   Homepage at rest: a veil over the hero, not a card. After scroll (and on
+   every other page): a full-width near-canvas bar. No layout motion.
+   ========================================================================== */
+
+.ocs-nav {
+  pointer-events: none;
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  border-bottom: 1px solid transparent;
+  background-color: transparent;
+  transition:
+    background-color 0.32s var(--ease-ui),
+    border-color 0.32s var(--ease-ui),
+    box-shadow 0.32s var(--ease-ui);
+}
+
+.ocs-nav__bar {
+  pointer-events: auto;
+}
+
+.ocs-nav[data-ocs-nav-state="integrated"] {
+  background-color: color-mix(in srgb, var(--ocs-canvas) 22%, transparent);
+}
+
+.ocs-nav[data-ocs-nav-state="solid"] {
+  pointer-events: auto;
+  isolation: isolate;
+  background-color: color-mix(in srgb, var(--ocs-canvas) 96%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--ocs-ink) 8%, transparent);
+  box-shadow: 0 10px 28px -22px rgba(12, 11, 10, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ocs-nav {
+    transition: none;
   }
 }
 
@@ -1390,35 +1435,49 @@ html[data-theme="dark"] .halftone-cta__badge {
   color: var(--ocs-ink-muted);
 }
 
+/* Gold shimmer — same family as Join OCS (amber-500 + on-accent ink).
+   Deep stop is the swirl's #b8863f; highlight is dark-theme amber-300. */
 .halftone-cta__button {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-top: 0.25rem;
   min-height: 3.25rem;
   padding: 0.95rem 2rem;
+  border: 0;
   border-radius: 999px;
-  background: var(--ocs-ink);
-  color: var(--ocs-canvas);
+  background-color: var(--ocs-amber-500);
+  background-image: linear-gradient(
+    120deg,
+    #b8863f 0%,
+    var(--ocs-amber-500) 25%,
+    #f6c98a 50%,
+    var(--ocs-amber-500) 75%,
+    #b8863f 100%
+  );
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  color: var(--ocs-on-accent);
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   text-decoration: none;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
+  animation: halftone-cta-shimmer 7s ease-in-out infinite;
   transition:
     transform 0.2s var(--ease-ui),
-    box-shadow 0.2s var(--ease-ui),
-    background-color 0.2s var(--ease-ui);
-}
-
-html[data-theme="dark"] .halftone-cta__button {
-  background: #f0eee9;
-  color: #0a0908;
+    box-shadow 0.3s var(--ease-ui);
 }
 
 .halftone-cta__button:hover,
 .halftone-cta__button:focus-visible {
+  animation-duration: 3.5s;
   transform: translateY(-1px);
-  box-shadow: var(--ocs-collab-shadow);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.28),
+    0 0 24px rgba(232, 162, 74, 0.45);
 }
 
 .halftone-cta__button:focus-visible {
@@ -1428,6 +1487,16 @@ html[data-theme="dark"] .halftone-cta__button {
 
 .halftone-cta__button:active {
   transform: translateY(0);
+}
+
+@keyframes halftone-cta-shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes halftone-swirl-drift {
@@ -1448,9 +1517,15 @@ html[data-theme="dark"] .halftone-cta__button {
     animation: none !important;
   }
 
+  .halftone-cta__button {
+    animation: none;
+    background-position: 50% 50%;
+  }
+
   .halftone-cta__button:hover,
   .halftone-cta__button:focus-visible,
   .halftone-cta__button:active {
+    animation: none;
     transform: none;
   }
 }

@@ -21,7 +21,7 @@ export function readNavClearance() {
     .getPropertyValue("--ocs-nav-clearance")
     .trim();
   const value = parseFloat(raw);
-  if (!Number.isFinite(value)) return 84;
+  if (!Number.isFinite(value)) return 64;
   return raw.endsWith("rem") ? value * 16 : value;
 }
 

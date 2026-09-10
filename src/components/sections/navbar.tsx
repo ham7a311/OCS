@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
@@ -50,9 +50,21 @@ export function Navbar() {
     setConfirmSignOut(true);
   }, []);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
+  useLayoutEffect(() => {
+    let ticking = false;
+    const apply = () => {
+      const y = window.scrollY;
+      setScrolled((prev) => (prev ? y > 12 : y > 28));
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        apply();
+        ticking = false;
+      });
+    };
+    apply();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -102,17 +114,19 @@ export function Navbar() {
     return onHome && activeId === item.id;
   };
 
+  const integrated = onHome && !scrolled && !menuOpen;
+
   return (
     <>
-      <header data-ocs-nav="" className="pointer-events-none fixed inset-x-0 top-0 z-50 bg-canvas">
-        <div className="h-3 bg-canvas sm:h-4" aria-hidden="true" />
-        <Container className="pointer-events-auto">
+      <header
+        data-ocs-nav=""
+        data-ocs-nav-state={integrated ? "integrated" : "solid"}
+        className="ocs-nav"
+      >
+        <Container className="ocs-nav__bar">
           <nav
             aria-label="Primary"
-            className={cn(
-              "relative flex h-16 min-w-0 items-center justify-between gap-2 rounded-lg border border-line-subtle bg-canvas px-2.5 backdrop-blur-[24px] transition-shadow duration-300 ease-ui sm:h-[4.25rem] sm:px-4",
-              (scrolled || menuOpen) && "shadow-[0_12px_40px_-24px_rgba(20,18,12,0.45)]",
-            )}
+            className="relative flex h-16 min-w-0 items-center justify-between gap-2 sm:h-[4.25rem]"
           >
             {compact ? (
               <a
