@@ -17,7 +17,6 @@ import {
 export function FeaturedEvent() {
   const hasUpcoming = upcomingEvents.length > 0;
   const visibleTimeline = pastEvents.slice(0, TIMELINE_VISIBLE_LIMIT);
-  const hasArchive = pastEvents.length > TIMELINE_VISIBLE_LIMIT;
 
   return (
     <Section id="events" tone="canvas" labelledBy="events-title">
@@ -32,7 +31,7 @@ export function FeaturedEvent() {
                 Rooms worth <Em>being in</Em>.
               </>
             }
-            description="We bring people in front of students who would not otherwise be in the same room as them."
+            description="We bring people in front of students who would not otherwise be in the same room as them. Workshops and webinars include a certificate of attendance."
           />
         </Reveal>
 
@@ -71,15 +70,24 @@ export function FeaturedEvent() {
 
             <EventTimeline events={visibleTimeline} />
 
-            {hasArchive ? (
+            <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6">
+              {pastEvents.length > 0 ? (
+                <a
+                  href="/events/archive"
+                  className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase transition-colors duration-200 ease-ui hover:text-ink"
+                >
+                  All past events
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                </a>
+              ) : null}
               <a
-                href="/events/archive"
-                className="mt-6 inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase transition-colors duration-200 ease-ui hover:text-ink"
+                href="/voices"
+                className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase transition-colors duration-200 ease-ui hover:text-ink"
               >
-                View full events archive
+                More from the room
                 <ArrowUpRight className="size-3.5" aria-hidden="true" />
               </a>
-            ) : null}
+            </div>
           </Reveal>
         ) : null}
 

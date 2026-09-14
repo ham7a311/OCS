@@ -30,7 +30,7 @@ export function EventCard({ event }: { event: OcsEvent }) {
   const date = splitEventDate(event.date);
   const metadata = eventDisplayMetadata(event);
   const columns = metadata.length <= 2 ? 2 : metadata.length === 3 ? 3 : 4;
-  const artwork = eventArtworkKind(event.category);
+  const artwork = eventArtworkKind(event);
 
   return (
     <article
@@ -50,17 +50,37 @@ export function EventCard({ event }: { event: OcsEvent }) {
       <div className="event-card__content-column">
         <div className="grid gap-10 px-6 py-10 sm:px-8 sm:py-12 lg:grid-cols-12 lg:gap-14 lg:py-14">
           <div className="lg:col-span-3">
-            <p className="flex items-baseline gap-3 lg:flex-col lg:items-start lg:gap-1">
-              <span className="text-[3.5rem] leading-[0.85] font-medium tracking-[-0.04em] text-ink tabular-nums lg:text-[4.5rem]">
-                {date.day}
-              </span>
-              <span className="font-mono text-sm tracking-[0.14em] text-amber-300">
-                {date.month} {date.year}
-              </span>
-            </p>
-            <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase lg:mt-4">
-              {date.weekday}
-            </p>
+            {event.datePrecision === "month" ? (
+              <>
+                <p className="flex items-baseline gap-3 lg:flex-col lg:items-start lg:gap-1">
+                  <span className="text-[2.5rem] leading-[0.9] font-medium tracking-[-0.04em] text-ink lg:text-[3.25rem]">
+                    {date.month}
+                  </span>
+                  <span className="font-mono text-sm tracking-[0.14em] text-amber-300">
+                    {date.year}
+                  </span>
+                </p>
+                {event.dateNote ? (
+                  <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase lg:mt-4">
+                    {event.dateNote}
+                  </p>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <p className="flex items-baseline gap-3 lg:flex-col lg:items-start lg:gap-1">
+                  <span className="text-[3.5rem] leading-[0.85] font-medium tracking-[-0.04em] text-ink tabular-nums lg:text-[4.5rem]">
+                    {date.day}
+                  </span>
+                  <span className="font-mono text-sm tracking-[0.14em] text-amber-300">
+                    {date.month} {date.year}
+                  </span>
+                </p>
+                <p className="mt-3 font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase lg:mt-4">
+                  {date.weekday}
+                </p>
+              </>
+            )}
           </div>
 
           <div className="lg:col-span-9">

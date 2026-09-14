@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect, type FormEvent } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BackLink } from "@/components/ui/back-link";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Em } from "@/components/ui/section-heading";
@@ -63,23 +62,6 @@ const providers = [
   { id: "microsoft", label: "Continue with Microsoft", icon: MicrosoftMark },
   { id: "github", label: "Continue with GitHub", icon: GitHubMark },
 ] as const;
-
-function BackHomeLink() {
-  return (
-    <Link
-      href="/"
-      className="group inline-flex min-h-11 items-center gap-2 py-2 font-mono text-[0.6875rem] tracking-[0.09em] text-ink uppercase"
-    >
-      <ArrowLeft
-        className="size-3.5 transition-transform duration-200 ease-ui group-hover:-translate-x-0.5 group-focus-visible:-translate-x-0.5"
-        aria-hidden="true"
-      />
-      <span className="underline decoration-transparent underline-offset-4 transition-[text-decoration-color] duration-200 ease-ui group-hover:decoration-current group-focus-visible:decoration-current">
-        Back to home
-      </span>
-    </Link>
-  );
-}
 
 function SketchRule({
   kind,
@@ -228,7 +210,7 @@ export function SignInPage() {
         </div>
 
         <div className="relative z-10">
-          <BackHomeLink />
+          <BackLink href="/" label="Back to home" />
         </div>
 
         <div className="relative z-10 flex flex-1 flex-col justify-center py-16">
@@ -250,7 +232,7 @@ export function SignInPage() {
       <div className="relative flex min-h-dvh flex-1 flex-col px-5 py-6 sm:px-8 md:py-8">
         <div className="flex w-full items-start justify-between gap-4">
           <div className="md:hidden">
-            <BackHomeLink />
+            <BackLink href="/" label="Back to home" />
           </div>
           <div className="ml-auto">
             <ThemeToggle />

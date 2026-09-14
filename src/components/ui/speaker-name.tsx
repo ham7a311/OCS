@@ -43,7 +43,7 @@ export function eventDisplayMetadata(event: OcsEvent): MetaItem[] {
     event.status === "upcoming" || event.status === "registration-open";
 
   return eventMetadata(event).map((item) =>
-    item.label === "Speaker"
+    item.label === "Speaker" && event.speaker
       ? {
           ...item,
           value: (
