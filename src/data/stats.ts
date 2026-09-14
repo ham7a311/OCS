@@ -15,16 +15,16 @@ export type Stat = {
 export const stats: Stat[] = [
   {
     id: "countries",
-    value: 13,
+    value: 27,
     suffix: "+",
     label: "Countries represented",
-    note: "Students in Oman, and attendees joining from across 13 countries",
+    note: "Students in Oman, and attendees joining from across 27 countries",
     displayOrder: 1,
     featured: true,
   },
   {
     id: "members",
-    value: 250,
+    value: 400,
     suffix: "+",
     label: "Members",
     note: "Students building together",
