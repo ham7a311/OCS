@@ -1,9 +1,4 @@
-MIT License (source code)
-=========================
-
-This file applies to the **software source code** in this repository (for example
-TypeScript, CSS, and configuration that implements the site). Content, media,
-and brand assets are licensed separately — see LICENSE-CONTENT.
+MIT License
 
 Copyright (c) 2026 Oman Computing Society
 
@@ -24,3 +19,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+This license applies to the software source code in this repository. Content,
+media, and brand assets are licensed under CC BY 4.0 — see LICENSE-CONTENT.
