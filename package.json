@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "description": "Public website for the Oman Computing Society",
+  "license": "(MIT AND CC-BY-4.0)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

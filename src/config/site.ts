@@ -39,6 +39,10 @@ export const site = {
 
   url: optional(process.env.NEXT_PUBLIC_SITE_URL) ?? "https://ocs-mocha.vercel.app",
 
+  repositoryUrl:
+    optional(process.env.NEXT_PUBLIC_REPOSITORY_URL) ??
+    "https://github.com/ham7a311/OCS",
+
   whatsappUrl: WHATSAPP_COMMUNITY_URL,
   linkedinUrl: LINKEDIN_URL,
   instagramUrl: INSTAGRAM_URL,

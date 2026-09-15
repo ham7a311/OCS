@@ -1,0 +1,45 @@
+Content, media, and brand — CC BY 4.0
+=====================================
+
+Copyright (c) 2026 Oman Computing Society
+
+The non-software materials listed below are licensed under the Creative Commons
+Attribution 4.0 International license (CC BY 4.0).
+
+You may share and adapt these materials for any purpose, including commercially,
+as long as you give appropriate credit to Oman Computing Society, link to the
+license, and note if you changed anything.
+
+Full legal text: https://creativecommons.org/licenses/by/4.0/legalcode
+Human-readable summary: https://creativecommons.org/licenses/by/4.0/
+
+Scope
+-----
+
+This license applies to OCS-owned:
+
+- **Brand** — the name “Oman Computing Society”, “OCS”, and the logo at
+  `public/ocs-logo.png`, and other official brand assets in this repository
+- **Copy** — text in `src/data/` and other OCS-authored wording shipped with the site
+- **Media** — photographs, avatars, illustrations, and other images under
+  `public/` that OCS created or holds rights to (excluding third-party assets)
+
+Attribution example
+-------------------
+
+> © Oman Computing Society. Source: https://github.com/ham7a311/OCS
+> Licensed under CC BY 4.0.
+
+Third-party assets
+------------------
+
+Partner logos and marks in `public/partners/` (and any other third-party
+content) remain the property of their respective owners. They are shown on the
+OCS site with permission and are **not** relicensed by this file.
+
+Trademark note
+--------------
+
+CC BY 4.0 covers copyright in works. When you reuse OCS brand assets or the
+society name, do not imply that your project is the official Oman Computing
+Society or that OCS endorses you, unless you have written permission.

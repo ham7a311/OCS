@@ -102,3 +102,21 @@ src/
 Confirm `npm run build` and `npm run lint` both pass, set
 `NEXT_PUBLIC_SITE_URL` to the production origin so metadata and the sitemap
 resolve correctly, and verify the WhatsApp invitation still accepts new members.
+
+## License
+
+This repository uses two licenses:
+
+| What | License | File |
+| ---- | ------- | ---- |
+| **Source code** (implementation) | [MIT](LICENSE) | `LICENSE` |
+| **Brand, copy, and media** (OCS-owned) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | [LICENSE-CONTENT](LICENSE-CONTENT) |
+
+**Brand and media** includes the OCS name and logo, site copy in `src/data/`,
+illustrations, avatars, and other OCS-owned files under `public/`. You may reuse
+and adapt them with **attribution** to Oman Computing Society. See
+[LICENSE-CONTENT](LICENSE-CONTENT) for scope, attribution wording, and
+third-party exceptions (e.g. partner logos in `public/partners/`).
+
+When reusing brand assets, do not suggest you are the official OCS or that OCS
+endorses your project unless you have permission.

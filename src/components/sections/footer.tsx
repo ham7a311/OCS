@@ -107,11 +107,30 @@ export function Footer() {
       </div>
 
       <Container>
-        <div className="grid gap-3 border-t border-line-subtle pt-7 pb-20 sm:grid-cols-2 sm:items-center sm:pb-20">
-          <p className="font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase">
+        <div className="grid gap-3 border-t border-line-subtle pt-7 pb-20 sm:grid-cols-3 sm:items-center sm:pb-20">
+          <p className="order-1 font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase sm:order-none">
             © {year} {site.organizationName}. All rights reserved.
           </p>
-          <p className="font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase sm:text-right">
+          <p className="order-3 text-center text-sm text-ink-faint sm:order-none">
+            <a
+              href={`${site.repositoryUrl}/blob/main/LICENSE`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-serif italic text-amber-300 transition-colors duration-200 ease-ui hover:text-amber-400"
+            >
+              MIT
+            </a>
+            {" · "}
+            <a
+              href={`${site.repositoryUrl}/blob/main/LICENSE-CONTENT`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-serif italic text-amber-300 transition-colors duration-200 ease-ui hover:text-amber-400"
+            >
+              CC BY 4.0
+            </a>
+          </p>
+          <p className="order-2 font-mono text-[0.625rem] tracking-[0.09em] text-ink-faint uppercase sm:order-none sm:text-right">
             Student-led · Sultanate of Oman
           </p>
         </div>

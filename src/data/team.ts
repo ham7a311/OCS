@@ -73,9 +73,10 @@ export const team: TeamMember[] = [
     color: "#2FBF71",
     linkedin: "https://www.linkedin.com/in/eng-rabia-khalid",
     about:
-      "Sets the technical bar for what OCS builds and teaches. Reviews the stack, the workshops, and whether a squad is actually shipping software or just talking about it.",
-    education: "Software Engineering · UTAS — Muscat",
-    skills: ["Python", "Java", "Databases/SQL", "Machine Learning", "Linux", "Git"],
+      "Enjoys building things, figuring out how they work, and learning along the way. Into AI, software, and research — and usually up for whatever is next.",
+    education: "Software Engineering · Majan University College",
+    skills: ["Python", "React", "Odoo/ERP", "SQL", "AI/ML", "Full-Stack"],
+    links: [{ label: "GitHub", href: "https://github.com/Rabi064" }],
   },
   {
     id: "al-munther-al-harrasi",
