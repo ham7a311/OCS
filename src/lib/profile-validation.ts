@@ -1,3 +1,4 @@
+import { isValidStoredPhone } from "@/data/calling-codes";
 import {
   GRADUATION_YEARS,
   INTERESTS,
@@ -141,10 +142,15 @@ export function validateProfilePayload(input: unknown): ProfileFormData {
   const consent = asBoolean(raw.consent, "Consent");
   if (!consent) throw new Error("You need to agree before we can store your profile.");
 
+  const phone = asString(raw.phone ?? "", "Phone").trim();
+  if (!isValidStoredPhone(phone)) {
+    throw new Error("Enter a valid phone number with country code, or leave it blank.");
+  }
+
   return {
     fullName,
     preferredName: asString(raw.preferredName ?? "", "Preferred name").trim(),
-    phone: asString(raw.phone ?? "", "Phone").trim(),
+    phone,
     school,
     otherSchool: school === "Other" ? otherSchool : "",
     programme,

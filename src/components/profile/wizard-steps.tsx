@@ -2,6 +2,7 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChoiceChip } from "@/components/ui/choice-chip";
+import { PhoneField } from "@/components/profile/phone-field";
 import { Field, SelectField, TextareaField, TextInput } from "@/components/ui/form-field";
 import { Panel } from "@/components/ui/panel";
 import {
@@ -62,14 +63,16 @@ export function StepWhoYouAre({ data, email, showErrors, updateField }: WizardSt
         <TextInput id="profile-email" name="email" value={email} readOnly />
       </Field>
 
-      <Field label="Phone" htmlFor="phone" helper="Only used for chapter logistics.">
-        <TextInput
+      <Field
+        label="Phone"
+        htmlFor="phone"
+        helper="Only used for chapter logistics. The prefix is set by the country."
+      >
+        <PhoneField
           id="phone"
           name="phone"
-          type="tel"
-          autoComplete="tel"
           value={data.phone}
-          onChange={(event) => updateField("phone", event.target.value)}
+          onChange={(value) => updateField("phone", value)}
         />
       </Field>
     </div>
