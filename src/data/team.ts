@@ -26,9 +26,7 @@ export const team: TeamMember[] = [
     role: "CEO & Founder",
     color: "#5C7CFA",
     linkedin: "https://www.linkedin.com/in/abhiman-dewangan",
-    photo: "/images/abhiman-pfp.jpeg",
-    photoPosition: "50% 18%",
-    photoScale: 1.45,
+    photo: "/images/avatars/abhiman.jpg",
     about:
       "Came to Oman at four, and it became more than home. Founded Oman Computing Society so students would have the room he wished existed. Whether it’s AI or mathematics, the rule is the same: if something is missing, build it.",
     skills: ["Python", "React", "FastAPI", "RAG", "LLMs", "Git"],
@@ -63,9 +61,7 @@ export const team: TeamMember[] = [
     linkedin: "https://www.linkedin.com/in/noor-al-balushi247",
     about:
       "Cares about cybersecurity, AI, digital forensics, and fraud detection — work that has to survive a real-world problem. Also the quieter side: innovation, partnerships, and keeping the community together.",
-    photo: "/images/noor-b-pfp.jpeg",
-    photoPosition: "52% 36%",
-    photoScale: 1.55,
+    photo: "/images/avatars/noor-al-balushi.jpg",
     education: "CS (Cybersecurity) · MCBS",
     skills: ["Cybersecurity", "AI", "Digital Forensics", "Fraud Detection", "Community Building"],
     links: [{ label: "Email", href: "mailto:nooralbalushi247@gmail.com" }],
@@ -98,8 +94,7 @@ export const team: TeamMember[] = [
     role: "Member of Tech Dept.",
     color: "#4ECDC4",
     linkedin: "https://www.linkedin.com/in/ham7a311/",
-    photo: "/images/hamza-pfp2.jpeg",
-    photoPosition: "50% 18%",
+    photo: "/images/avatars/hamza.jpg",
     about:
       "Full-stack engineer designing and shipping real web products. Built and maintains the official OCS website.",
     education: "Computer Science · GUtech",
@@ -115,9 +110,7 @@ export const team: TeamMember[] = [
     role: "Member of Tech Dept.",
     color: "#D67EE8",
     linkedin: "https://www.linkedin.com/in/taif-albadi-748a25348",
-    photo: "/images/taif-pfp.JPG",
-    photoPosition: "50% 12%",
-    photoScale: 2.35,
+    photo: "/images/avatars/taif.jpg",
     about:
       "Cares about AI and making something you can actually run. Shows up in the tech room — workshops, student projects, the messy middle — and would rather ship a demo than talk about one.",
     education: "AI · GUtech",
@@ -133,9 +126,7 @@ export const team: TeamMember[] = [
     role: "Member of Tech Dept.",
     color: "#4A8FB8",
     linkedin: null,
-    photo: "/images/alyazen-pfp.JPG",
-    photoPosition: "58% 42%",
-    photoScale: 2.1,
+    photo: "/images/avatars/al-yazen.jpg",
     about:
       "IT student at UTAS Muscat. Builds software, AI-powered work, and the web — including hackathons and innovation programmes around Oman. At OCS he works frontend: keep it simple, keep it usable.",
     education: "IT · UTAS — Muscat",
