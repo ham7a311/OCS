@@ -41,14 +41,6 @@ export function Footer() {
                 ))}
               <li>
                 <a
-                  href="/voices"
-                  className="inline-flex min-h-6 items-center py-2 text-sm text-ink-muted transition-colors duration-200 ease-ui hover:text-ink"
-                >
-                  Voices
-                </a>
-              </li>
-              <li>
-                <a
                   href="/events/archive"
                   className="inline-flex min-h-6 items-center py-2 text-sm text-ink-muted transition-colors duration-200 ease-ui hover:text-ink"
                 >

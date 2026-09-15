@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useId, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, UserRound } from "lucide-react";
-import { BackLink } from "@/components/ui/back-link";
 import { Container } from "@/components/ui/container";
+import { Eyebrow } from "@/components/ui/eyebrow";
 import { PagerButton } from "@/components/ui/pager-button";
+import { Em } from "@/components/ui/section-heading";
 import { VoicesWaveField } from "@/components/visual/voices-wave-field";
 import { voices, type Voice } from "@/data/voices";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
@@ -71,6 +72,8 @@ export function VoicesViewer() {
   const [direction, setDirection] = useState(1);
   const liveId = useId();
   const reduced = usePrefersReducedMotion();
+  const stageRef = useRef<HTMLElement>(null);
+  const inViewRef = useRef(false);
   const count = voices.length;
   const voice = voices[index] ?? voices[0];
 
@@ -83,11 +86,27 @@ export function VoicesViewer() {
   );
 
   useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inViewRef.current = Boolean(entry?.isIntersecting);
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (!inViewRef.current) return;
       const target = event.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) {
         return;
       }
+      if (target?.closest(".team-marquee-shell")) return;
       if (event.key === "ArrowLeft") {
         event.preventDefault();
         go(-1);
@@ -110,19 +129,25 @@ export function VoicesViewer() {
   };
 
   return (
-    <section className="voices-stage" aria-labelledby="voices-title">
+    <section
+      ref={stageRef}
+      id="voices"
+      className="voices-stage"
+      aria-labelledby="voices-title"
+    >
       <div className="voices-word-layer" aria-hidden="true">
         <div className="voices-word">VOICES</div>
       </div>
       <VoicesWaveField />
 
       <Container className="voices-frame">
-        <BackLink href="/#events" label="Back to events" />
-
-        <h1 id="voices-title" className="voices-title">
+        <Eyebrow index="04">Voices</Eyebrow>
+        <h2 id="voices-title" className="voices-title">
           Voices
-        </h1>
-        <p className="voices-lead">One student at a time, after the room closed.</p>
+        </h2>
+        <p className="voices-lead">
+          One student at a time, <Em>after the room closed</Em>.
+        </p>
 
         <p className="voices-pull voices-pull--a" aria-hidden="true">
           Rooms worth
@@ -141,9 +166,10 @@ export function VoicesViewer() {
 
           <div className="voices-card">
             <div id={liveId} aria-live="polite" aria-atomic="true" className="voices-card-live">
-              <AnimatePresence mode="wait" initial={false} custom={direction}>
+              <AnimatePresence initial={false} custom={direction}>
                 <motion.div
                   key={voice.id}
+                  className="voices-card-slide"
                   custom={direction}
                   initial={reduced ? { opacity: 0 } : { opacity: 0, x: direction * 18 }}
                   animate={{ opacity: 1, x: 0 }}

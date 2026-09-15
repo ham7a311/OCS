@@ -2270,13 +2270,48 @@ html[data-theme="dark"] .model-page-table .table-cell-tier {
   animation: ocs-marquee 36s linear infinite;
 }
 
-.partner-marquee:not(.team-marquee):hover .partner-marquee-track,
-.partner-marquee:not(.team-marquee):focus-within .partner-marquee-track {
+.partner-marquee:hover .partner-marquee-track,
+.partner-marquee:focus-within .partner-marquee-track {
   animation-play-state: paused;
 }
 
-.team-marquee:has(.team-card:hover) .partner-marquee-track {
-  animation-play-state: paused;
+.team-marquee-shell {
+  position: relative;
+}
+
+.team-marquee-shell .team-marquee {
+  min-width: 0;
+  touch-action: pan-y;
+}
+
+.team-marquee-track {
+  will-change: transform;
+}
+
+.team-marquee-prev,
+.team-marquee-next {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  transform: translateY(-50%);
+}
+
+.team-marquee-prev {
+  left: 0.5rem;
+}
+
+.team-marquee-next {
+  right: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .team-marquee-prev {
+    left: 0.75rem;
+  }
+
+  .team-marquee-next {
+    right: 0.75rem;
+  }
 }
 
 @keyframes ocs-marquee {
@@ -5290,6 +5325,7 @@ html[data-theme="light"] .panel-field-lattice {
   overflow-y: visible;
   min-height: min(100dvh, 56rem);
   padding-bottom: clamp(4.5rem, 9vw, 7.5rem);
+  scroll-margin-top: var(--ocs-nav-clearance);
   background:
     radial-gradient(
       ellipse 68% 48% at 50% 44%,
@@ -5424,7 +5460,7 @@ html[data-theme="light"] .voices-wave-field {
 }
 
 .voices-pull--a {
-  top: calc(var(--ocs-nav-clearance) + 3.35rem);
+  top: 3.35rem;
   right: 0;
   font-size: clamp(1.15rem, 1.9vw + 0.55rem, 2.15rem);
   opacity: 0.62;
@@ -5443,11 +5479,11 @@ html[data-theme="light"] .voices-wave-field {
 .voices-frame {
   position: relative;
   z-index: 3;
-  padding-top: var(--ocs-nav-clearance);
+  padding-top: clamp(4rem, 8vw, 7rem);
 }
 
 .voices-title {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   font-size: clamp(1.85rem, 3.2vw, 2.5rem);
   font-weight: 600;
   letter-spacing: -0.03em;
@@ -5480,9 +5516,14 @@ html[data-theme="light"] .voices-wave-field {
 .voices-card {
   grid-area: card;
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 68rem;
+  min-height: clamp(18.5rem, 16rem + 18vw, 28rem);
   overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   border-radius: var(--radius-lg);
   background: color-mix(in srgb, var(--ocs-surface-2) 70%, transparent);
   border: 1px solid color-mix(in srgb, var(--ocs-ink) 8%, transparent);
@@ -5536,6 +5577,14 @@ html[data-theme="light"] .voices-card::before {
 .voices-card-live {
   position: relative;
   z-index: 1;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: inherit;
+}
+
+.voices-card-slide {
+  position: absolute;
+  inset: 0;
 }
 
 .voices-pager--prev {
@@ -5575,6 +5624,12 @@ html[data-theme="light"] .voices-card::before {
 
 .voices-article {
   position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
   padding: 2rem 1.5rem 2.15rem;
 }
 
@@ -5631,6 +5686,7 @@ html[data-theme="light"] .voices-card::before {
   z-index: 1;
   margin-top: 1rem;
   max-width: 28ch;
+  overflow-wrap: break-word;
   font-size: clamp(1.5rem, 1.15rem + 2.15vw, 2.75rem);
   font-weight: 450;
   letter-spacing: -0.028em;
@@ -5809,6 +5865,15 @@ html[data-theme="light"] .voices-card::before {
   .voices-wave--extra {
     display: none;
   }
+
+  .voices-card {
+    min-height: clamp(21.75rem, 18.5rem + 22vw, 32rem);
+  }
+
+  .voices-quote-body {
+    font-size: clamp(1.3125rem, 1.08rem + 1.4vw, 2rem);
+    line-height: 1.32;
+  }
 }
 
 @media (max-width: 639px) {
@@ -5843,6 +5908,14 @@ html[data-theme="light"] .voices-card::before {
 
   .voices-quote-body {
     max-width: none;
+  }
+
+  .voices-article {
+    padding: 1.65rem 1.25rem 1.8rem;
+  }
+
+  .voices-session {
+    margin-top: 1.35rem;
   }
 
   .voices-mark {

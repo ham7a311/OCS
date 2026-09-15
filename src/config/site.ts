@@ -111,6 +111,7 @@ export const navigation: NavItem[] = [
   { id: "about", label: "About", href: "/#about", kind: "hash" },
   { id: "programs", label: "Programs", href: "/#programs", kind: "hash" },
   { id: "events", label: "Events", href: "/#events", kind: "hash" },
+  { id: "voices", label: "Voices", href: "/#voices", kind: "hash" },
   { id: "partners", label: "Partners", href: "/#partners", kind: "hash" },
   { id: "model", label: "The Model", href: "/model", kind: "route" },
   { id: "members", label: "Members", href: "/signin", kind: "route" },

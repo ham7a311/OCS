@@ -1,13 +1,17 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { LinkedInIcon } from "@/components/ui/channel-icon";
+import { PagerButton } from "@/components/ui/pager-button";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
 import { team, type TeamMember } from "@/data/team";
 
 const SPEED_DESKTOP = 30;
 const SPEED_MOBILE = 22;
+const STEP_MS = 480;
+const SWIPE_ARM_PX = 10;
 
 const DOTS = [
   { duration: 4.2, delay: 0, size: 5 },
@@ -105,11 +109,55 @@ function TeamSet({ members, hidden }: { members: TeamMember[]; hidden?: boolean 
   );
 }
 
+function wrapModulo(value: number, loop: number) {
+  if (loop < 8) return 0;
+  return ((value % loop) + loop) % loop;
+}
+
+function easeStep(t: number) {
+  return 1 - (1 - t) ** 3;
+}
+
 export function TeamMarquee() {
   const reduced = usePrefersReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
-  const [duration, setDuration] = useState(40);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const loopWidthRef = useRef(0);
+  const strideRef = useRef(304);
+  const speedRef = useRef(SPEED_DESKTOP);
+  const hoverPauseRef = useRef(false);
+  const lastTsRef = useRef(0);
+  const stepAnimRef = useRef<{ from: number; to: number; start: number } | null>(null);
+  const pointerRef = useRef<{ id: number; x: number; dragging: boolean } | null>(null);
+  const skipClickRef = useRef(false);
   const [repeats, setRepeats] = useState(1);
+
+  const apply = useCallback(() => {
+    const node = trackRef.current;
+    if (!node) return;
+    node.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`;
+  }, []);
+
+  const step = useCallback(
+    (direction: -1 | 1) => {
+      const loop = loopWidthRef.current;
+      const stride = strideRef.current;
+      if (loop < 8 || stride < 8) return;
+
+      let from = wrapModulo(offsetRef.current, loop);
+      let to = from + direction * stride;
+      if (to < 0) {
+        from += loop;
+        to += loop;
+      }
+
+      offsetRef.current = from;
+      apply();
+      stepAnimRef.current = { from, to, start: performance.now() };
+    },
+    [apply],
+  );
 
   useLayoutEffect(() => {
     if (reduced) return;
@@ -119,18 +167,26 @@ export function TeamMarquee() {
     if (!wrap || !firstSet) return;
 
     const measure = () => {
-      const setWidth = firstSet.scrollWidth / Math.max(repeats, 1);
-      const viewWidth = wrap.getBoundingClientRect().width;
-      if (setWidth < 8) return;
+      const item = firstSet.querySelector<HTMLElement>("li");
+      const next = item?.nextElementSibling as HTMLElement | null;
+      if (item && next) {
+        strideRef.current = next.getBoundingClientRect().left - item.getBoundingClientRect().left;
+      }
 
-      const copiesPerHalf = Math.max(1, Math.ceil(viewWidth / setWidth));
+      const oneSet = firstSet.scrollWidth / Math.max(repeats, 1);
+      const viewWidth = wrap.getBoundingClientRect().width;
+      if (oneSet < 8) return;
+
+      const copiesPerHalf = Math.max(1, Math.ceil(viewWidth / oneSet));
+      speedRef.current = window.innerWidth < 640 ? SPEED_MOBILE : SPEED_DESKTOP;
       if (copiesPerHalf !== repeats) {
         setRepeats(copiesPerHalf);
         return;
       }
 
-      const speed = window.innerWidth < 640 ? SPEED_MOBILE : SPEED_DESKTOP;
-      setDuration((setWidth * copiesPerHalf) / speed);
+      loopWidthRef.current = firstSet.scrollWidth;
+      offsetRef.current = wrapModulo(offsetRef.current, loopWidthRef.current);
+      apply();
     };
 
     measure();
@@ -138,7 +194,77 @@ export function TeamMarquee() {
     observer.observe(wrap);
     observer.observe(firstSet);
     return () => observer.disconnect();
-  }, [reduced, repeats]);
+  }, [apply, reduced, repeats]);
+
+  useEffect(() => {
+    if (reduced) return;
+
+    let frame = 0;
+    const tick = (now: number) => {
+      const anim = stepAnimRef.current;
+      if (anim) {
+        const t = Math.min(1, (now - anim.start) / STEP_MS);
+        offsetRef.current = anim.from + (anim.to - anim.from) * easeStep(t);
+        apply();
+        if (t >= 1) {
+          offsetRef.current = wrapModulo(anim.to, loopWidthRef.current);
+          apply();
+          stepAnimRef.current = null;
+          lastTsRef.current = now;
+        }
+      } else if (!hoverPauseRef.current) {
+        if (lastTsRef.current) {
+          const dt = Math.min(32, now - lastTsRef.current) / 1000;
+          offsetRef.current = wrapModulo(
+            offsetRef.current + speedRef.current * dt,
+            loopWidthRef.current,
+          );
+          apply();
+        }
+        lastTsRef.current = now;
+      } else {
+        lastTsRef.current = now;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [apply, reduced]);
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    const target = event.target as HTMLElement | null;
+    if (target?.closest("a, button")) return;
+    pointerRef.current = { id: event.pointerId, x: event.clientX, dragging: false };
+  };
+
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const pointer = pointerRef.current;
+    if (!pointer || pointer.id !== event.pointerId) return;
+    const dx = event.clientX - pointer.x;
+    if (!pointer.dragging && Math.abs(dx) > SWIPE_ARM_PX) {
+      pointer.dragging = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+  };
+
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    const pointer = pointerRef.current;
+    pointerRef.current = null;
+    if (!pointer || pointer.id !== event.pointerId || !pointer.dragging) return;
+    skipClickRef.current = true;
+    const dx = event.clientX - pointer.x;
+    const threshold = strideRef.current * 0.45;
+    if (dx <= -threshold) step(1);
+    else if (dx >= threshold) step(-1);
+  };
+
+  const onPointerCancel = (event: PointerEvent<HTMLDivElement>) => {
+    const pointer = pointerRef.current;
+    if (!pointer || pointer.id !== event.pointerId) return;
+    pointerRef.current = null;
+  };
 
   if (reduced) {
     return (
@@ -156,31 +282,81 @@ export function TeamMarquee() {
 
   return (
     <div
-      ref={wrapRef}
-      className="partner-marquee team-marquee overflow-hidden py-1"
-      style={{
-        maskImage:
-          "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
-        WebkitMaskImage:
-          "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+      className="team-marquee-shell"
+      onKeyDown={(event) => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        const target = event.target as HTMLElement | null;
+        if (
+          target &&
+          (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
+        ) {
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        step(event.key === "ArrowLeft" ? -1 : 1);
       }}
     >
-      <div
-        className="partner-marquee-track flex w-max items-center"
-        style={{ animationDuration: `${duration}s` }}
+      <PagerButton
+        label="Previous team member"
+        onClick={() => step(-1)}
+        className="team-marquee-prev bg-surface-1/90 backdrop-blur-sm"
       >
-        <div data-marquee-set="" className="flex items-center">
-          <TeamSet members={team} />
-          {Array.from({ length: extra }, (_, index) => (
-            <TeamSet key={`pad-${index}`} members={team} hidden />
-          ))}
-        </div>
-        <div className="flex items-center" aria-hidden="true">
-          {Array.from({ length: repeats }, (_, index) => (
-            <TeamSet key={`loop-${index}`} members={team} hidden />
-          ))}
+        <ArrowLeft className="size-4" aria-hidden="true" />
+      </PagerButton>
+
+      <div
+        ref={wrapRef}
+        className="team-marquee overflow-hidden py-1"
+        style={{
+          maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+        }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
+        onClickCapture={(event) => {
+          if (!skipClickRef.current) return;
+          event.preventDefault();
+          event.stopPropagation();
+          skipClickRef.current = false;
+        }}
+        onMouseOver={(event) => {
+          if ((event.target as HTMLElement | null)?.closest(".team-card")) {
+            hoverPauseRef.current = true;
+          }
+        }}
+        onMouseOut={(event) => {
+          const next = event.relatedTarget as HTMLElement | null;
+          if (!next || !event.currentTarget.contains(next) || !next.closest(".team-card")) {
+            hoverPauseRef.current = false;
+          }
+        }}
+      >
+        <div ref={trackRef} className="team-marquee-track flex w-max items-center">
+          <div data-marquee-set="" className="flex items-center">
+            <TeamSet members={team} />
+            {Array.from({ length: extra }, (_, index) => (
+              <TeamSet key={`pad-${index}`} members={team} hidden />
+            ))}
+          </div>
+          <div className="flex items-center" aria-hidden="true">
+            {Array.from({ length: repeats }, (_, index) => (
+              <TeamSet key={`loop-${index}`} members={team} hidden />
+            ))}
+          </div>
         </div>
       </div>
+
+      <PagerButton
+        label="Next team member"
+        onClick={() => step(1)}
+        className="team-marquee-next bg-surface-1/90 backdrop-blur-sm"
+      >
+        <ArrowRight className="size-4" aria-hidden="true" />
+      </PagerButton>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { Partners } from "@/components/sections/partners";
 import { Programs } from "@/components/sections/programs";
 import { SignedInHomeGate } from "@/components/sections/signed-in-home-gate";
 import { Stats } from "@/components/sections/stats";
+import { VoicesViewer } from "@/components/sections/voices-viewer";
 import { ImpactArrow } from "@/components/visual/impact-arrow";
 
 export default function HomePage() {
@@ -23,6 +24,7 @@ export default function HomePage() {
         <About />
         <Programs />
         <FeaturedEvent />
+        <VoicesViewer />
         <Partners />
         <Join />
       </main>

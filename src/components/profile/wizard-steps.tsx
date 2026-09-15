@@ -80,6 +80,7 @@ export function StepWhereYouStudy({ data, showErrors, updateField }: WizardStepP
   const otherOpen = data.school === "Other";
   const schoolInvalid = showErrors && !data.school.trim();
   const otherInvalid = showErrors && otherOpen && !data.otherSchool.trim();
+  const graduated = data.yearOfStudy === "Graduated";
 
   return (
     <div className="flex flex-col gap-3.5">
@@ -170,11 +171,11 @@ export function StepWhereYouStudy({ data, showErrors, updateField }: WizardStepP
 
       <fieldset>
         <legend className="font-mono text-[0.6875rem] tracking-[0.09em] text-ink-muted uppercase">
-          Expected graduation
+          {graduated ? "Year of graduation" : "Expected graduation"}
         </legend>
         <div className="mt-1.5 grid grid-cols-2 gap-3">
           <SelectField
-            aria-label="Graduation month"
+            aria-label={graduated ? "Graduation month" : "Expected graduation month"}
             name="graduationMonth"
             value={data.graduationMonth}
             onChange={(event) => updateField("graduationMonth", event.target.value)}
@@ -187,7 +188,7 @@ export function StepWhereYouStudy({ data, showErrors, updateField }: WizardStepP
             ))}
           </SelectField>
           <SelectField
-            aria-label="Graduation year"
+            aria-label={graduated ? "Graduation year" : "Expected graduation year"}
             name="graduationYear"
             value={data.graduationYear}
             onChange={(event) => updateField("graduationYear", event.target.value)}

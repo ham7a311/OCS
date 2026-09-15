@@ -15,7 +15,7 @@ export function Partners() {
       <Container>
         <Reveal>
           <SectionHeading
-            index="04"
+            index="05"
             eyebrow="Partners"
             id="partners-title"
             title={

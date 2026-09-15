@@ -81,7 +81,7 @@ export function FeaturedEvent() {
                 </a>
               ) : null}
               <a
-                href="/voices"
+                href="/#voices"
                 className="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase transition-colors duration-200 ease-ui hover:text-ink"
               >
                 More from the room
