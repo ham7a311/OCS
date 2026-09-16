@@ -6428,3 +6428,265 @@ html[data-theme="light"] .team-avatar-disc {
     transform: translate3d(10px, -8px, 0);
   }
 }
+
+/* ==========================================================================
+   Cinema credits
+   A self-contained, always-dark playback surface at /credits.
+   ========================================================================== */
+
+html.credits-lock,
+body.credits-lock {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.credits-page {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  touch-action: none;
+  background: #030303;
+  color: #f4efe6;
+}
+
+.credits-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 11%,
+    #000 86%,
+    transparent 100%
+  );
+}
+
+.credits-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, transparent 38%, rgb(0 0 0 / 0.42) 100%),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.25), transparent 20% 78%, rgb(0 0 0 / 0.4));
+}
+
+.credits-roll {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(92vw, 56rem);
+  transform: translate3d(-50%, 100vh, 0);
+  will-change: transform;
+  text-align: center;
+}
+
+.credits-title-card {
+  display: grid;
+  min-height: 60vh;
+  place-content: center;
+  gap: 1.2rem;
+}
+
+.credits-title-card h1 {
+  max-width: 12ch;
+  margin-inline: auto;
+  font-family: var(--font-serif);
+  font-size: clamp(3.2rem, 8vw, 7.5rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+}
+
+.credits-kicker,
+.credits-location {
+  font-family: var(--font-mono);
+  font-size: clamp(0.625rem, 1.2vw, 0.75rem);
+  letter-spacing: 0.19em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: #bda36b;
+}
+
+.credits-block {
+  margin-top: clamp(9rem, 22vh, 15rem);
+}
+
+.credits-block h2 {
+  margin-bottom: clamp(3rem, 7vh, 5rem);
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+
+.credits-lines {
+  display: grid;
+  gap: clamp(1.8rem, 4vh, 3rem);
+}
+
+.credits-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.credits-role {
+  padding-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.625rem, 1.3vw, 0.75rem);
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+  text-align: right;
+  text-transform: uppercase;
+  color: #bda36b;
+}
+
+.credits-names {
+  display: grid;
+  gap: 0.35rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.45rem, 3.2vw, 2.5rem);
+  font-style: italic;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  text-align: left;
+}
+
+.credits-end-card {
+  display: grid;
+  min-height: 75vh;
+  place-content: center;
+  gap: 1rem;
+  margin-top: clamp(11rem, 28vh, 20rem);
+}
+
+.credits-end-title {
+  max-width: 11ch;
+  margin-inline: auto;
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-style: italic;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.credits-controls {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 3;
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.35rem;
+  border: 1px solid rgb(244 239 230 / 0.14);
+  border-radius: 999px;
+  background: rgb(9 9 9 / 0.82);
+  box-shadow: 0 0.75rem 2.5rem rgb(0 0 0 / 0.42);
+  backdrop-filter: blur(12px);
+}
+
+.credits-control {
+  display: inline-flex;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  padding-inline: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(244 239 230 / 0.68);
+  transition:
+    color 180ms var(--ease-ui),
+    background-color 180ms var(--ease-ui);
+}
+
+.credits-control:hover,
+.credits-control:focus-visible {
+  background: rgb(244 239 230 / 0.09);
+  color: #f4efe6;
+}
+
+.credits-control:focus-visible {
+  outline: 2px solid #c9a85f;
+  outline-offset: 2px;
+}
+
+.credits-control:disabled {
+  cursor: not-allowed;
+  opacity: 0.36;
+}
+
+.credits-control svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  stroke-width: 1.7;
+}
+
+.credits-page--reduced .credits-stage {
+  mask-image: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+.credits-page--reduced .credits-roll {
+  position: relative;
+  top: auto;
+  left: auto;
+  margin-inline: auto;
+  padding: 5rem 0 9rem;
+  transform: none;
+  will-change: auto;
+}
+
+.credits-page--reduced .credits-title-card,
+.credits-page--reduced .credits-end-card {
+  min-height: 0;
+}
+
+.credits-page--reduced .credits-block,
+.credits-page--reduced .credits-end-card {
+  margin-top: 4rem;
+}
+
+.credits-page--reduced .credits-block h2 {
+  margin-bottom: 1.5rem;
+}
+
+.credits-page--reduced .credits-lines {
+  gap: 1rem;
+}
+
+@media (max-width: 639px) {
+  .credits-line {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .credits-role,
+  .credits-names {
+    text-align: center;
+  }
+
+  .credits-role {
+    padding-top: 0;
+  }
+
+  .credits-controls {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}

@@ -64,6 +64,14 @@ export function Footer() {
                   Privacy Notice
                 </a>
               </li>
+              <li>
+                <a
+                  href="/credits"
+                  className="inline-flex min-h-6 items-center py-2 text-sm text-ink-muted transition-colors duration-200 ease-ui hover:text-ink"
+                >
+                  Credits
+                </a>
+              </li>
             </ul>
           </nav>
 
