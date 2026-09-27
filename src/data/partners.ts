@@ -75,18 +75,6 @@ export const partners: Partner[] = [
     website: null,
     active: true,
   },
-  {
-    id: "hackroute",
-    name: "HackRoute",
-    descriptor: "Student hackathon community",
-    monogram: "HR",
-    logo: "/partners/hackroute.png",
-    logoTone: "badge",
-    logoWidth: 512,
-    logoHeight: 512,
-    website: null,
-    active: true,
-  },
 ];
 
 export const partnershipModel = [

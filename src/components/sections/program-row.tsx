@@ -68,7 +68,7 @@ export function ProgramRow({
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <span
             ref={numberRef}
-            className="font-mono text-[0.6875rem] text-amber-300 tabular-nums"
+            className="font-mono text-[0.6875rem] tracking-[0.06em] text-amber-300 tabular-nums"
           >
             {String(index + 1).padStart(2, "0")}
           </span>

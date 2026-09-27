@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +12,16 @@ type Node = {
   r: number;
 };
 
+type Zone = { left: number; top: number; right: number; bottom: number };
+
+/** Share of nodes kept out of the quiet zone, and how faint the rest draw there. */
+const QUIET_EVICT = 0.75;
+const QUIET_ALPHA = 0.28;
+
+function inZone(zone: Zone | null, x: number, y: number) {
+  return Boolean(zone && x > zone.left && x < zone.right && y > zone.top && y < zone.bottom);
+}
+
 type Variant = "hero" | "ambient";
 type Density = "default" | "sparse";
 
@@ -22,9 +32,9 @@ function nodeCount(width: number, variant: Variant, density: Density) {
     return 14;
   }
   if (variant === "ambient") return 20;
-  if (width < 640) return 36;
-  if (width < 1024) return 56;
-  return 72;
+  if (width < 640) return 28;
+  if (width < 1024) return 44;
+  return 58;
 }
 
 function palette(dark: boolean, ambient: boolean, sparse: boolean) {
@@ -37,8 +47,8 @@ function palette(dark: boolean, ambient: boolean, sparse: boolean) {
     return { rgb: [243, 180, 95] as const, node: 0.5, line: 0.28, glow: 0.58 };
   }
   return dark
-    ? { rgb: [243, 180, 95] as const, node: 0.38, line: 0.2, glow: 0.45 }
-    : { rgb: [232, 162, 74] as const, node: 0.28, line: 0.13, glow: 0.36 };
+    ? { rgb: [243, 180, 95] as const, node: 0.32, line: 0.16, glow: 0.42 }
+    : { rgb: [196, 130, 42] as const, node: 0.3, line: 0.14, glow: 0.4 };
 }
 
 function isDark() {
@@ -49,14 +59,17 @@ function isDark() {
  * Connecting-nodes field. Decorative — never intercepts clicks.
  * `hero` is mouse-reactive and denser; `ambient` is a calmer, passive drift.
  * `density="sparse"` is the confirmation-page atmosphere: 10–15 nodes, slower.
+ * `quietRef` marks an element (the hero headline) the field thins out behind.
  */
 export function NodeNetwork({
   variant = "hero",
   density = "default",
+  quietRef,
   className,
 }: {
   variant?: Variant;
   density?: Density;
+  quietRef?: RefObject<HTMLElement | null>;
   className?: string;
 }) {
   const reduced = usePrefersReducedMotion();
@@ -98,15 +111,44 @@ export function NodeNetwork({
         ? Math.min(220, Math.max(140, width * 0.18))
         : Math.min(148, Math.max(96, width * 0.12));
 
+    let zone: Zone | null = null;
+
+    function place() {
+      let x = Math.random() * width;
+      let y = Math.random() * height;
+      if (inZone(zone, x, y) && Math.random() < QUIET_EVICT) {
+        for (let attempt = 0; attempt < 8 && inZone(zone, x, y); attempt += 1) {
+          x = Math.random() * width;
+          y = Math.random() * height;
+        }
+      }
+      return { x, y };
+    }
+
     function seed() {
       const count = nodeCount(width, variant, density);
       nodes = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
+        ...place(),
         vx: (Math.random() - 0.5) * speed,
         vy: (Math.random() - 0.5) * speed,
         r: 1.6 + Math.random() * 1.8,
       }));
+    }
+
+    function measureZone(rect: DOMRect) {
+      const quiet = quietRef?.current;
+      if (!quiet) {
+        zone = null;
+        return;
+      }
+      const box = quiet.getBoundingClientRect();
+      const pad = 28;
+      zone = {
+        left: box.left - rect.left - pad,
+        top: box.top - rect.top - pad,
+        right: box.right - rect.left + pad,
+        bottom: box.bottom - rect.top + pad,
+      };
     }
 
     function resize() {
@@ -118,6 +160,7 @@ export function NodeNetwork({
       surface.style.width = `${width}px`;
       surface.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      measureZone(rect);
       seed();
     }
 
@@ -173,10 +216,11 @@ export function NodeNetwork({
           const dist = Math.hypot(dx, dy);
           if (dist > link) continue;
 
+          const midX = (a.x + c.x) / 2;
+          const midY = (a.y + c.y) / 2;
           let alpha = (1 - dist / link) * colors.line;
+          if (inZone(zone, midX, midY)) alpha *= QUIET_ALPHA;
           if (reactive) {
-            const midX = (a.x + c.x) / 2;
-            const midY = (a.y + c.y) / 2;
             const toMouse = Math.hypot(midX - mouse.x, midY - mouse.y);
             if (toMouse < influence) {
               alpha += ((influence - toMouse) / influence) * 0.16;
@@ -193,7 +237,7 @@ export function NodeNetwork({
       }
 
       for (const node of nodes) {
-        let alpha = colors.node;
+        let alpha = inZone(zone, node.x, node.y) ? colors.node * QUIET_ALPHA : colors.node;
         if (reactive) {
           const dist = Math.hypot(node.x - mouse.x, node.y - mouse.y);
           if (dist < influence) {
@@ -261,7 +305,7 @@ export function NodeNetwork({
         window.removeEventListener("mouseleave", onLeave);
       }
     };
-  }, [ambient, density, reduced, sparse, variant]);
+  }, [ambient, density, quietRef, reduced, sparse, variant]);
 
   return (
     <canvas
@@ -273,9 +317,9 @@ export function NodeNetwork({
           ? undefined
           : {
               maskImage:
-                "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
+                "radial-gradient(ellipse 70% 70% at 68% 42%, black 0%, transparent 100%)",
               WebkitMaskImage:
-                "radial-gradient(ellipse 80% 60% at 50% 40%, black 0%, transparent 100%)",
+                "radial-gradient(ellipse 70% 70% at 68% 42%, black 0%, transparent 100%)",
             }
       }
     />

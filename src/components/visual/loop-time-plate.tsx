@@ -103,6 +103,8 @@ export function LoopCard({
   pace: "slow" | "fast";
   loop: typeof slowLoop | typeof fastLoop;
 }) {
+  const speed = loop.fields.find((field) => field.label === "Speed")?.value;
+
   return (
     <Panel
       className={`loop-card loop-card--${pace} relative isolate flex h-full flex-col overflow-hidden`}
@@ -110,11 +112,17 @@ export function LoopCard({
       onPointerLeave={clearPlatePoint}
     >
       {pace === "slow" ? <SlowMonthPlate /> : null}
-      <div className="loop-card-copy relative z-10 px-6 py-6 sm:px-8">
-        <p className="font-mono text-[0.6875rem] tracking-[0.09em] text-amber-300 uppercase">
-          {kicker}
+      <div className="loop-card-copy relative z-10 px-6 pt-7 pb-6 sm:px-8">
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[0.6875rem] tracking-[0.09em] uppercase">
+          <span className="text-amber-300">{kicker}</span>
+          {speed ? (
+            <>
+              <span className="h-px w-5 bg-line-strong" aria-hidden="true" />
+              <span className="loop-card-pace">{speed}</span>
+            </>
+          ) : null}
         </p>
-        <h3 className="mt-3 text-h3 text-ink">{loop.title}</h3>
+        <h3 className="mt-4 text-h3 text-ink">{loop.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-ink-muted">{loop.subtitle}</p>
         {pace === "fast" ? <FastStavePlate /> : null}
       </div>

@@ -9,10 +9,13 @@ export function Eyebrow({
   index,
   children,
   className,
+  stop,
 }: {
   index?: string;
   children: string;
   className?: string;
+  /** Marks this label as a station on the homepage route. */
+  stop?: boolean;
 }) {
   return (
     <p
@@ -20,6 +23,7 @@ export function Eyebrow({
         "flex items-center gap-3 font-mono text-label uppercase text-ink-faint",
         className,
       )}
+      data-route-stop={stop ? "" : undefined}
     >
       {index ? (
         <>

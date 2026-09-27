@@ -9,7 +9,7 @@ import { Programs } from "@/components/sections/programs";
 import { SignedInHomeGate } from "@/components/sections/signed-in-home-gate";
 import { Stats } from "@/components/sections/stats";
 import { VoicesViewer } from "@/components/sections/voices-viewer";
-import { ImpactArrow } from "@/components/visual/impact-arrow";
+import { RouteSpine } from "@/components/visual/route-spine";
 
 export default function HomePage() {
   return (
@@ -17,16 +17,16 @@ export default function HomePage() {
       <SignedInHomeGate />
       <Navbar />
       <main id="main">
-        <ImpactArrow>
+        <RouteSpine>
           <Hero />
           <Stats />
-        </ImpactArrow>
-        <About />
-        <Programs />
-        <FeaturedEvent />
-        <VoicesViewer />
-        <Partners />
-        <Join />
+          <About />
+          <Programs />
+          <FeaturedEvent />
+          <VoicesViewer />
+          <Partners />
+          <Join />
+        </RouteSpine>
       </main>
       <Footer />
     </>

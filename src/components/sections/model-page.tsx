@@ -10,7 +10,7 @@ import { Section } from "@/components/ui/section";
 import { Em, SectionHeading } from "@/components/ui/section-heading";
 import { AudienceAtmosphereCards } from "@/components/sections/audience-atmosphere-cards";
 import { EvidenceMetricGrid } from "@/components/sections/evidence-metric-grid";
-import { GuardedCoreVisual } from "@/components/visual/guarded-core";
+import { DataPath } from "@/components/visual/data-path";
 import { LoopConnector } from "@/components/visual/loop-connector";
 import { LoopCard } from "@/components/visual/loop-time-plate";
 import { CropMarkCta } from "@/components/visual/crop-mark";
@@ -406,14 +406,9 @@ export function ModelPage() {
               </Reveal>
             </div>
 
-            <div
-              className="hidden lg:col-span-6 lg:flex lg:items-center lg:justify-center xl:col-span-5"
-              aria-hidden="true"
-            >
-              <Reveal delay={0.12}>
-                <GuardedCoreVisual />
-              </Reveal>
-            </div>
+            <Reveal delay={0.12} className="mt-16 lg:col-span-6 lg:mt-0 xl:col-span-5">
+              <DataPath />
+            </Reveal>
           </div>
         </Container>
       </Section>

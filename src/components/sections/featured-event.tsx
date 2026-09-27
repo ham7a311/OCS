@@ -25,6 +25,7 @@ export function FeaturedEvent() {
           <SectionHeading
             index="03"
             eyebrow="Events"
+            stop
             id="events-title"
             title={
               <>

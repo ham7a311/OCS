@@ -27,35 +27,31 @@ function n(value: number) {
 }
 
 /**
- * One cubic Bézier from the last commitment, through the well above
- * Workshops, ending just to the right of Impact to date and pointing at it.
+ * One cubic Bézier that leaves the hero CTAs heading right, sweeps out over
+ * the scene, and comes back in to land beside the reach figure.
  */
 function buildCurve(root: HTMLElement): Curve | null {
   const from = root.querySelector("[data-arrow-from]");
   const to = root.querySelector("[data-arrow-to]");
-  const well = root.querySelector("[data-arrow-well]");
   if (!from || !to) return null;
 
   const wrap = root.getBoundingClientRect();
   const startBox = relativeRect(from, wrap);
   const endBox = relativeRect(to, wrap);
-  const wellBox = well ? relativeRect(well, wrap) : null;
 
-  const sx = startBox.left + startBox.width * 0.28;
-  const sy = startBox.bottom + 8;
-  const ex = endBox.right + 16;
-  const ey = endBox.top + endBox.height / 2;
-
-  const wellX = wellBox ? wellBox.left + wellBox.width * 0.55 : sx + 48;
-  const wellY = wellBox ? (sy + wellBox.top) / 2 : sy + Math.max(72, (ey - sy) * 0.55);
+  const sx = startBox.right + 24;
+  const sy = startBox.top + startBox.height / 2;
+  const ex = endBox.right + 20;
+  const ey = endBox.top + endBox.height * 0.4;
 
   const dy = ey - sy;
   if (dy < 16) return null;
 
-  const c1x = wellX;
-  const c1y = wellY;
-  const c2x = ex + Math.max(72, (wellX - ex) * 0.22);
-  const c2y = ey;
+  const reach = Math.min(wrap.width - 48, Math.max(sx + 180, wrap.width * 0.72));
+  const c1x = reach;
+  const c1y = sy + dy * 0.18;
+  const c2x = Math.min(wrap.width - 48, ex + Math.max(160, (reach - ex) * 0.7));
+  const c2y = ey - dy * 0.12;
 
   const d = `M ${n(sx)} ${n(sy)} C ${n(c1x)} ${n(c1y)}, ${n(c2x)} ${n(c2y)}, ${n(ex)} ${n(ey)}`;
 
@@ -131,8 +127,8 @@ function ArrowOverlay({ root }: { root: HTMLElement | null }) {
 }
 
 /**
- * Annotation from the last hero commitment, through the space above
- * Workshops, pointing at the Impact to date label.
+ * The first stretch of the route: from the hero's invitation to the figure
+ * that proves it, 27 countries.
  */
 export function ImpactArrow({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);

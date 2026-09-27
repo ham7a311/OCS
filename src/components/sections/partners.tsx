@@ -17,6 +17,7 @@ export function Partners() {
           <SectionHeading
             index="05"
             eyebrow="Partners"
+            stop
             id="partners-title"
             title={
               <>
@@ -41,14 +42,14 @@ export function Partners() {
       </Container>
 
       <Reveal delay={0.08}>
-        <div className="mt-10 lg:mt-12">
+        <div className="mt-14 lg:mt-20">
           <PartnerMarquee partners={roster} />
         </div>
       </Reveal>
 
       <Container>
         <Reveal delay={0.1}>
-          <ul className="mt-8 flex flex-wrap gap-2">
+          <ul className="mt-12 flex flex-wrap gap-2 lg:mt-16">
             {partnershipModel.map((item) => (
               <li
                 key={item}
@@ -62,7 +63,7 @@ export function Partners() {
 
         <Reveal delay={0.14}>
           <HalftoneCta
-            className="mt-10"
+            className="mt-14 lg:mt-16"
             badge="Work with us"
             heading={
               <>

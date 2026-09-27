@@ -17,3 +17,4 @@ next-env.d.ts
 # Core team portraits — keep local, never publish
 public/images/*pfp*
 public/images/hamza-avatar.jpg
+/.cinematic-src

@@ -32,17 +32,6 @@ export const team: TeamMember[] = [
     skills: ["Python", "React", "FastAPI", "RAG", "LLMs", "Git"],
   },
   {
-    id: "alazher",
-    name: "Al Azher Al Rawahi",
-    role: "Chief Marketing Officer",
-    color: "#E4574A",
-    linkedin: "https://www.linkedin.com/in/alazhar96",
-    about:
-      "Makes sure the room is visible without turning it into a brand deck. Campaigns, partnerships, and the public face of sessions that would otherwise stay inside one campus.",
-    education: "Marketing · Sultan Qaboos University",
-    skills: ["Content creation", "Social media", "Graphic Design", "Photography", "Figma"],
-  },
-  {
     id: "noor-al-rahbi",
     name: "Noor Al Rahbi",
     role: "Director of Ops",

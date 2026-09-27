@@ -22,6 +22,7 @@ export function SectionHeading({
   align = "start",
   className,
   id,
+  stop,
 }: {
   index?: string;
   eyebrow: string;
@@ -30,6 +31,7 @@ export function SectionHeading({
   align?: "start" | "center";
   className?: string;
   id?: string;
+  stop?: boolean;
 }) {
   const centered = align === "center";
 
@@ -41,7 +43,9 @@ export function SectionHeading({
         className,
       )}
     >
-      <Eyebrow index={index}>{eyebrow}</Eyebrow>
+      <Eyebrow index={index} stop={stop}>
+        {eyebrow}
+      </Eyebrow>
       <h2 id={id} className="max-w-[20ch] text-h2 text-ink">
         {title}
       </h2>

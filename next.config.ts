@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   // Hides the circular Next.js "N" overlay in local screenshots.
   devIndicators: false,
   agentRules: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+  },
   async redirects() {
     return [
       {

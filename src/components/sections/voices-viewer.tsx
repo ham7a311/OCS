@@ -1,15 +1,17 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, UserRound } from "lucide-react";
+import Image from "next/image";
 import { Container } from "@/components/ui/container";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { PagerButton } from "@/components/ui/pager-button";
 import { Em } from "@/components/ui/section-heading";
-import { VoicesWaveField } from "@/components/visual/voices-wave-field";
+import { imagery } from "@/data/imagery";
 import { voices, type Voice } from "@/data/voices";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { useTheme } from "@/hooks/use-theme";
 import { duration, easeUi } from "@/lib/motion";
 
 function padIndex(value: number) {
@@ -69,9 +71,10 @@ function VoiceStage({ voice }: { voice: Voice }) {
 
 export function VoicesViewer() {
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const liveId = useId();
   const reduced = usePrefersReducedMotion();
+  const { theme } = useTheme();
+  const hands = theme === "light" ? imagery.voicesLight : imagery.voices;
   const stageRef = useRef<HTMLElement>(null);
   const inViewRef = useRef(false);
   const count = voices.length;
@@ -79,7 +82,6 @@ export function VoicesViewer() {
 
   const go = useCallback(
     (next: -1 | 1) => {
-      setDirection(next);
       setIndex((current) => (current + next + count) % count);
     },
     [count],
@@ -135,13 +137,23 @@ export function VoicesViewer() {
       className="voices-stage"
       aria-labelledby="voices-title"
     >
-      <div className="voices-word-layer" aria-hidden="true">
-        <div className="voices-word">VOICES</div>
+      <div className="voices-ground" aria-hidden="true">
+        <div className="voices-ground__photo absolute inset-0">
+          <Image
+            src={hands.src}
+            alt={hands.alt}
+            fill
+            placeholder="blur"
+            sizes="100vw"
+            className="voices-ground__img"
+          />
+        </div>
       </div>
-      <VoicesWaveField />
 
       <Container className="voices-frame">
-        <Eyebrow index="04">Voices</Eyebrow>
+        <Eyebrow index="04" stop>
+          Voices
+        </Eyebrow>
         <h2 id="voices-title" className="voices-title">
           Voices
         </h2>
@@ -165,20 +177,27 @@ export function VoicesViewer() {
           </PagerButton>
 
           <div className="voices-card">
-            <div id={liveId} aria-live="polite" aria-atomic="true" className="voices-card-live">
-              <AnimatePresence initial={false} custom={direction}>
-                <motion.div
-                  key={voice.id}
-                  className="voices-card-slide"
-                  custom={direction}
-                  initial={reduced ? { opacity: 0 } : { opacity: 0, x: direction * 18 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={reduced ? { opacity: 0 } : { opacity: 0, x: direction * -14 }}
-                  transition={transition}
-                >
-                  <VoiceStage voice={voice} />
-                </motion.div>
-              </AnimatePresence>
+            <div className="voices-card-live">
+              <p id={liveId} className="sr-only" aria-live="polite">
+                {voice.name}. {voice.quote}
+              </p>
+              {voices.map((item) => {
+                const active = item.id === voice.id;
+                return (
+                  <motion.div
+                    key={item.id}
+                    className="voices-card-slide"
+                    data-active={active ? "" : undefined}
+                    aria-hidden={active ? undefined : true}
+                    initial={false}
+                    animate={{ opacity: active ? 1 : 0 }}
+                    transition={transition}
+                    style={{ pointerEvents: active ? "auto" : "none" }}
+                  >
+                    <VoiceStage voice={item} />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
 

@@ -6,50 +6,63 @@ import { Reveal } from "@/components/ui/reveal";
 import { Section } from "@/components/ui/section";
 import { stats, type Stat } from "@/data/stats";
 import { useCountUp } from "@/hooks/use-count-up";
-import { cn } from "@/lib/utils";
 
-function StatCell({ stat }: { stat: Stat }) {
+function Figure({ stat, className }: { stat: Stat; className?: string }) {
   const { ref, value } = useCountUp(stat.value);
 
   return (
-    <div
-      data-arrow-well={stat.id === "workshops" ? "" : undefined}
-      className={cn(
-        "hero-metric flex flex-col gap-3 px-4 py-7 sm:px-6 sm:py-8 lg:px-7 lg:py-10",
-        stat.featured && "hero-metric--featured",
-      )}
-    >
-      <p className="hero-metric-value text-stat text-ink tabular-nums">
-        <span ref={ref}>{value}</span>
-        {stat.suffix ? <span className="text-amber-300">{stat.suffix}</span> : null}
-      </p>
-      <div className="flex flex-col gap-1.5">
-        <p className="font-mono text-[0.625rem] leading-snug tracking-[0.08em] text-ink-muted uppercase sm:text-[0.6875rem] sm:tracking-[0.09em]">
-          {stat.label}
-        </p>
-        <p className="text-sm leading-snug text-ink-faint">{stat.note}</p>
-      </div>
-    </div>
+    <span className={className}>
+      <span ref={ref}>{value}</span>
+      {stat.suffix ? <span className="text-amber-300">{stat.suffix}</span> : null}
+    </span>
   );
 }
 
+/**
+ * Evidence, set as one story and its footnotes: the reach figure carries the
+ * section, the other three read as a ledger beneath it.
+ */
 export function Stats() {
+  const ordered = [...stats].sort((a, b) => a.displayOrder - b.displayOrder);
+  const primary = ordered.find((stat) => stat.featured) ?? ordered[0];
+  const secondary = ordered.filter((stat) => stat !== primary);
+
+  if (!primary) return null;
+
   return (
-    <Section tone="canvas" divider={false} className="pt-2 pb-16 sm:pb-20 lg:pt-4 lg:pb-24">
+    <Section tone="canvas" divider={false} className="stats-section">
       <Container>
-        <div data-arrow-to="" className="w-fit">
-          <Reveal>
-            <Eyebrow>Impact to date</Eyebrow>
+        <Reveal>
+          <Eyebrow>Impact to date</Eyebrow>
+        </Reveal>
+
+        <div className="mt-10 grid gap-14 lg:mt-12 lg:grid-cols-12 lg:items-end lg:gap-10">
+          <Reveal delay={0.06} className="lg:col-span-7">
+            <p className="stats-primary">
+              <span data-arrow-to="" className="stats-primary__figure tabular-nums">
+                <Figure stat={primary} />
+              </span>
+              <span className="stats-primary__label">{primary.label}</span>
+            </p>
+            <p className="mt-5 max-w-[34ch] text-lead text-ink-muted">{primary.note}</p>
+          </Reveal>
+
+          <Reveal delay={0.14} className="lg:col-span-5">
+            <dl className="stats-ledger">
+              {secondary.map((stat) => (
+                <div key={stat.id} className="stats-ledger__row">
+                  <dt className="stats-ledger__label">
+                    <span className="text-ink">{stat.label}</span>
+                    <span className="stats-ledger__note">{stat.note}</span>
+                  </dt>
+                  <dd className="stats-ledger__value tabular-nums">
+                    <Figure stat={stat} />
+                  </dd>
+                </div>
+              ))}
+            </dl>
           </Reveal>
         </div>
-
-        <Reveal delay={0.08}>
-          <div className="hero-metrics mt-8 grid grid-cols-2 gap-px overflow-hidden border-y lg:grid-cols-4">
-            {stats.map((stat) => (
-              <StatCell key={stat.id} stat={stat} />
-            ))}
-          </div>
-        </Reveal>
       </Container>
     </Section>
   );
