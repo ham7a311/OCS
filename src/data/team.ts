@@ -43,19 +43,6 @@ export const team: TeamMember[] = [
     skills: ["Communication", "Partnerships", "Event Coordination", "Teamwork"],
   },
   {
-    id: "noor-al-balushi",
-    name: "Noor Al Balushi",
-    role: "Chief Digital Engagement Officer",
-    color: "#9B5DE5",
-    linkedin: "https://www.linkedin.com/in/noor-al-balushi247",
-    about:
-      "Cares about cybersecurity, AI, digital forensics, and fraud detection — work that has to survive a real-world problem. Also the quieter side: innovation, partnerships, and keeping the community together.",
-    photo: "/images/avatars/noor-al-balushi.jpg",
-    education: "CS (Cybersecurity) · MCBS",
-    skills: ["Cybersecurity", "AI", "Digital Forensics", "Fraud Detection", "Community Building"],
-    links: [{ label: "Email", href: "mailto:nooralbalushi247@gmail.com" }],
-  },
-  {
     id: "rabia-khalid",
     name: "Rabia Khalid",
     role: "Chief Tech Officer",
@@ -73,10 +60,12 @@ export const team: TeamMember[] = [
     role: "Director of Tech",
     color: "#E07A3D",
     linkedin: "https://www.linkedin.com/in/al-munther-al-harrasi",
+    photo: "/images/avatars/al-munther.jpg",
+    photoPosition: "center 32%",
     about:
-      "Runs the day-to-day of the tech department: session briefs, tooling, and the people who stand at the front of a workshop. Turns a topic into something students can leave having made.",
-    education: "Computer Science · UTAS — Muscat",
-    skills: ["Python", "JavaScript", "Web Dev", "AI tools", "Vibe coding"],
+      "Information Technology student at the University of Technology and Applied Sciences, Director of Technology at OCS, and a Decoding Data Science Ambassador.\n\nHe builds digital products, and he cares about the interface as much as the code underneath it.",
+    education: "Information Technology · UTAS",
+    skills: ["Digital products", "Interface", "Web"],
   },
   {
     id: "hamza",
@@ -140,9 +129,14 @@ export const team: TeamMember[] = [
     color: "#C9A03A",
     linkedin: "https://www.linkedin.com/in/sulaiman-al-darei",
     about:
-      "Holds the threads nobody else wants to hold: structure, questions, and the model when it starts to drift. The title is a joke until you need him in the room.",
-    education: "Computer Science · Sultan Qaboos University",
-    skills: ["Algorithms/DSA", "Python", "C/C++", "Git", "Linux"],
+      "Builds the parts you are not meant to notice: pipelines, containerized services, secure data for industrial IoT, and the AI on top, plus the operations that keep businesses running across Oman. He likes taking something complicated, automating the messy middle, and handing it back simple.",
+    skills: [
+      "Software Development",
+      "Automation",
+      "Data Analysis",
+      "Public Lectures",
+      "Artificial Intelligence",
+    ],
   },
 ];
 

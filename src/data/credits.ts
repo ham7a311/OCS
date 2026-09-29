@@ -18,10 +18,6 @@ export const creditBlocks: readonly CreditBlock[] = [
     lines: [
       { role: "CEO & Founder", names: ["Abhiman Dewangan"] },
       { role: "Director of Operations", names: ["Noor Al Rahbi"] },
-      {
-        role: "Chief Digital Engagement Officer",
-        names: ["Noor Al Balushi"],
-      },
       { role: "Chief Technology Officer", names: ["Rabia Khalid"] },
       { role: "Director of Technology", names: ["Al Munther Al Harrasi"] },
       {

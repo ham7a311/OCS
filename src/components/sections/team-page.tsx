@@ -211,7 +211,7 @@ export function TeamPage() {
           The people who <Em>keep the room open</Em>.
         </h1>
         <p className="team-lead">
-          Ten students who run Oman Computing Society — the sessions, the public face, and the
+          Eight students who run Oman Computing Society — the sessions, the public face, and the
           software the community actually uses.
         </p>
       </Container>
@@ -256,7 +256,11 @@ export function TeamPage() {
                     {member.about ? (
                       <div className="team-block">
                         <p className="team-block-label">About</p>
-                        <p className="team-block-body">{member.about}</p>
+                        {member.about.split(/\n\n+/).map((paragraph) => (
+                          <p key={paragraph} className="team-block-body">
+                            {paragraph}
+                          </p>
+                        ))}
                       </div>
                     ) : null}
 
